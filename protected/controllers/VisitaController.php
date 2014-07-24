@@ -105,6 +105,24 @@ class VisitaController extends Controller
 		));
 	}
 
+	public function actionAceptarPresupuesto($id)
+	{
+		$model=$this->loadModel($id);
+		$model->estado = 3;
+		if ($model->save()) {
+				$this->redirect(array('view','id'=>$model->id));
+		}
+	}
+
+	public function actionRechazarPresupuesto($id)
+	{
+		$model=$this->loadModel($id);
+		$model->estado = 2;
+		if ($model->save()) {
+				$this->redirect(array('view','id'=>$model->id));
+		}
+	}
+
 	/**
 	 * Deletes a particular model.
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.

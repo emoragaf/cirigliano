@@ -48,6 +48,9 @@ return array(
     'model.Presupuesto.index'=>'Listar Presupuestos',
     'model.Presupuesto.view'=>'Detalles Presupuesto',
     'model.Presupuesto.delete'=>'Eliminar Presupuesto',
+    'model.Presupuesto.aceptar'=>'Aceptar Presupuesto',
+    'model.Presupuesto.rechazar'=>'Rechazar Presupuesto',
+
     //Comuna
     'model.Comuna'=>'Comunas',
     'model.Comuna.create'=>'Nueva Comuna',
