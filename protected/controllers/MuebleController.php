@@ -70,7 +70,7 @@ class MuebleController extends Controller
 		if (isset($_POST['Mueble'])) {
 			$model->attributes=$_POST['Mueble'];
 			if ($model->save()) {
-				$this->redirect(array('view','id'=>$model->id));
+				$this->redirect(array('admin'));
 			}
 		}
 
@@ -94,7 +94,7 @@ class MuebleController extends Controller
 		if (isset($_POST['Mueble'])) {
 			$model->attributes=$_POST['Mueble'];
 			if ($model->save()) {
-				$this->redirect(array('view','id'=>$model->id));
+				$this->redirect(array('admin'));
 			}
 		}
 

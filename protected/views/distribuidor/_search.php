@@ -1,6 +1,6 @@
 <?php
-/* @var $this PuntoController */
-/* @var $model Punto */
+/* @var $this DistribuidorController */
+/* @var $model Distribuidor */
 /* @var $form CActiveForm */
 ?>
 
@@ -10,8 +10,10 @@
 	'action'=>Yii::app()->createUrl($this->route),
 	'method'=>'get',
 )); ?>
-                    <?php echo $form->dropDownListControlGroup($model, 'mueble',
-                        CHtml::listData(MueblePunto::model()->findAll(array('condition'=>'punto_id = '.$model->id)), 'id', 'NombreMueble'), array('empty' => 'Seleccione')); ?>
+
+                    <?php echo $form->textFieldControlGroup($model,'id',array('span'=>5)); ?>
+
+                    <?php echo $form->textFieldControlGroup($model,'nombre',array('span'=>5,'maxlength'=>255)); ?>
 
         <div class="form-actions">
         <?php echo TbHtml::submitButton('Buscar',  array('color' => TbHtml::BUTTON_COLOR_PRIMARY,));?>

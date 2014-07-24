@@ -30,6 +30,7 @@ $this->menu=array(
 		'tarifa',
 		array(
 			'class'=>'bootstrap.widgets.TbButtonColumn',
+			'template'=>'{update}{delete}',
 		),
 	),
 )); ?>

@@ -56,6 +56,9 @@ class MueblePunto extends CActiveRecord
 			'servicioMuebles' => array(self::HAS_MANY, 'ServicioMueble', array('mueble_id'=>'mueble_id')),
 		);
 	}
+	public function getNombreMueble(){
+		return isset($this->mueble) ? $this->mueble->descripcion.' '.$this->codigo : null;
+	}
 
 	/**
 	 * @return array customized attribute labels (name=>label)

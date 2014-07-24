@@ -18,28 +18,15 @@
     <!--<p class="help-block"><?php echo Yii::t('app','Fields with * are required.'); ?></p>-->
 
     <?php echo $form->errorSummary($model); ?>
-            <label for="punto_id">Punto</label>
-            <select name="punto_id" id="">
-                <option value="1">Punto 1</option>
-                <option value="2">Punto 2</option>
-                <option value="3">Punto 3</option>
-                <option value="4">Punto 4</option>
-                <option value="5">Punto 5</option>
-            </select>
-
             <label for="punto_id">Tipo Visita</label>
-            <select name="tipo_visita_id" id="">
+            <select name="Visita[tipo_visita_id]" id="">
                 <option value="1">Reparación</option>
                 <option value="2">Limpieza</option>
                 <option value="3">Visita Preventiva</option>
             </select>
 
-            <label for="punto_id">Creador Visita</label>
-            <select name="persona_punto_id" id="">
-                <option value="1">Persona 1</option>
-                <option value="2">Persona 2</option>
-                <option value="3">Persona 3</option>
-            </select>
+            <?php echo $form->dropDownListControlGroup($model, 'persona_punto_id',
+                CHtml::listData(PersonaPunto::model()->findAll(array('condition'=>'punto_id = '.$model->punto_id)), 'id', 'Nombre'), array('empty' => 'Seleccione')); ?>
 
     <div>
         <?php echo TbHtml::submitButton($model->isNewRecord ? 'Crear' : 'Guardar',array(

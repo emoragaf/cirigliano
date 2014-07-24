@@ -35,6 +35,14 @@
 	            'class' => 'bootstrap.widgets.TbNav',
 	            'items' => array(
 	                array('label' => 'Puntos', 'url' =>array('/Punto/admin')),
+	                array('label'=>'Administracion','items'=>array(
+	                	array('label' => 'Distribuidores', 'url' =>array('/Distribuidor/admin')),
+	                	array('label' => 'Canales', 'url' =>array('/Canal/admin')),
+	                	//array('label' => 'Regiones', 'url' =>array('/Region/admin')),
+	                	array('label' => 'Comunas', 'url' =>array('/Comuna/admin')),
+	                	array('label' => 'Muebles', 'url' =>array('/Mueble/admin')),
+	                	array('label' => 'Tarifas Muebles', 'url' =>array('/ServicioMueble/admin')),
+	                	))
 	                //array('label' => '', 'url' => '#'),
 	                //array('label' => 'Link', 'url' => '#'),
 	            ),

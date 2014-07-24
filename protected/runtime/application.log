@@ -2915,3 +2915,959 @@ Stack trace:
 REQUEST_URI=/cirigliano/punto/2
 HTTP_REFERER=http://localhost:8888/cirigliano/Punto/admin
 ---
+2014/07/24 00:22:52 [error] [system.db.CDbCommand] CDbCommand::fetchAll() falló: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '>id' at line 1. La sentencia SQL ejecutada fue: SELECT * FROM `mueble_punto` `t` WHERE punto_id = $model->id.
+in /Applications/MAMP/htdocs/cirigliano/protected/views/punto/_search.php (14)
+in /Applications/MAMP/htdocs/cirigliano/protected/views/punto/view.php (140)
+in /Applications/MAMP/htdocs/cirigliano/protected/controllers/PuntoController.php (69)
+2014/07/24 00:22:52 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand falló al ejecutar la sentencia SQL: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '>id' at line 1. The SQL statement executed was: SELECT * FROM `mueble_punto` `t` WHERE punto_id = $model->id' in /Applications/MAMP/htdocs/yii/framework/db/CDbCommand.php:543
+Stack trace:
+#0 /Applications/MAMP/htdocs/yii/framework/db/CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 /Applications/MAMP/htdocs/yii/framework/db/ar/CActiveRecord.php(1351): CDbCommand->queryAll()
+#2 /Applications/MAMP/htdocs/yii/framework/db/ar/CActiveRecord.php(1470): CActiveRecord->query(Object(CDbCriteria), true)
+#3 /Applications/MAMP/htdocs/cirigliano/protected/views/punto/_search.php(14): CActiveRecord->findAll(Array)
+#4 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(126): require('/Applications/M...')
+#5 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(95): CBaseController->renderInternal('/Applications/M...', Array, true)
+#6 /Applications/MAMP/htdocs/yii/framework/web/CController.php(869): CBaseController->renderFile('/Applications/M...', Array, true)
+#7 /Applications/MAMP/htdocs/cirigliano/protected/views/punto/view.php(140): CController->renderPartial('_search', Array)
+#8 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(126): require('/Applications/M...')
+#9 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(95): CBaseController->renderInternal('/Applications/M...', Array, true)
+#10 /Applications/MAMP/htdocs/yii/framework/web/CController.php(869): CBaseController->renderFile('/Applications/M...', Array, true)
+#11 /Applications/MAMP/htdocs/yii/framework/web/CController.php(782): CController->renderPartial('view', Array, true)
+#12 /Applications/MAMP/htdocs/cirigliano/protected/controllers/PuntoController.php(69): CController->render('view', Array)
+#13 [internal function]: PuntoController->actionView('1')
+#14 /Applications/MAMP/htdocs/yii/framework/web/actions/CAction.php(108): ReflectionMethod->invokeArgs(Object(PuntoController), Array)
+#15 /Applications/MAMP/htdocs/yii/framework/web/actions/CInlineAction.php(47): CAction->runWithParamsInternal(Object(PuntoController), Object(ReflectionMethod), Array)
+#16 /Applications/MAMP/htdocs/yii/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#17 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#18 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#19 /Applications/MAMP/htdocs/yii/framework/web/CController.php(1145): CFilter->filter(Object(CFilterChain))
+#20 /Applications/MAMP/htdocs/yii/framework/web/filters/CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#21 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#22 /Applications/MAMP/htdocs/yii/framework/web/CController.php(291): CFilterChain->run()
+#23 /Applications/MAMP/htdocs/yii/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#24 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(282): CController->run('view')
+#25 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(141): CWebApplication->runController('punto/view')
+#26 /Applications/MAMP/htdocs/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#27 /Applications/MAMP/htdocs/cirigliano/index.php(13): CApplication->run()
+#28 {main}
+REQUEST_URI=/cirigliano/punto/1
+HTTP_REFERER=http://localhost:8888/cirigliano/Punto/admin
+---
+2014/07/24 00:23:22 [error] [exception.CException] exception 'CException' with message 'La propiedad "Mueble"."nombre" no se encuentra definida.' in /Applications/MAMP/htdocs/yii/framework/base/CComponent.php:130
+Stack trace:
+#0 /Applications/MAMP/htdocs/yii/framework/db/ar/CActiveRecord.php(145): CComponent->__get('nombre')
+#1 /Applications/MAMP/htdocs/cirigliano/protected/models/MueblePunto.php(60): CActiveRecord->__get('nombre')
+#2 /Applications/MAMP/htdocs/yii/framework/base/CComponent.php(188): MueblePunto->getNombreMueble()
+#3 /Applications/MAMP/htdocs/yii/framework/db/ar/CActiveRecord.php(183): CComponent->__isset('NombreMueble')
+#4 /Applications/MAMP/htdocs/yii/framework/web/helpers/CHtml.php(2135): CActiveRecord->__isset('NombreMueble')
+#5 /Applications/MAMP/htdocs/yii/framework/web/helpers/CHtml.php(2081): CHtml::value(Object(MueblePunto), 'NombreMueble')
+#6 /Applications/MAMP/htdocs/cirigliano/protected/views/punto/_search.php(14): CHtml::listData(Array, 'id', 'NombreMueble')
+#7 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(126): require('/Applications/M...')
+#8 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(95): CBaseController->renderInternal('/Applications/M...', Array, true)
+#9 /Applications/MAMP/htdocs/yii/framework/web/CController.php(869): CBaseController->renderFile('/Applications/M...', Array, true)
+#10 /Applications/MAMP/htdocs/cirigliano/protected/views/punto/view.php(140): CController->renderPartial('_search', Array)
+#11 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(126): require('/Applications/M...')
+#12 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(95): CBaseController->renderInternal('/Applications/M...', Array, true)
+#13 /Applications/MAMP/htdocs/yii/framework/web/CController.php(869): CBaseController->renderFile('/Applications/M...', Array, true)
+#14 /Applications/MAMP/htdocs/yii/framework/web/CController.php(782): CController->renderPartial('view', Array, true)
+#15 /Applications/MAMP/htdocs/cirigliano/protected/controllers/PuntoController.php(69): CController->render('view', Array)
+#16 [internal function]: PuntoController->actionView('1')
+#17 /Applications/MAMP/htdocs/yii/framework/web/actions/CAction.php(108): ReflectionMethod->invokeArgs(Object(PuntoController), Array)
+#18 /Applications/MAMP/htdocs/yii/framework/web/actions/CInlineAction.php(47): CAction->runWithParamsInternal(Object(PuntoController), Object(ReflectionMethod), Array)
+#19 /Applications/MAMP/htdocs/yii/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#20 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#21 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#22 /Applications/MAMP/htdocs/yii/framework/web/CController.php(1145): CFilter->filter(Object(CFilterChain))
+#23 /Applications/MAMP/htdocs/yii/framework/web/filters/CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#24 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#25 /Applications/MAMP/htdocs/yii/framework/web/CController.php(291): CFilterChain->run()
+#26 /Applications/MAMP/htdocs/yii/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#27 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(282): CController->run('view')
+#28 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(141): CWebApplication->runController('punto/view')
+#29 /Applications/MAMP/htdocs/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#30 /Applications/MAMP/htdocs/cirigliano/index.php(13): CApplication->run()
+#31 {main}
+REQUEST_URI=/cirigliano/punto/1
+HTTP_REFERER=http://localhost:8888/cirigliano/Punto/admin
+---
+2014/07/24 00:23:42 [error] [exception.CException] exception 'CException' with message 'La propiedad "Punto"."mueble" no se encuentra definida.' in /Applications/MAMP/htdocs/yii/framework/base/CComponent.php:130
+Stack trace:
+#0 /Applications/MAMP/htdocs/yii/framework/db/ar/CActiveRecord.php(145): CComponent->__get('mueble')
+#1 /Applications/MAMP/htdocs/yii/framework/web/helpers/CHtml.php(2529): CActiveRecord->__get('mueble')
+#2 /Applications/MAMP/htdocs/yii/framework/web/helpers/CHtml.php(1802): CHtml::resolveValue(Object(Punto), 'mueble')
+#3 /Applications/MAMP/htdocs/cirigliano/protected/extensions/bootstrap/helpers/TbHtml.php(1677): CHtml::activeDropDownList(Object(Punto), 'mueble', Array, Array)
+#4 /Applications/MAMP/htdocs/cirigliano/protected/extensions/bootstrap/helpers/TbHtml.php(2163): TbHtml::activeDropDownList(Object(Punto), 'mueble', Array, Array)
+#5 /Applications/MAMP/htdocs/cirigliano/protected/extensions/bootstrap/helpers/TbHtml.php(2097): TbHtml::createActiveInput('dropDownList', Object(Punto), 'mueble', Array, Array)
+#6 /Applications/MAMP/htdocs/cirigliano/protected/extensions/bootstrap/widgets/TbActiveForm.php(704): TbHtml::activeControlGroup('dropDownList', Object(Punto), 'mueble', Array, Array)
+#7 /Applications/MAMP/htdocs/cirigliano/protected/extensions/bootstrap/widgets/TbActiveForm.php(577): TbActiveForm->createControlGroup('dropDownList', Object(Punto), 'mueble', Array, Array)
+#8 /Applications/MAMP/htdocs/cirigliano/protected/views/punto/_search.php(14): TbActiveForm->dropDownListControlGroup(Object(Punto), 'mueble', Array, Array)
+#9 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(126): require('/Applications/M...')
+#10 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(95): CBaseController->renderInternal('/Applications/M...', Array, true)
+#11 /Applications/MAMP/htdocs/yii/framework/web/CController.php(869): CBaseController->renderFile('/Applications/M...', Array, true)
+#12 /Applications/MAMP/htdocs/cirigliano/protected/views/punto/view.php(140): CController->renderPartial('_search', Array)
+#13 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(126): require('/Applications/M...')
+#14 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(95): CBaseController->renderInternal('/Applications/M...', Array, true)
+#15 /Applications/MAMP/htdocs/yii/framework/web/CController.php(869): CBaseController->renderFile('/Applications/M...', Array, true)
+#16 /Applications/MAMP/htdocs/yii/framework/web/CController.php(782): CController->renderPartial('view', Array, true)
+#17 /Applications/MAMP/htdocs/cirigliano/protected/controllers/PuntoController.php(69): CController->render('view', Array)
+#18 [internal function]: PuntoController->actionView('1')
+#19 /Applications/MAMP/htdocs/yii/framework/web/actions/CAction.php(108): ReflectionMethod->invokeArgs(Object(PuntoController), Array)
+#20 /Applications/MAMP/htdocs/yii/framework/web/actions/CInlineAction.php(47): CAction->runWithParamsInternal(Object(PuntoController), Object(ReflectionMethod), Array)
+#21 /Applications/MAMP/htdocs/yii/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#22 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#23 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#24 /Applications/MAMP/htdocs/yii/framework/web/CController.php(1145): CFilter->filter(Object(CFilterChain))
+#25 /Applications/MAMP/htdocs/yii/framework/web/filters/CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#26 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#27 /Applications/MAMP/htdocs/yii/framework/web/CController.php(291): CFilterChain->run()
+#28 /Applications/MAMP/htdocs/yii/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#29 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(282): CController->run('view')
+#30 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(141): CWebApplication->runController('punto/view')
+#31 /Applications/MAMP/htdocs/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#32 /Applications/MAMP/htdocs/cirigliano/index.php(13): CApplication->run()
+#33 {main}
+REQUEST_URI=/cirigliano/punto/1
+HTTP_REFERER=http://localhost:8888/cirigliano/Punto/admin
+---
+2014/07/24 00:23:43 [error] [exception.CException] exception 'CException' with message 'La propiedad "Punto"."mueble" no se encuentra definida.' in /Applications/MAMP/htdocs/yii/framework/base/CComponent.php:130
+Stack trace:
+#0 /Applications/MAMP/htdocs/yii/framework/db/ar/CActiveRecord.php(145): CComponent->__get('mueble')
+#1 /Applications/MAMP/htdocs/yii/framework/web/helpers/CHtml.php(2529): CActiveRecord->__get('mueble')
+#2 /Applications/MAMP/htdocs/yii/framework/web/helpers/CHtml.php(1802): CHtml::resolveValue(Object(Punto), 'mueble')
+#3 /Applications/MAMP/htdocs/cirigliano/protected/extensions/bootstrap/helpers/TbHtml.php(1677): CHtml::activeDropDownList(Object(Punto), 'mueble', Array, Array)
+#4 /Applications/MAMP/htdocs/cirigliano/protected/extensions/bootstrap/helpers/TbHtml.php(2163): TbHtml::activeDropDownList(Object(Punto), 'mueble', Array, Array)
+#5 /Applications/MAMP/htdocs/cirigliano/protected/extensions/bootstrap/helpers/TbHtml.php(2097): TbHtml::createActiveInput('dropDownList', Object(Punto), 'mueble', Array, Array)
+#6 /Applications/MAMP/htdocs/cirigliano/protected/extensions/bootstrap/widgets/TbActiveForm.php(704): TbHtml::activeControlGroup('dropDownList', Object(Punto), 'mueble', Array, Array)
+#7 /Applications/MAMP/htdocs/cirigliano/protected/extensions/bootstrap/widgets/TbActiveForm.php(577): TbActiveForm->createControlGroup('dropDownList', Object(Punto), 'mueble', Array, Array)
+#8 /Applications/MAMP/htdocs/cirigliano/protected/views/punto/_search.php(14): TbActiveForm->dropDownListControlGroup(Object(Punto), 'mueble', Array, Array)
+#9 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(126): require('/Applications/M...')
+#10 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(95): CBaseController->renderInternal('/Applications/M...', Array, true)
+#11 /Applications/MAMP/htdocs/yii/framework/web/CController.php(869): CBaseController->renderFile('/Applications/M...', Array, true)
+#12 /Applications/MAMP/htdocs/cirigliano/protected/views/punto/view.php(140): CController->renderPartial('_search', Array)
+#13 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(126): require('/Applications/M...')
+#14 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(95): CBaseController->renderInternal('/Applications/M...', Array, true)
+#15 /Applications/MAMP/htdocs/yii/framework/web/CController.php(869): CBaseController->renderFile('/Applications/M...', Array, true)
+#16 /Applications/MAMP/htdocs/yii/framework/web/CController.php(782): CController->renderPartial('view', Array, true)
+#17 /Applications/MAMP/htdocs/cirigliano/protected/controllers/PuntoController.php(69): CController->render('view', Array)
+#18 [internal function]: PuntoController->actionView('1')
+#19 /Applications/MAMP/htdocs/yii/framework/web/actions/CAction.php(108): ReflectionMethod->invokeArgs(Object(PuntoController), Array)
+#20 /Applications/MAMP/htdocs/yii/framework/web/actions/CInlineAction.php(47): CAction->runWithParamsInternal(Object(PuntoController), Object(ReflectionMethod), Array)
+#21 /Applications/MAMP/htdocs/yii/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#22 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#23 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#24 /Applications/MAMP/htdocs/yii/framework/web/CController.php(1145): CFilter->filter(Object(CFilterChain))
+#25 /Applications/MAMP/htdocs/yii/framework/web/filters/CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#26 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#27 /Applications/MAMP/htdocs/yii/framework/web/CController.php(291): CFilterChain->run()
+#28 /Applications/MAMP/htdocs/yii/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#29 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(282): CController->run('view')
+#30 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(141): CWebApplication->runController('punto/view')
+#31 /Applications/MAMP/htdocs/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#32 /Applications/MAMP/htdocs/cirigliano/index.php(13): CApplication->run()
+#33 {main}
+REQUEST_URI=/cirigliano/punto/1
+HTTP_REFERER=http://localhost:8888/cirigliano/Punto/admin
+---
+2014/07/24 00:29:20 [error] [system.db.CDbCommand] CDbCommand::fetchAll() falló: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1. La sentencia SQL ejecutada fue: SELECT * FROM `mueble_punto` `t` WHERE punto_id = .
+in /Applications/MAMP/htdocs/cirigliano/protected/views/punto/_search.php (14)
+in /Applications/MAMP/htdocs/cirigliano/protected/views/punto/admin.php (35)
+in /Applications/MAMP/htdocs/cirigliano/protected/controllers/PuntoController.php (163)
+2014/07/24 00:29:20 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand falló al ejecutar la sentencia SQL: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1. The SQL statement executed was: SELECT * FROM `mueble_punto` `t` WHERE punto_id = ' in /Applications/MAMP/htdocs/yii/framework/db/CDbCommand.php:543
+Stack trace:
+#0 /Applications/MAMP/htdocs/yii/framework/db/CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 /Applications/MAMP/htdocs/yii/framework/db/ar/CActiveRecord.php(1351): CDbCommand->queryAll()
+#2 /Applications/MAMP/htdocs/yii/framework/db/ar/CActiveRecord.php(1470): CActiveRecord->query(Object(CDbCriteria), true)
+#3 /Applications/MAMP/htdocs/cirigliano/protected/views/punto/_search.php(14): CActiveRecord->findAll(Array)
+#4 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(126): require('/Applications/M...')
+#5 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(95): CBaseController->renderInternal('/Applications/M...', Array, true)
+#6 /Applications/MAMP/htdocs/yii/framework/web/CController.php(869): CBaseController->renderFile('/Applications/M...', Array, true)
+#7 /Applications/MAMP/htdocs/cirigliano/protected/views/punto/admin.php(35): CController->renderPartial('_search', Array)
+#8 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(126): require('/Applications/M...')
+#9 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(95): CBaseController->renderInternal('/Applications/M...', Array, true)
+#10 /Applications/MAMP/htdocs/yii/framework/web/CController.php(869): CBaseController->renderFile('/Applications/M...', Array, true)
+#11 /Applications/MAMP/htdocs/yii/framework/web/CController.php(782): CController->renderPartial('admin', Array, true)
+#12 /Applications/MAMP/htdocs/cirigliano/protected/controllers/PuntoController.php(163): CController->render('admin', Array)
+#13 /Applications/MAMP/htdocs/yii/framework/web/actions/CInlineAction.php(49): PuntoController->actionAdmin()
+#14 /Applications/MAMP/htdocs/yii/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#15 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#16 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#17 /Applications/MAMP/htdocs/yii/framework/web/CController.php(1145): CFilter->filter(Object(CFilterChain))
+#18 /Applications/MAMP/htdocs/yii/framework/web/filters/CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#19 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#20 /Applications/MAMP/htdocs/yii/framework/web/CController.php(291): CFilterChain->run()
+#21 /Applications/MAMP/htdocs/yii/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#22 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(282): CController->run('admin')
+#23 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(141): CWebApplication->runController('Punto/admin')
+#24 /Applications/MAMP/htdocs/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#25 /Applications/MAMP/htdocs/cirigliano/index.php(13): CApplication->run()
+#26 {main}
+REQUEST_URI=/cirigliano/Punto/admin
+HTTP_REFERER=http://localhost:8888/cirigliano/
+---
+2014/07/24 00:29:25 [error] [system.db.CDbCommand] CDbCommand::fetchAll() falló: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1. La sentencia SQL ejecutada fue: SELECT * FROM `mueble_punto` `t` WHERE punto_id = .
+in /Applications/MAMP/htdocs/cirigliano/protected/views/punto/_search.php (14)
+in /Applications/MAMP/htdocs/cirigliano/protected/views/punto/admin.php (35)
+in /Applications/MAMP/htdocs/cirigliano/protected/controllers/PuntoController.php (163)
+2014/07/24 00:29:25 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand falló al ejecutar la sentencia SQL: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1. The SQL statement executed was: SELECT * FROM `mueble_punto` `t` WHERE punto_id = ' in /Applications/MAMP/htdocs/yii/framework/db/CDbCommand.php:543
+Stack trace:
+#0 /Applications/MAMP/htdocs/yii/framework/db/CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 /Applications/MAMP/htdocs/yii/framework/db/ar/CActiveRecord.php(1351): CDbCommand->queryAll()
+#2 /Applications/MAMP/htdocs/yii/framework/db/ar/CActiveRecord.php(1470): CActiveRecord->query(Object(CDbCriteria), true)
+#3 /Applications/MAMP/htdocs/cirigliano/protected/views/punto/_search.php(14): CActiveRecord->findAll(Array)
+#4 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(126): require('/Applications/M...')
+#5 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(95): CBaseController->renderInternal('/Applications/M...', Array, true)
+#6 /Applications/MAMP/htdocs/yii/framework/web/CController.php(869): CBaseController->renderFile('/Applications/M...', Array, true)
+#7 /Applications/MAMP/htdocs/cirigliano/protected/views/punto/admin.php(35): CController->renderPartial('_search', Array)
+#8 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(126): require('/Applications/M...')
+#9 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(95): CBaseController->renderInternal('/Applications/M...', Array, true)
+#10 /Applications/MAMP/htdocs/yii/framework/web/CController.php(869): CBaseController->renderFile('/Applications/M...', Array, true)
+#11 /Applications/MAMP/htdocs/yii/framework/web/CController.php(782): CController->renderPartial('admin', Array, true)
+#12 /Applications/MAMP/htdocs/cirigliano/protected/controllers/PuntoController.php(163): CController->render('admin', Array)
+#13 /Applications/MAMP/htdocs/yii/framework/web/actions/CInlineAction.php(49): PuntoController->actionAdmin()
+#14 /Applications/MAMP/htdocs/yii/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#15 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#16 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#17 /Applications/MAMP/htdocs/yii/framework/web/CController.php(1145): CFilter->filter(Object(CFilterChain))
+#18 /Applications/MAMP/htdocs/yii/framework/web/filters/CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#19 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#20 /Applications/MAMP/htdocs/yii/framework/web/CController.php(291): CFilterChain->run()
+#21 /Applications/MAMP/htdocs/yii/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#22 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(282): CController->run('admin')
+#23 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(141): CWebApplication->runController('Punto/admin')
+#24 /Applications/MAMP/htdocs/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#25 /Applications/MAMP/htdocs/cirigliano/index.php(13): CApplication->run()
+#26 {main}
+REQUEST_URI=/cirigliano/Punto/admin
+HTTP_REFERER=http://localhost:8888/cirigliano/
+---
+2014/07/24 00:29:53 [error] [system.db.CDbCommand] CDbCommand::fetchAll() falló: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1. La sentencia SQL ejecutada fue: SELECT * FROM `mueble_punto` `t` WHERE punto_id = .
+in /Applications/MAMP/htdocs/cirigliano/protected/views/punto/_search.php (14)
+in /Applications/MAMP/htdocs/cirigliano/protected/views/punto/admin.php (35)
+in /Applications/MAMP/htdocs/cirigliano/protected/controllers/PuntoController.php (163)
+2014/07/24 00:29:53 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand falló al ejecutar la sentencia SQL: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1. The SQL statement executed was: SELECT * FROM `mueble_punto` `t` WHERE punto_id = ' in /Applications/MAMP/htdocs/yii/framework/db/CDbCommand.php:543
+Stack trace:
+#0 /Applications/MAMP/htdocs/yii/framework/db/CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 /Applications/MAMP/htdocs/yii/framework/db/ar/CActiveRecord.php(1351): CDbCommand->queryAll()
+#2 /Applications/MAMP/htdocs/yii/framework/db/ar/CActiveRecord.php(1470): CActiveRecord->query(Object(CDbCriteria), true)
+#3 /Applications/MAMP/htdocs/cirigliano/protected/views/punto/_search.php(14): CActiveRecord->findAll(Array)
+#4 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(126): require('/Applications/M...')
+#5 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(95): CBaseController->renderInternal('/Applications/M...', Array, true)
+#6 /Applications/MAMP/htdocs/yii/framework/web/CController.php(869): CBaseController->renderFile('/Applications/M...', Array, true)
+#7 /Applications/MAMP/htdocs/cirigliano/protected/views/punto/admin.php(35): CController->renderPartial('_search', Array)
+#8 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(126): require('/Applications/M...')
+#9 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(95): CBaseController->renderInternal('/Applications/M...', Array, true)
+#10 /Applications/MAMP/htdocs/yii/framework/web/CController.php(869): CBaseController->renderFile('/Applications/M...', Array, true)
+#11 /Applications/MAMP/htdocs/yii/framework/web/CController.php(782): CController->renderPartial('admin', Array, true)
+#12 /Applications/MAMP/htdocs/cirigliano/protected/controllers/PuntoController.php(163): CController->render('admin', Array)
+#13 /Applications/MAMP/htdocs/yii/framework/web/actions/CInlineAction.php(49): PuntoController->actionAdmin()
+#14 /Applications/MAMP/htdocs/yii/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#15 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#16 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#17 /Applications/MAMP/htdocs/yii/framework/web/CController.php(1145): CFilter->filter(Object(CFilterChain))
+#18 /Applications/MAMP/htdocs/yii/framework/web/filters/CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#19 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#20 /Applications/MAMP/htdocs/yii/framework/web/CController.php(291): CFilterChain->run()
+#21 /Applications/MAMP/htdocs/yii/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#22 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(282): CController->run('admin')
+#23 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(141): CWebApplication->runController('Punto/admin')
+#24 /Applications/MAMP/htdocs/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#25 /Applications/MAMP/htdocs/cirigliano/index.php(13): CApplication->run()
+#26 {main}
+REQUEST_URI=/cirigliano/Punto/admin
+HTTP_REFERER=http://localhost:8888/cirigliano/
+---
+2014/07/24 00:42:31 [error] [system.db.CDbCommand] CDbCommand::fetchAll() falló: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1. La sentencia SQL ejecutada fue: SELECT * FROM `mueble_punto` `t` WHERE punto_id = .
+in /Applications/MAMP/htdocs/cirigliano/protected/views/punto/_search.php (14)
+in /Applications/MAMP/htdocs/cirigliano/protected/views/punto/admin.php (35)
+in /Applications/MAMP/htdocs/cirigliano/protected/controllers/PuntoController.php (163)
+2014/07/24 00:42:31 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand falló al ejecutar la sentencia SQL: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1. The SQL statement executed was: SELECT * FROM `mueble_punto` `t` WHERE punto_id = ' in /Applications/MAMP/htdocs/yii/framework/db/CDbCommand.php:543
+Stack trace:
+#0 /Applications/MAMP/htdocs/yii/framework/db/CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 /Applications/MAMP/htdocs/yii/framework/db/ar/CActiveRecord.php(1351): CDbCommand->queryAll()
+#2 /Applications/MAMP/htdocs/yii/framework/db/ar/CActiveRecord.php(1470): CActiveRecord->query(Object(CDbCriteria), true)
+#3 /Applications/MAMP/htdocs/cirigliano/protected/views/punto/_search.php(14): CActiveRecord->findAll(Array)
+#4 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(126): require('/Applications/M...')
+#5 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(95): CBaseController->renderInternal('/Applications/M...', Array, true)
+#6 /Applications/MAMP/htdocs/yii/framework/web/CController.php(869): CBaseController->renderFile('/Applications/M...', Array, true)
+#7 /Applications/MAMP/htdocs/cirigliano/protected/views/punto/admin.php(35): CController->renderPartial('_search', Array)
+#8 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(126): require('/Applications/M...')
+#9 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(95): CBaseController->renderInternal('/Applications/M...', Array, true)
+#10 /Applications/MAMP/htdocs/yii/framework/web/CController.php(869): CBaseController->renderFile('/Applications/M...', Array, true)
+#11 /Applications/MAMP/htdocs/yii/framework/web/CController.php(782): CController->renderPartial('admin', Array, true)
+#12 /Applications/MAMP/htdocs/cirigliano/protected/controllers/PuntoController.php(163): CController->render('admin', Array)
+#13 /Applications/MAMP/htdocs/yii/framework/web/actions/CInlineAction.php(49): PuntoController->actionAdmin()
+#14 /Applications/MAMP/htdocs/yii/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#15 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#16 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#17 /Applications/MAMP/htdocs/yii/framework/web/CController.php(1145): CFilter->filter(Object(CFilterChain))
+#18 /Applications/MAMP/htdocs/yii/framework/web/filters/CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#19 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#20 /Applications/MAMP/htdocs/yii/framework/web/CController.php(291): CFilterChain->run()
+#21 /Applications/MAMP/htdocs/yii/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#22 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(282): CController->run('admin')
+#23 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(141): CWebApplication->runController('Punto/admin')
+#24 /Applications/MAMP/htdocs/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#25 /Applications/MAMP/htdocs/cirigliano/index.php(13): CApplication->run()
+#26 {main}
+REQUEST_URI=/cirigliano/Punto/admin
+HTTP_REFERER=http://localhost:8888/cirigliano/
+---
+2014/07/24 00:42:32 [error] [system.db.CDbCommand] CDbCommand::fetchAll() falló: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1. La sentencia SQL ejecutada fue: SELECT * FROM `mueble_punto` `t` WHERE punto_id = .
+in /Applications/MAMP/htdocs/cirigliano/protected/views/punto/_search.php (14)
+in /Applications/MAMP/htdocs/cirigliano/protected/views/punto/admin.php (35)
+in /Applications/MAMP/htdocs/cirigliano/protected/controllers/PuntoController.php (163)
+2014/07/24 00:42:32 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand falló al ejecutar la sentencia SQL: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1. The SQL statement executed was: SELECT * FROM `mueble_punto` `t` WHERE punto_id = ' in /Applications/MAMP/htdocs/yii/framework/db/CDbCommand.php:543
+Stack trace:
+#0 /Applications/MAMP/htdocs/yii/framework/db/CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 /Applications/MAMP/htdocs/yii/framework/db/ar/CActiveRecord.php(1351): CDbCommand->queryAll()
+#2 /Applications/MAMP/htdocs/yii/framework/db/ar/CActiveRecord.php(1470): CActiveRecord->query(Object(CDbCriteria), true)
+#3 /Applications/MAMP/htdocs/cirigliano/protected/views/punto/_search.php(14): CActiveRecord->findAll(Array)
+#4 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(126): require('/Applications/M...')
+#5 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(95): CBaseController->renderInternal('/Applications/M...', Array, true)
+#6 /Applications/MAMP/htdocs/yii/framework/web/CController.php(869): CBaseController->renderFile('/Applications/M...', Array, true)
+#7 /Applications/MAMP/htdocs/cirigliano/protected/views/punto/admin.php(35): CController->renderPartial('_search', Array)
+#8 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(126): require('/Applications/M...')
+#9 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(95): CBaseController->renderInternal('/Applications/M...', Array, true)
+#10 /Applications/MAMP/htdocs/yii/framework/web/CController.php(869): CBaseController->renderFile('/Applications/M...', Array, true)
+#11 /Applications/MAMP/htdocs/yii/framework/web/CController.php(782): CController->renderPartial('admin', Array, true)
+#12 /Applications/MAMP/htdocs/cirigliano/protected/controllers/PuntoController.php(163): CController->render('admin', Array)
+#13 /Applications/MAMP/htdocs/yii/framework/web/actions/CInlineAction.php(49): PuntoController->actionAdmin()
+#14 /Applications/MAMP/htdocs/yii/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#15 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#16 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#17 /Applications/MAMP/htdocs/yii/framework/web/CController.php(1145): CFilter->filter(Object(CFilterChain))
+#18 /Applications/MAMP/htdocs/yii/framework/web/filters/CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#19 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#20 /Applications/MAMP/htdocs/yii/framework/web/CController.php(291): CFilterChain->run()
+#21 /Applications/MAMP/htdocs/yii/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#22 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(282): CController->run('admin')
+#23 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(141): CWebApplication->runController('Punto/admin')
+#24 /Applications/MAMP/htdocs/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#25 /Applications/MAMP/htdocs/cirigliano/index.php(13): CApplication->run()
+#26 {main}
+REQUEST_URI=/cirigliano/Punto/admin
+HTTP_REFERER=http://localhost:8888/cirigliano/
+---
+2014/07/24 00:42:41 [error] [system.db.CDbCommand] CDbCommand::fetchAll() falló: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1. La sentencia SQL ejecutada fue: SELECT * FROM `mueble_punto` `t` WHERE punto_id = .
+in /Applications/MAMP/htdocs/cirigliano/protected/views/punto/_search.php (14)
+in /Applications/MAMP/htdocs/cirigliano/protected/views/punto/admin.php (35)
+in /Applications/MAMP/htdocs/cirigliano/protected/controllers/PuntoController.php (163)
+2014/07/24 00:42:41 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand falló al ejecutar la sentencia SQL: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1. The SQL statement executed was: SELECT * FROM `mueble_punto` `t` WHERE punto_id = ' in /Applications/MAMP/htdocs/yii/framework/db/CDbCommand.php:543
+Stack trace:
+#0 /Applications/MAMP/htdocs/yii/framework/db/CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 /Applications/MAMP/htdocs/yii/framework/db/ar/CActiveRecord.php(1351): CDbCommand->queryAll()
+#2 /Applications/MAMP/htdocs/yii/framework/db/ar/CActiveRecord.php(1470): CActiveRecord->query(Object(CDbCriteria), true)
+#3 /Applications/MAMP/htdocs/cirigliano/protected/views/punto/_search.php(14): CActiveRecord->findAll(Array)
+#4 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(126): require('/Applications/M...')
+#5 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(95): CBaseController->renderInternal('/Applications/M...', Array, true)
+#6 /Applications/MAMP/htdocs/yii/framework/web/CController.php(869): CBaseController->renderFile('/Applications/M...', Array, true)
+#7 /Applications/MAMP/htdocs/cirigliano/protected/views/punto/admin.php(35): CController->renderPartial('_search', Array)
+#8 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(126): require('/Applications/M...')
+#9 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(95): CBaseController->renderInternal('/Applications/M...', Array, true)
+#10 /Applications/MAMP/htdocs/yii/framework/web/CController.php(869): CBaseController->renderFile('/Applications/M...', Array, true)
+#11 /Applications/MAMP/htdocs/yii/framework/web/CController.php(782): CController->renderPartial('admin', Array, true)
+#12 /Applications/MAMP/htdocs/cirigliano/protected/controllers/PuntoController.php(163): CController->render('admin', Array)
+#13 /Applications/MAMP/htdocs/yii/framework/web/actions/CInlineAction.php(49): PuntoController->actionAdmin()
+#14 /Applications/MAMP/htdocs/yii/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#15 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#16 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#17 /Applications/MAMP/htdocs/yii/framework/web/CController.php(1145): CFilter->filter(Object(CFilterChain))
+#18 /Applications/MAMP/htdocs/yii/framework/web/filters/CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#19 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#20 /Applications/MAMP/htdocs/yii/framework/web/CController.php(291): CFilterChain->run()
+#21 /Applications/MAMP/htdocs/yii/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#22 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(282): CController->run('admin')
+#23 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(141): CWebApplication->runController('Punto/admin')
+#24 /Applications/MAMP/htdocs/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#25 /Applications/MAMP/htdocs/cirigliano/index.php(13): CApplication->run()
+#26 {main}
+REQUEST_URI=/cirigliano/Punto/admin
+HTTP_REFERER=http://localhost:8888/cirigliano/
+---
+2014/07/24 00:42:57 [error] [system.db.CDbCommand] CDbCommand::fetchAll() falló: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1. La sentencia SQL ejecutada fue: SELECT * FROM `mueble_punto` `t` WHERE punto_id = .
+in /Applications/MAMP/htdocs/cirigliano/protected/views/punto/_search.php (14)
+in /Applications/MAMP/htdocs/cirigliano/protected/views/punto/admin.php (35)
+in /Applications/MAMP/htdocs/cirigliano/protected/controllers/PuntoController.php (163)
+2014/07/24 00:42:57 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand falló al ejecutar la sentencia SQL: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1. The SQL statement executed was: SELECT * FROM `mueble_punto` `t` WHERE punto_id = ' in /Applications/MAMP/htdocs/yii/framework/db/CDbCommand.php:543
+Stack trace:
+#0 /Applications/MAMP/htdocs/yii/framework/db/CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 /Applications/MAMP/htdocs/yii/framework/db/ar/CActiveRecord.php(1351): CDbCommand->queryAll()
+#2 /Applications/MAMP/htdocs/yii/framework/db/ar/CActiveRecord.php(1470): CActiveRecord->query(Object(CDbCriteria), true)
+#3 /Applications/MAMP/htdocs/cirigliano/protected/views/punto/_search.php(14): CActiveRecord->findAll(Array)
+#4 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(126): require('/Applications/M...')
+#5 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(95): CBaseController->renderInternal('/Applications/M...', Array, true)
+#6 /Applications/MAMP/htdocs/yii/framework/web/CController.php(869): CBaseController->renderFile('/Applications/M...', Array, true)
+#7 /Applications/MAMP/htdocs/cirigliano/protected/views/punto/admin.php(35): CController->renderPartial('_search', Array)
+#8 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(126): require('/Applications/M...')
+#9 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(95): CBaseController->renderInternal('/Applications/M...', Array, true)
+#10 /Applications/MAMP/htdocs/yii/framework/web/CController.php(869): CBaseController->renderFile('/Applications/M...', Array, true)
+#11 /Applications/MAMP/htdocs/yii/framework/web/CController.php(782): CController->renderPartial('admin', Array, true)
+#12 /Applications/MAMP/htdocs/cirigliano/protected/controllers/PuntoController.php(163): CController->render('admin', Array)
+#13 /Applications/MAMP/htdocs/yii/framework/web/actions/CInlineAction.php(49): PuntoController->actionAdmin()
+#14 /Applications/MAMP/htdocs/yii/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#15 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#16 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#17 /Applications/MAMP/htdocs/yii/framework/web/CController.php(1145): CFilter->filter(Object(CFilterChain))
+#18 /Applications/MAMP/htdocs/yii/framework/web/filters/CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#19 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#20 /Applications/MAMP/htdocs/yii/framework/web/CController.php(291): CFilterChain->run()
+#21 /Applications/MAMP/htdocs/yii/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#22 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(282): CController->run('admin')
+#23 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(141): CWebApplication->runController('Punto/admin')
+#24 /Applications/MAMP/htdocs/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#25 /Applications/MAMP/htdocs/cirigliano/index.php(13): CApplication->run()
+#26 {main}
+REQUEST_URI=/cirigliano/Punto/admin
+HTTP_REFERER=http://localhost:8888/cirigliano/
+---
+2014/07/24 00:43:01 [error] [system.db.CDbCommand] CDbCommand::fetchAll() falló: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1. La sentencia SQL ejecutada fue: SELECT * FROM `mueble_punto` `t` WHERE punto_id = .
+in /Applications/MAMP/htdocs/cirigliano/protected/views/punto/_search.php (14)
+in /Applications/MAMP/htdocs/cirigliano/protected/views/punto/admin.php (35)
+in /Applications/MAMP/htdocs/cirigliano/protected/controllers/PuntoController.php (163)
+2014/07/24 00:43:01 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand falló al ejecutar la sentencia SQL: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1. The SQL statement executed was: SELECT * FROM `mueble_punto` `t` WHERE punto_id = ' in /Applications/MAMP/htdocs/yii/framework/db/CDbCommand.php:543
+Stack trace:
+#0 /Applications/MAMP/htdocs/yii/framework/db/CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 /Applications/MAMP/htdocs/yii/framework/db/ar/CActiveRecord.php(1351): CDbCommand->queryAll()
+#2 /Applications/MAMP/htdocs/yii/framework/db/ar/CActiveRecord.php(1470): CActiveRecord->query(Object(CDbCriteria), true)
+#3 /Applications/MAMP/htdocs/cirigliano/protected/views/punto/_search.php(14): CActiveRecord->findAll(Array)
+#4 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(126): require('/Applications/M...')
+#5 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(95): CBaseController->renderInternal('/Applications/M...', Array, true)
+#6 /Applications/MAMP/htdocs/yii/framework/web/CController.php(869): CBaseController->renderFile('/Applications/M...', Array, true)
+#7 /Applications/MAMP/htdocs/cirigliano/protected/views/punto/admin.php(35): CController->renderPartial('_search', Array)
+#8 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(126): require('/Applications/M...')
+#9 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(95): CBaseController->renderInternal('/Applications/M...', Array, true)
+#10 /Applications/MAMP/htdocs/yii/framework/web/CController.php(869): CBaseController->renderFile('/Applications/M...', Array, true)
+#11 /Applications/MAMP/htdocs/yii/framework/web/CController.php(782): CController->renderPartial('admin', Array, true)
+#12 /Applications/MAMP/htdocs/cirigliano/protected/controllers/PuntoController.php(163): CController->render('admin', Array)
+#13 /Applications/MAMP/htdocs/yii/framework/web/actions/CInlineAction.php(49): PuntoController->actionAdmin()
+#14 /Applications/MAMP/htdocs/yii/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#15 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#16 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#17 /Applications/MAMP/htdocs/yii/framework/web/CController.php(1145): CFilter->filter(Object(CFilterChain))
+#18 /Applications/MAMP/htdocs/yii/framework/web/filters/CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#19 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#20 /Applications/MAMP/htdocs/yii/framework/web/CController.php(291): CFilterChain->run()
+#21 /Applications/MAMP/htdocs/yii/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#22 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(282): CController->run('admin')
+#23 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(141): CWebApplication->runController('Punto/admin')
+#24 /Applications/MAMP/htdocs/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#25 /Applications/MAMP/htdocs/cirigliano/index.php(13): CApplication->run()
+#26 {main}
+REQUEST_URI=/cirigliano/Punto/admin
+HTTP_REFERER=http://localhost:8888/cirigliano/
+---
+2014/07/24 00:43:11 [error] [system.db.CDbCommand] CDbCommand::fetchAll() falló: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1. La sentencia SQL ejecutada fue: SELECT * FROM `mueble_punto` `t` WHERE punto_id = .
+in /Applications/MAMP/htdocs/cirigliano/protected/views/punto/_search.php (14)
+in /Applications/MAMP/htdocs/cirigliano/protected/views/punto/admin.php (35)
+in /Applications/MAMP/htdocs/cirigliano/protected/controllers/PuntoController.php (163)
+2014/07/24 00:43:11 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand falló al ejecutar la sentencia SQL: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1. The SQL statement executed was: SELECT * FROM `mueble_punto` `t` WHERE punto_id = ' in /Applications/MAMP/htdocs/yii/framework/db/CDbCommand.php:543
+Stack trace:
+#0 /Applications/MAMP/htdocs/yii/framework/db/CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 /Applications/MAMP/htdocs/yii/framework/db/ar/CActiveRecord.php(1351): CDbCommand->queryAll()
+#2 /Applications/MAMP/htdocs/yii/framework/db/ar/CActiveRecord.php(1470): CActiveRecord->query(Object(CDbCriteria), true)
+#3 /Applications/MAMP/htdocs/cirigliano/protected/views/punto/_search.php(14): CActiveRecord->findAll(Array)
+#4 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(126): require('/Applications/M...')
+#5 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(95): CBaseController->renderInternal('/Applications/M...', Array, true)
+#6 /Applications/MAMP/htdocs/yii/framework/web/CController.php(869): CBaseController->renderFile('/Applications/M...', Array, true)
+#7 /Applications/MAMP/htdocs/cirigliano/protected/views/punto/admin.php(35): CController->renderPartial('_search', Array)
+#8 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(126): require('/Applications/M...')
+#9 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(95): CBaseController->renderInternal('/Applications/M...', Array, true)
+#10 /Applications/MAMP/htdocs/yii/framework/web/CController.php(869): CBaseController->renderFile('/Applications/M...', Array, true)
+#11 /Applications/MAMP/htdocs/yii/framework/web/CController.php(782): CController->renderPartial('admin', Array, true)
+#12 /Applications/MAMP/htdocs/cirigliano/protected/controllers/PuntoController.php(163): CController->render('admin', Array)
+#13 /Applications/MAMP/htdocs/yii/framework/web/actions/CInlineAction.php(49): PuntoController->actionAdmin()
+#14 /Applications/MAMP/htdocs/yii/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#15 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#16 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#17 /Applications/MAMP/htdocs/yii/framework/web/CController.php(1145): CFilter->filter(Object(CFilterChain))
+#18 /Applications/MAMP/htdocs/yii/framework/web/filters/CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#19 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#20 /Applications/MAMP/htdocs/yii/framework/web/CController.php(291): CFilterChain->run()
+#21 /Applications/MAMP/htdocs/yii/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#22 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(282): CController->run('admin')
+#23 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(141): CWebApplication->runController('Punto/admin')
+#24 /Applications/MAMP/htdocs/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#25 /Applications/MAMP/htdocs/cirigliano/index.php(13): CApplication->run()
+#26 {main}
+REQUEST_URI=/cirigliano/Punto/admin
+HTTP_REFERER=http://localhost:8888/cirigliano/
+---
+2014/07/24 00:43:13 [error] [system.db.CDbCommand] CDbCommand::fetchAll() falló: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1. La sentencia SQL ejecutada fue: SELECT * FROM `mueble_punto` `t` WHERE punto_id = .
+in /Applications/MAMP/htdocs/cirigliano/protected/views/punto/_search.php (14)
+in /Applications/MAMP/htdocs/cirigliano/protected/views/punto/admin.php (35)
+in /Applications/MAMP/htdocs/cirigliano/protected/controllers/PuntoController.php (163)
+2014/07/24 00:43:13 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand falló al ejecutar la sentencia SQL: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1. The SQL statement executed was: SELECT * FROM `mueble_punto` `t` WHERE punto_id = ' in /Applications/MAMP/htdocs/yii/framework/db/CDbCommand.php:543
+Stack trace:
+#0 /Applications/MAMP/htdocs/yii/framework/db/CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 /Applications/MAMP/htdocs/yii/framework/db/ar/CActiveRecord.php(1351): CDbCommand->queryAll()
+#2 /Applications/MAMP/htdocs/yii/framework/db/ar/CActiveRecord.php(1470): CActiveRecord->query(Object(CDbCriteria), true)
+#3 /Applications/MAMP/htdocs/cirigliano/protected/views/punto/_search.php(14): CActiveRecord->findAll(Array)
+#4 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(126): require('/Applications/M...')
+#5 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(95): CBaseController->renderInternal('/Applications/M...', Array, true)
+#6 /Applications/MAMP/htdocs/yii/framework/web/CController.php(869): CBaseController->renderFile('/Applications/M...', Array, true)
+#7 /Applications/MAMP/htdocs/cirigliano/protected/views/punto/admin.php(35): CController->renderPartial('_search', Array)
+#8 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(126): require('/Applications/M...')
+#9 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(95): CBaseController->renderInternal('/Applications/M...', Array, true)
+#10 /Applications/MAMP/htdocs/yii/framework/web/CController.php(869): CBaseController->renderFile('/Applications/M...', Array, true)
+#11 /Applications/MAMP/htdocs/yii/framework/web/CController.php(782): CController->renderPartial('admin', Array, true)
+#12 /Applications/MAMP/htdocs/cirigliano/protected/controllers/PuntoController.php(163): CController->render('admin', Array)
+#13 /Applications/MAMP/htdocs/yii/framework/web/actions/CInlineAction.php(49): PuntoController->actionAdmin()
+#14 /Applications/MAMP/htdocs/yii/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#15 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#16 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#17 /Applications/MAMP/htdocs/yii/framework/web/CController.php(1145): CFilter->filter(Object(CFilterChain))
+#18 /Applications/MAMP/htdocs/yii/framework/web/filters/CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#19 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#20 /Applications/MAMP/htdocs/yii/framework/web/CController.php(291): CFilterChain->run()
+#21 /Applications/MAMP/htdocs/yii/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#22 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(282): CController->run('admin')
+#23 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(141): CWebApplication->runController('Punto/admin')
+#24 /Applications/MAMP/htdocs/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#25 /Applications/MAMP/htdocs/cirigliano/index.php(13): CApplication->run()
+#26 {main}
+REQUEST_URI=/cirigliano/Punto/admin
+HTTP_REFERER=http://localhost:8888/cirigliano/
+---
+2014/07/24 00:43:47 [error] [system.db.CDbCommand] CDbCommand::fetchAll() falló: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1. La sentencia SQL ejecutada fue: SELECT * FROM `mueble_punto` `t` WHERE punto_id = .
+in /Applications/MAMP/htdocs/cirigliano/protected/views/punto/_search.php (14)
+in /Applications/MAMP/htdocs/cirigliano/protected/views/punto/admin.php (35)
+in /Applications/MAMP/htdocs/cirigliano/protected/controllers/PuntoController.php (163)
+2014/07/24 00:43:47 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand falló al ejecutar la sentencia SQL: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1. The SQL statement executed was: SELECT * FROM `mueble_punto` `t` WHERE punto_id = ' in /Applications/MAMP/htdocs/yii/framework/db/CDbCommand.php:543
+Stack trace:
+#0 /Applications/MAMP/htdocs/yii/framework/db/CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 /Applications/MAMP/htdocs/yii/framework/db/ar/CActiveRecord.php(1351): CDbCommand->queryAll()
+#2 /Applications/MAMP/htdocs/yii/framework/db/ar/CActiveRecord.php(1470): CActiveRecord->query(Object(CDbCriteria), true)
+#3 /Applications/MAMP/htdocs/cirigliano/protected/views/punto/_search.php(14): CActiveRecord->findAll(Array)
+#4 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(126): require('/Applications/M...')
+#5 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(95): CBaseController->renderInternal('/Applications/M...', Array, true)
+#6 /Applications/MAMP/htdocs/yii/framework/web/CController.php(869): CBaseController->renderFile('/Applications/M...', Array, true)
+#7 /Applications/MAMP/htdocs/cirigliano/protected/views/punto/admin.php(35): CController->renderPartial('_search', Array)
+#8 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(126): require('/Applications/M...')
+#9 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(95): CBaseController->renderInternal('/Applications/M...', Array, true)
+#10 /Applications/MAMP/htdocs/yii/framework/web/CController.php(869): CBaseController->renderFile('/Applications/M...', Array, true)
+#11 /Applications/MAMP/htdocs/yii/framework/web/CController.php(782): CController->renderPartial('admin', Array, true)
+#12 /Applications/MAMP/htdocs/cirigliano/protected/controllers/PuntoController.php(163): CController->render('admin', Array)
+#13 /Applications/MAMP/htdocs/yii/framework/web/actions/CInlineAction.php(49): PuntoController->actionAdmin()
+#14 /Applications/MAMP/htdocs/yii/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#15 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#16 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#17 /Applications/MAMP/htdocs/yii/framework/web/CController.php(1145): CFilter->filter(Object(CFilterChain))
+#18 /Applications/MAMP/htdocs/yii/framework/web/filters/CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#19 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#20 /Applications/MAMP/htdocs/yii/framework/web/CController.php(291): CFilterChain->run()
+#21 /Applications/MAMP/htdocs/yii/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#22 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(282): CController->run('admin')
+#23 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(141): CWebApplication->runController('Punto/admin')
+#24 /Applications/MAMP/htdocs/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#25 /Applications/MAMP/htdocs/cirigliano/index.php(13): CApplication->run()
+#26 {main}
+REQUEST_URI=/cirigliano/Punto/admin
+HTTP_REFERER=http://localhost:8888/cirigliano/
+---
+2014/07/24 00:46:23 [error] [system.db.CDbCommand] CDbCommand::fetchAll() falló: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'orden' in 'order clause'. La sentencia SQL ejecutada fue: SELECT * FROM `comuna` `t` ORDER BY orden.
+in /Applications/MAMP/htdocs/cirigliano/protected/views/punto/admin.php (46)
+in /Applications/MAMP/htdocs/cirigliano/protected/controllers/PuntoController.php (163)
+in /Applications/MAMP/htdocs/cirigliano/index.php (13)
+2014/07/24 00:46:23 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand falló al ejecutar la sentencia SQL: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'orden' in 'order clause'. The SQL statement executed was: SELECT * FROM `comuna` `t` ORDER BY orden' in /Applications/MAMP/htdocs/yii/framework/db/CDbCommand.php:543
+Stack trace:
+#0 /Applications/MAMP/htdocs/yii/framework/db/CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 /Applications/MAMP/htdocs/yii/framework/db/ar/CActiveRecord.php(1351): CDbCommand->queryAll()
+#2 /Applications/MAMP/htdocs/yii/framework/db/ar/CActiveRecord.php(1470): CActiveRecord->query(Object(CDbCriteria), true)
+#3 /Applications/MAMP/htdocs/cirigliano/protected/views/punto/admin.php(46): CActiveRecord->findAll(Array)
+#4 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(126): require('/Applications/M...')
+#5 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(95): CBaseController->renderInternal('/Applications/M...', Array, true)
+#6 /Applications/MAMP/htdocs/yii/framework/web/CController.php(869): CBaseController->renderFile('/Applications/M...', Array, true)
+#7 /Applications/MAMP/htdocs/yii/framework/web/CController.php(782): CController->renderPartial('admin', Array, true)
+#8 /Applications/MAMP/htdocs/cirigliano/protected/controllers/PuntoController.php(163): CController->render('admin', Array)
+#9 /Applications/MAMP/htdocs/yii/framework/web/actions/CInlineAction.php(49): PuntoController->actionAdmin()
+#10 /Applications/MAMP/htdocs/yii/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#11 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#12 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#13 /Applications/MAMP/htdocs/yii/framework/web/CController.php(1145): CFilter->filter(Object(CFilterChain))
+#14 /Applications/MAMP/htdocs/yii/framework/web/filters/CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#15 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#16 /Applications/MAMP/htdocs/yii/framework/web/CController.php(291): CFilterChain->run()
+#17 /Applications/MAMP/htdocs/yii/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#18 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(282): CController->run('admin')
+#19 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(141): CWebApplication->runController('Punto/admin')
+#20 /Applications/MAMP/htdocs/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#21 /Applications/MAMP/htdocs/cirigliano/index.php(13): CApplication->run()
+#22 {main}
+REQUEST_URI=/cirigliano/Punto/admin
+HTTP_REFERER=http://localhost:8888/cirigliano/
+---
+2014/07/24 01:01:29 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "Presupuesto/create"' in /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php:286
+Stack trace:
+#0 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(141): CWebApplication->runController('Presupuesto/cre...')
+#1 /Applications/MAMP/htdocs/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#2 /Applications/MAMP/htdocs/cirigliano/index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/cirigliano/Presupuesto/create/1
+HTTP_REFERER=http://localhost:8888/cirigliano/visita/1
+---
+2014/07/24 01:06:34 [error] [exception.CException] exception 'CException' with message 'La propiedad "Presupuesto"."punto_id" no se encuentra definida.' in /Applications/MAMP/htdocs/yii/framework/base/CComponent.php:173
+Stack trace:
+#0 /Applications/MAMP/htdocs/yii/framework/db/ar/CActiveRecord.php(161): CComponent->__set('punto_id', '1')
+#1 /Applications/MAMP/htdocs/cirigliano/protected/controllers/PresupuestoController.php(66): CActiveRecord->__set('punto_id', '1')
+#2 [internal function]: PresupuestoController->actionCreate('1')
+#3 /Applications/MAMP/htdocs/yii/framework/web/actions/CAction.php(108): ReflectionMethod->invokeArgs(Object(PresupuestoController), Array)
+#4 /Applications/MAMP/htdocs/yii/framework/web/actions/CInlineAction.php(47): CAction->runWithParamsInternal(Object(PresupuestoController), Object(ReflectionMethod), Array)
+#5 /Applications/MAMP/htdocs/yii/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#6 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#7 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#8 /Applications/MAMP/htdocs/yii/framework/web/CController.php(1145): CFilter->filter(Object(CFilterChain))
+#9 /Applications/MAMP/htdocs/yii/framework/web/filters/CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#10 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#11 /Applications/MAMP/htdocs/yii/framework/web/CController.php(291): CFilterChain->run()
+#12 /Applications/MAMP/htdocs/yii/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(282): CController->run('create')
+#14 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(141): CWebApplication->runController('Presupuesto/cre...')
+#15 /Applications/MAMP/htdocs/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#16 /Applications/MAMP/htdocs/cirigliano/index.php(13): CApplication->run()
+#17 {main}
+REQUEST_URI=/cirigliano/Presupuesto/create/1
+---
+2014/07/24 01:07:12 [error] [exception.CException] exception 'CException' with message 'La propiedad "Presupuesto"."punto_id" no se encuentra definida.' in /Applications/MAMP/htdocs/yii/framework/base/CComponent.php:173
+Stack trace:
+#0 /Applications/MAMP/htdocs/yii/framework/db/ar/CActiveRecord.php(161): CComponent->__set('punto_id', '1')
+#1 /Applications/MAMP/htdocs/cirigliano/protected/controllers/PresupuestoController.php(66): CActiveRecord->__set('punto_id', '1')
+#2 [internal function]: PresupuestoController->actionCreate('1')
+#3 /Applications/MAMP/htdocs/yii/framework/web/actions/CAction.php(108): ReflectionMethod->invokeArgs(Object(PresupuestoController), Array)
+#4 /Applications/MAMP/htdocs/yii/framework/web/actions/CInlineAction.php(47): CAction->runWithParamsInternal(Object(PresupuestoController), Object(ReflectionMethod), Array)
+#5 /Applications/MAMP/htdocs/yii/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#6 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#7 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#8 /Applications/MAMP/htdocs/yii/framework/web/CController.php(1145): CFilter->filter(Object(CFilterChain))
+#9 /Applications/MAMP/htdocs/yii/framework/web/filters/CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#10 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#11 /Applications/MAMP/htdocs/yii/framework/web/CController.php(291): CFilterChain->run()
+#12 /Applications/MAMP/htdocs/yii/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(282): CController->run('create')
+#14 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(141): CWebApplication->runController('Presupuesto/cre...')
+#15 /Applications/MAMP/htdocs/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#16 /Applications/MAMP/htdocs/cirigliano/index.php(13): CApplication->run()
+#17 {main}
+REQUEST_URI=/cirigliano/Presupuesto/create/1
+---
+2014/07/24 01:07:14 [error] [exception.CException] exception 'CException' with message 'La propiedad "Presupuesto"."punto_id" no se encuentra definida.' in /Applications/MAMP/htdocs/yii/framework/base/CComponent.php:173
+Stack trace:
+#0 /Applications/MAMP/htdocs/yii/framework/db/ar/CActiveRecord.php(161): CComponent->__set('punto_id', '1')
+#1 /Applications/MAMP/htdocs/cirigliano/protected/controllers/PresupuestoController.php(66): CActiveRecord->__set('punto_id', '1')
+#2 [internal function]: PresupuestoController->actionCreate('1')
+#3 /Applications/MAMP/htdocs/yii/framework/web/actions/CAction.php(108): ReflectionMethod->invokeArgs(Object(PresupuestoController), Array)
+#4 /Applications/MAMP/htdocs/yii/framework/web/actions/CInlineAction.php(47): CAction->runWithParamsInternal(Object(PresupuestoController), Object(ReflectionMethod), Array)
+#5 /Applications/MAMP/htdocs/yii/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#6 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#7 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#8 /Applications/MAMP/htdocs/yii/framework/web/CController.php(1145): CFilter->filter(Object(CFilterChain))
+#9 /Applications/MAMP/htdocs/yii/framework/web/filters/CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#10 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#11 /Applications/MAMP/htdocs/yii/framework/web/CController.php(291): CFilterChain->run()
+#12 /Applications/MAMP/htdocs/yii/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(282): CController->run('create')
+#14 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(141): CWebApplication->runController('Presupuesto/cre...')
+#15 /Applications/MAMP/htdocs/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#16 /Applications/MAMP/htdocs/cirigliano/index.php(13): CApplication->run()
+#17 {main}
+REQUEST_URI=/cirigliano/Presupuesto/create/1
+---
+2014/07/24 01:07:27 [error] [system.db.CDbCommand] CDbCommand::fetchAll() falló: SQLSTATE[42S22]: Column not found: 1054 Unknown column 't.visita_id' in 'where clause'. La sentencia SQL ejecutada fue: SELECT * FROM `mueble_punto` `t` WHERE t.visita_id=:id.
+in /Applications/MAMP/htdocs/cirigliano/protected/controllers/PresupuestoController.php (69)
+in /Applications/MAMP/htdocs/cirigliano/index.php (13)
+2014/07/24 01:07:27 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand falló al ejecutar la sentencia SQL: SQLSTATE[42S22]: Column not found: 1054 Unknown column 't.visita_id' in 'where clause'. The SQL statement executed was: SELECT * FROM `mueble_punto` `t` WHERE t.visita_id=:id' in /Applications/MAMP/htdocs/yii/framework/db/CDbCommand.php:543
+Stack trace:
+#0 /Applications/MAMP/htdocs/yii/framework/db/CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 /Applications/MAMP/htdocs/yii/framework/db/ar/CActiveRecord.php(1351): CDbCommand->queryAll()
+#2 /Applications/MAMP/htdocs/yii/framework/db/ar/CActiveRecord.php(1470): CActiveRecord->query(Object(CDbCriteria), true)
+#3 /Applications/MAMP/htdocs/cirigliano/protected/controllers/PresupuestoController.php(69): CActiveRecord->findAll(Array)
+#4 [internal function]: PresupuestoController->actionCreate('1')
+#5 /Applications/MAMP/htdocs/yii/framework/web/actions/CAction.php(108): ReflectionMethod->invokeArgs(Object(PresupuestoController), Array)
+#6 /Applications/MAMP/htdocs/yii/framework/web/actions/CInlineAction.php(47): CAction->runWithParamsInternal(Object(PresupuestoController), Object(ReflectionMethod), Array)
+#7 /Applications/MAMP/htdocs/yii/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#8 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#9 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#10 /Applications/MAMP/htdocs/yii/framework/web/CController.php(1145): CFilter->filter(Object(CFilterChain))
+#11 /Applications/MAMP/htdocs/yii/framework/web/filters/CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#12 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#13 /Applications/MAMP/htdocs/yii/framework/web/CController.php(291): CFilterChain->run()
+#14 /Applications/MAMP/htdocs/yii/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#15 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(282): CController->run('create')
+#16 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(141): CWebApplication->runController('Presupuesto/cre...')
+#17 /Applications/MAMP/htdocs/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#18 /Applications/MAMP/htdocs/cirigliano/index.php(13): CApplication->run()
+#19 {main}
+REQUEST_URI=/cirigliano/Presupuesto/create/1
+---
+2014/07/24 01:08:05 [error] [system.db.CDbCommand] CDbCommand::fetchAll() falló: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'visita_id' in 'where clause'. La sentencia SQL ejecutada fue: SELECT * FROM `mueble_punto` `t` WHERE visita_id=:id.
+in /Applications/MAMP/htdocs/cirigliano/protected/controllers/PresupuestoController.php (69)
+in /Applications/MAMP/htdocs/cirigliano/index.php (13)
+2014/07/24 01:08:05 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand falló al ejecutar la sentencia SQL: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'visita_id' in 'where clause'. The SQL statement executed was: SELECT * FROM `mueble_punto` `t` WHERE visita_id=:id' in /Applications/MAMP/htdocs/yii/framework/db/CDbCommand.php:543
+Stack trace:
+#0 /Applications/MAMP/htdocs/yii/framework/db/CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 /Applications/MAMP/htdocs/yii/framework/db/ar/CActiveRecord.php(1351): CDbCommand->queryAll()
+#2 /Applications/MAMP/htdocs/yii/framework/db/ar/CActiveRecord.php(1470): CActiveRecord->query(Object(CDbCriteria), true)
+#3 /Applications/MAMP/htdocs/cirigliano/protected/controllers/PresupuestoController.php(69): CActiveRecord->findAll(Array)
+#4 [internal function]: PresupuestoController->actionCreate('1')
+#5 /Applications/MAMP/htdocs/yii/framework/web/actions/CAction.php(108): ReflectionMethod->invokeArgs(Object(PresupuestoController), Array)
+#6 /Applications/MAMP/htdocs/yii/framework/web/actions/CInlineAction.php(47): CAction->runWithParamsInternal(Object(PresupuestoController), Object(ReflectionMethod), Array)
+#7 /Applications/MAMP/htdocs/yii/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#8 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#9 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#10 /Applications/MAMP/htdocs/yii/framework/web/CController.php(1145): CFilter->filter(Object(CFilterChain))
+#11 /Applications/MAMP/htdocs/yii/framework/web/filters/CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#12 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#13 /Applications/MAMP/htdocs/yii/framework/web/CController.php(291): CFilterChain->run()
+#14 /Applications/MAMP/htdocs/yii/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#15 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(282): CController->run('create')
+#16 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(141): CWebApplication->runController('Presupuesto/cre...')
+#17 /Applications/MAMP/htdocs/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#18 /Applications/MAMP/htdocs/cirigliano/index.php(13): CApplication->run()
+#19 {main}
+REQUEST_URI=/cirigliano/Presupuesto/create/1
+---
+2014/07/24 01:23:12 [error] [php] Use of undefined constant optionValue - assumed 'optionValue' (/Applications/MAMP/htdocs/cirigliano/protected/views/presupuesto/_form.php:36)
+Stack trace:
+#0 /Applications/MAMP/htdocs/yii/framework/web/CController.php(869): PresupuestoController->renderFile()
+#1 /Applications/MAMP/htdocs/cirigliano/protected/views/presupuesto/create.php(20): PresupuestoController->renderPartial()
+#2 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(126): require()
+#3 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(95): PresupuestoController->renderInternal()
+#4 /Applications/MAMP/htdocs/yii/framework/web/CController.php(869): PresupuestoController->renderFile()
+#5 /Applications/MAMP/htdocs/yii/framework/web/CController.php(782): PresupuestoController->renderPartial()
+#6 /Applications/MAMP/htdocs/cirigliano/protected/controllers/PresupuestoController.php(84): PresupuestoController->render()
+#7 unknown(0): PresupuestoController->actionCreate()
+#8 /Applications/MAMP/htdocs/yii/framework/web/actions/CAction.php(108): ReflectionMethod->invokeArgs()
+#9 /Applications/MAMP/htdocs/yii/framework/web/actions/CInlineAction.php(47): CInlineAction->runWithParamsInternal()
+#10 /Applications/MAMP/htdocs/yii/framework/web/CController.php(308): CInlineAction->runWithParams()
+#11 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilterChain.php(133): PresupuestoController->runAction()
+#12 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#13 /Applications/MAMP/htdocs/yii/framework/web/CController.php(1145): CAccessControlFilter->filter()
+#14 /Applications/MAMP/htdocs/yii/framework/web/filters/CInlineFilter.php(58): PresupuestoController->filterAccessControl()
+#15 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter()
+#16 /Applications/MAMP/htdocs/yii/framework/web/CController.php(291): CFilterChain->run()
+#17 /Applications/MAMP/htdocs/yii/framework/web/CController.php(265): PresupuestoController->runActionWithFilters()
+#18 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(282): PresupuestoController->run()
+#19 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(141): CWebApplication->runController()
+#20 /Applications/MAMP/htdocs/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#21 /Applications/MAMP/htdocs/cirigliano/index.php(13): CWebApplication->run()
+REQUEST_URI=/cirigliano/Presupuesto/create/1
+in /Applications/MAMP/htdocs/cirigliano/protected/views/presupuesto/_form.php (36)
+in /Applications/MAMP/htdocs/cirigliano/protected/views/presupuesto/create.php (20)
+in /Applications/MAMP/htdocs/cirigliano/protected/controllers/PresupuestoController.php (84)
+2014/07/24 01:48:59 [error] [system.db.CDbCommand] CDbCommand::execute() falló: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '0' for key 'PRIMARY'. La sentencia SQL ejecutada fue: INSERT INTO `presupuesto` (`visita_id`, `user_id`, `estado`, `fecha_creacion`, `nota`) VALUES (:yp0, :yp1, :yp2, :yp3, :yp4).
+in /Applications/MAMP/htdocs/cirigliano/protected/controllers/PresupuestoController.php (76)
+in /Applications/MAMP/htdocs/cirigliano/index.php (13)
+2014/07/24 01:48:59 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand falló al ejecutar la sentencia SQL: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '0' for key 'PRIMARY'. The SQL statement executed was: INSERT INTO `presupuesto` (`visita_id`, `user_id`, `estado`, `fecha_creacion`, `nota`) VALUES (:yp0, :yp1, :yp2, :yp3, :yp4)' in /Applications/MAMP/htdocs/yii/framework/db/CDbCommand.php:358
+Stack trace:
+#0 /Applications/MAMP/htdocs/yii/framework/db/ar/CActiveRecord.php(1077): CDbCommand->execute()
+#1 /Applications/MAMP/htdocs/yii/framework/db/ar/CActiveRecord.php(806): CActiveRecord->insert(NULL)
+#2 /Applications/MAMP/htdocs/cirigliano/protected/controllers/PresupuestoController.php(76): CActiveRecord->save()
+#3 [internal function]: PresupuestoController->actionCreate('1')
+#4 /Applications/MAMP/htdocs/yii/framework/web/actions/CAction.php(108): ReflectionMethod->invokeArgs(Object(PresupuestoController), Array)
+#5 /Applications/MAMP/htdocs/yii/framework/web/actions/CInlineAction.php(47): CAction->runWithParamsInternal(Object(PresupuestoController), Object(ReflectionMethod), Array)
+#6 /Applications/MAMP/htdocs/yii/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#7 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#8 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#9 /Applications/MAMP/htdocs/yii/framework/web/CController.php(1145): CFilter->filter(Object(CFilterChain))
+#10 /Applications/MAMP/htdocs/yii/framework/web/filters/CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#11 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#12 /Applications/MAMP/htdocs/yii/framework/web/CController.php(291): CFilterChain->run()
+#13 /Applications/MAMP/htdocs/yii/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#14 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(282): CController->run('create')
+#15 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(141): CWebApplication->runController('Presupuesto/cre...')
+#16 /Applications/MAMP/htdocs/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#17 /Applications/MAMP/htdocs/cirigliano/index.php(13): CApplication->run()
+#18 {main}
+REQUEST_URI=/cirigliano/Presupuesto/create/1
+HTTP_REFERER=http://localhost:8888/cirigliano/Presupuesto/create/1
+---
+2014/07/24 01:52:19 [error] [system.db.CDbCommand] CDbCommand::execute() falló: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '0' for key 'PRIMARY'. La sentencia SQL ejecutada fue: INSERT INTO `presupuesto` (`visita_id`, `user_id`, `estado`, `fecha_creacion`, `nota`) VALUES (:yp0, :yp1, :yp2, :yp3, :yp4).
+in /Applications/MAMP/htdocs/cirigliano/protected/controllers/PresupuestoController.php (76)
+in /Applications/MAMP/htdocs/cirigliano/index.php (13)
+2014/07/24 01:52:19 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand falló al ejecutar la sentencia SQL: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '0' for key 'PRIMARY'. The SQL statement executed was: INSERT INTO `presupuesto` (`visita_id`, `user_id`, `estado`, `fecha_creacion`, `nota`) VALUES (:yp0, :yp1, :yp2, :yp3, :yp4)' in /Applications/MAMP/htdocs/yii/framework/db/CDbCommand.php:358
+Stack trace:
+#0 /Applications/MAMP/htdocs/yii/framework/db/ar/CActiveRecord.php(1077): CDbCommand->execute()
+#1 /Applications/MAMP/htdocs/yii/framework/db/ar/CActiveRecord.php(806): CActiveRecord->insert(NULL)
+#2 /Applications/MAMP/htdocs/cirigliano/protected/controllers/PresupuestoController.php(76): CActiveRecord->save()
+#3 [internal function]: PresupuestoController->actionCreate('1')
+#4 /Applications/MAMP/htdocs/yii/framework/web/actions/CAction.php(108): ReflectionMethod->invokeArgs(Object(PresupuestoController), Array)
+#5 /Applications/MAMP/htdocs/yii/framework/web/actions/CInlineAction.php(47): CAction->runWithParamsInternal(Object(PresupuestoController), Object(ReflectionMethod), Array)
+#6 /Applications/MAMP/htdocs/yii/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#7 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#8 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#9 /Applications/MAMP/htdocs/yii/framework/web/CController.php(1145): CFilter->filter(Object(CFilterChain))
+#10 /Applications/MAMP/htdocs/yii/framework/web/filters/CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#11 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#12 /Applications/MAMP/htdocs/yii/framework/web/CController.php(291): CFilterChain->run()
+#13 /Applications/MAMP/htdocs/yii/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#14 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(282): CController->run('create')
+#15 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(141): CWebApplication->runController('Presupuesto/cre...')
+#16 /Applications/MAMP/htdocs/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#17 /Applications/MAMP/htdocs/cirigliano/index.php(13): CApplication->run()
+#18 {main}
+REQUEST_URI=/cirigliano/Presupuesto/create/1
+HTTP_REFERER=http://localhost:8888/cirigliano/Presupuesto/create/1
+---
+2014/07/24 03:33:01 [error] [exception.CException] exception 'CException' with message 'La propiedad "ServicioMueble"."mueblepunto" no se encuentra definida.' in /Applications/MAMP/htdocs/yii/framework/base/CComponent.php:130
+Stack trace:
+#0 /Applications/MAMP/htdocs/yii/framework/db/ar/CActiveRecord.php(145): CComponent->__get('mueblepunto')
+#1 /Applications/MAMP/htdocs/cirigliano/protected/views/visita/view.php(67): CActiveRecord->__get('mueblepunto')
+#2 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(126): require('/Applications/M...')
+#3 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(95): CBaseController->renderInternal('/Applications/M...', Array, true)
+#4 /Applications/MAMP/htdocs/yii/framework/web/CController.php(869): CBaseController->renderFile('/Applications/M...', Array, true)
+#5 /Applications/MAMP/htdocs/yii/framework/web/CController.php(782): CController->renderPartial('view', Array, true)
+#6 /Applications/MAMP/htdocs/cirigliano/protected/controllers/VisitaController.php(57): CController->render('view', Array)
+#7 [internal function]: VisitaController->actionView('1')
+#8 /Applications/MAMP/htdocs/yii/framework/web/actions/CAction.php(108): ReflectionMethod->invokeArgs(Object(VisitaController), Array)
+#9 /Applications/MAMP/htdocs/yii/framework/web/actions/CInlineAction.php(47): CAction->runWithParamsInternal(Object(VisitaController), Object(ReflectionMethod), Array)
+#10 /Applications/MAMP/htdocs/yii/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#11 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#12 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#13 /Applications/MAMP/htdocs/yii/framework/web/CController.php(1145): CFilter->filter(Object(CFilterChain))
+#14 /Applications/MAMP/htdocs/yii/framework/web/filters/CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#15 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#16 /Applications/MAMP/htdocs/yii/framework/web/CController.php(291): CFilterChain->run()
+#17 /Applications/MAMP/htdocs/yii/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#18 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(282): CController->run('view')
+#19 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(141): CWebApplication->runController('visita/view')
+#20 /Applications/MAMP/htdocs/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#21 /Applications/MAMP/htdocs/cirigliano/index.php(13): CApplication->run()
+#22 {main}
+REQUEST_URI=/cirigliano/visita/1
+HTTP_REFERER=http://localhost:8888/cirigliano/Presupuesto/create/1
+---
+2014/07/24 03:36:59 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "Ditribuidor/admin"' in /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php:286
+Stack trace:
+#0 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(141): CWebApplication->runController('Ditribuidor/adm...')
+#1 /Applications/MAMP/htdocs/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#2 /Applications/MAMP/htdocs/cirigliano/index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/cirigliano/Ditribuidor/admin
+HTTP_REFERER=http://localhost:8888/cirigliano/Punto/admin
+---
+2014/07/24 03:37:08 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "Ditribuidor/admin"' in /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php:286
+Stack trace:
+#0 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(141): CWebApplication->runController('Ditribuidor/adm...')
+#1 /Applications/MAMP/htdocs/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#2 /Applications/MAMP/htdocs/cirigliano/index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/cirigliano/Ditribuidor/admin
+HTTP_REFERER=http://localhost:8888/cirigliano/Punto/admin
+---
+2014/07/24 03:37:11 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "Distribuidor/admin"' in /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php:286
+Stack trace:
+#0 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(141): CWebApplication->runController('Distribuidor/ad...')
+#1 /Applications/MAMP/htdocs/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#2 /Applications/MAMP/htdocs/cirigliano/index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/cirigliano/Distribuidor/admin
+HTTP_REFERER=http://localhost:8888/cirigliano/Punto/admin
+---
+2014/07/24 03:37:13 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "Distribuidor/admin"' in /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php:286
+Stack trace:
+#0 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(141): CWebApplication->runController('Distribuidor/ad...')
+#1 /Applications/MAMP/htdocs/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#2 /Applications/MAMP/htdocs/cirigliano/index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/cirigliano/Distribuidor/admin
+HTTP_REFERER=http://localhost:8888/cirigliano/Punto/admin
+---
+2014/07/24 03:52:03 [error] [exception.CException] exception 'CException' with message 'La propiedad "Comuna"."region" no se encuentra definida.' in /Applications/MAMP/htdocs/yii/framework/base/CComponent.php:130
+Stack trace:
+#0 /Applications/MAMP/htdocs/yii/framework/db/ar/CActiveRecord.php(145): CComponent->__get('region')
+#1 /Applications/MAMP/htdocs/yii/framework/base/CComponent.php(612) : eval()'d code(1): CActiveRecord->__get('region')
+#2 /Applications/MAMP/htdocs/yii/framework/base/CComponent.php(612): eval()
+#3 /Applications/MAMP/htdocs/yii/framework/zii/widgets/grid/CDataColumn.php(137): CComponent->evaluateExpression('$data->region->...', Array)
+#4 /Applications/MAMP/htdocs/yii/framework/zii/widgets/grid/CGridColumn.php(151): CDataColumn->renderDataCellContent(0, Object(Comuna))
+#5 /Applications/MAMP/htdocs/yii/framework/zii/widgets/grid/CGridView.php(616): CGridColumn->renderDataCell(0)
+#6 /Applications/MAMP/htdocs/yii/framework/zii/widgets/grid/CGridView.php(572): CGridView->renderTableRow(0)
+#7 /Applications/MAMP/htdocs/yii/framework/zii/widgets/grid/CGridView.php(482): CGridView->renderTableBody()
+#8 /Applications/MAMP/htdocs/yii/framework/zii/widgets/CBaseListView.php(167): CGridView->renderItems()
+#9 [internal function]: CBaseListView->renderSection(Array)
+#10 /Applications/MAMP/htdocs/yii/framework/zii/widgets/CBaseListView.php(150): preg_replace_callback('/{(\w+)}/', Array, '{items}?<div cl...')
+#11 /Applications/MAMP/htdocs/yii/framework/zii/widgets/CBaseListView.php(135): CBaseListView->renderContent()
+#12 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(173): CBaseListView->run()
+#13 /Applications/MAMP/htdocs/cirigliano/protected/views/comuna/admin.php(36): CBaseController->widget('bootstrap.widge...', Array)
+#14 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(126): require('/Applications/M...')
+#15 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(95): CBaseController->renderInternal('/Applications/M...', Array, true)
+#16 /Applications/MAMP/htdocs/yii/framework/web/CController.php(869): CBaseController->renderFile('/Applications/M...', Array, true)
+#17 /Applications/MAMP/htdocs/yii/framework/web/CController.php(782): CController->renderPartial('admin', Array, true)
+#18 /Applications/MAMP/htdocs/cirigliano/protected/controllers/ComunaController.php(150): CController->render('admin', Array)
+#19 /Applications/MAMP/htdocs/yii/framework/web/actions/CInlineAction.php(49): ComunaController->actionAdmin()
+#20 /Applications/MAMP/htdocs/yii/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#21 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#22 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#23 /Applications/MAMP/htdocs/yii/framework/web/CController.php(1145): CFilter->filter(Object(CFilterChain))
+#24 /Applications/MAMP/htdocs/yii/framework/web/filters/CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#25 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#26 /Applications/MAMP/htdocs/yii/framework/web/CController.php(291): CFilterChain->run()
+#27 /Applications/MAMP/htdocs/yii/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#28 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(282): CController->run('admin')
+#29 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(141): CWebApplication->runController('comuna/admin')
+#30 /Applications/MAMP/htdocs/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#31 /Applications/MAMP/htdocs/cirigliano/index.php(13): CApplication->run()
+#32 {main}
+REQUEST_URI=/cirigliano/comuna/admin
+HTTP_REFERER=http://localhost:8888/cirigliano/comuna/create
+---
+2014/07/24 04:02:08 [error] [system.db.CDbCommand] CDbCommand::fetchAll() falló: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '>punto_id' at line 1. La sentencia SQL ejecutada fue: SELECT * FROM `persona_punto` `t` WHERE punto_id = $model->punto_id.
+in /Applications/MAMP/htdocs/cirigliano/protected/views/visita/_form.php (29)
+in /Applications/MAMP/htdocs/cirigliano/protected/views/visita/create.php (20)
+in /Applications/MAMP/htdocs/cirigliano/protected/controllers/VisitaController.php (81)
+2014/07/24 04:02:08 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand falló al ejecutar la sentencia SQL: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '>punto_id' at line 1. The SQL statement executed was: SELECT * FROM `persona_punto` `t` WHERE punto_id = $model->punto_id' in /Applications/MAMP/htdocs/yii/framework/db/CDbCommand.php:543
+Stack trace:
+#0 /Applications/MAMP/htdocs/yii/framework/db/CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 /Applications/MAMP/htdocs/yii/framework/db/ar/CActiveRecord.php(1351): CDbCommand->queryAll()
+#2 /Applications/MAMP/htdocs/yii/framework/db/ar/CActiveRecord.php(1470): CActiveRecord->query(Object(CDbCriteria), true)
+#3 /Applications/MAMP/htdocs/cirigliano/protected/views/visita/_form.php(29): CActiveRecord->findAll(Array)
+#4 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(126): require('/Applications/M...')
+#5 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(95): CBaseController->renderInternal('/Applications/M...', Array, true)
+#6 /Applications/MAMP/htdocs/yii/framework/web/CController.php(869): CBaseController->renderFile('/Applications/M...', Array, true)
+#7 /Applications/MAMP/htdocs/cirigliano/protected/views/visita/create.php(20): CController->renderPartial('_form', Array)
+#8 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(126): require('/Applications/M...')
+#9 /Applications/MAMP/htdocs/yii/framework/web/CBaseController.php(95): CBaseController->renderInternal('/Applications/M...', Array, true)
+#10 /Applications/MAMP/htdocs/yii/framework/web/CController.php(869): CBaseController->renderFile('/Applications/M...', Array, true)
+#11 /Applications/MAMP/htdocs/yii/framework/web/CController.php(782): CController->renderPartial('create', Array, true)
+#12 /Applications/MAMP/htdocs/cirigliano/protected/controllers/VisitaController.php(81): CController->render('create', Array)
+#13 [internal function]: VisitaController->actionCreate('1')
+#14 /Applications/MAMP/htdocs/yii/framework/web/actions/CAction.php(108): ReflectionMethod->invokeArgs(Object(VisitaController), Array)
+#15 /Applications/MAMP/htdocs/yii/framework/web/actions/CInlineAction.php(47): CAction->runWithParamsInternal(Object(VisitaController), Object(ReflectionMethod), Array)
+#16 /Applications/MAMP/htdocs/yii/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#17 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#18 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#19 /Applications/MAMP/htdocs/yii/framework/web/CController.php(1145): CFilter->filter(Object(CFilterChain))
+#20 /Applications/MAMP/htdocs/yii/framework/web/filters/CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#21 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#22 /Applications/MAMP/htdocs/yii/framework/web/CController.php(291): CFilterChain->run()
+#23 /Applications/MAMP/htdocs/yii/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#24 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(282): CController->run('create')
+#25 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(141): CWebApplication->runController('Visita/create')
+#26 /Applications/MAMP/htdocs/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#27 /Applications/MAMP/htdocs/cirigliano/index.php(13): CApplication->run()
+#28 {main}
+REQUEST_URI=/cirigliano/Visita/create/1
+HTTP_REFERER=http://localhost:8888/cirigliano/punto/1
+---
+2014/07/24 04:07:49 [warning] [application] Error al establecer unsafe al atributo "mueble_punto" de "Visita".
+in /Applications/MAMP/htdocs/cirigliano/protected/controllers/PuntoController.php (63)
+in /Applications/MAMP/htdocs/cirigliano/index.php (13)
+2014/07/24 04:07:51 [warning] [application] Error al establecer unsafe al atributo "mueble_punto" de "Visita".
+in /Applications/MAMP/htdocs/cirigliano/protected/controllers/PuntoController.php (63)
+in /Applications/MAMP/htdocs/cirigliano/index.php (13)
+2014/07/24 04:11:58 [error] [exception.CHttpException.400] exception 'CHttpException' with message 'Su solicitud es inválida.' in /Applications/MAMP/htdocs/yii/framework/web/CController.php:336
+Stack trace:
+#0 /Applications/MAMP/htdocs/yii/framework/web/CController.php(309): CController->invalidActionParams(Object(CInlineAction))
+#1 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#2 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#3 /Applications/MAMP/htdocs/yii/framework/web/CController.php(1145): CFilter->filter(Object(CFilterChain))
+#4 /Applications/MAMP/htdocs/yii/framework/web/filters/CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#5 /Applications/MAMP/htdocs/yii/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#6 /Applications/MAMP/htdocs/yii/framework/web/CController.php(291): CFilterChain->run()
+#7 /Applications/MAMP/htdocs/yii/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#8 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(282): CController->run('create')
+#9 /Applications/MAMP/htdocs/yii/framework/web/CWebApplication.php(141): CWebApplication->runController('servicioMueble/...')
+#10 /Applications/MAMP/htdocs/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#11 /Applications/MAMP/htdocs/cirigliano/index.php(13): CApplication->run()
+#12 {main}
+REQUEST_URI=/cirigliano/servicioMueble/create
+HTTP_REFERER=http://localhost:8888/cirigliano/ServicioMueble/admin
+---

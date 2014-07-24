@@ -12,7 +12,6 @@ $this->breadcrumbs=array(
 
 $this->menu=array(
 	array('label'=>Yii::t('app','model.ServicioMueble.create'),'url'=>array('create','id'=>$model->mueble_id)),
-	array('label'=>Yii::t('app','model.ServicioMueble.view'),'url'=>array('view','id'=>$model->id)),
 	array('label'=>Yii::t('app','model.ServicioMueble.admin'),'url'=>array('admin')),
 );
 ?>

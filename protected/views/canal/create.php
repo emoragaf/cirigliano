@@ -10,7 +10,6 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>Yii::t('app','model.Canal.index'),'url'=>array('index')),
 	array('label'=>Yii::t('app','model.Canal.admin'),'url'=>array('admin')),
 );
 ?>

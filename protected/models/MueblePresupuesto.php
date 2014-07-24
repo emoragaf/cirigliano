@@ -5,8 +5,12 @@
  *
  * The followings are the available columns in table 'mueble_presupuesto':
  * @property integer $id
- * @property integer $mueble_punto_id
+ * @property integer $servicio_mueble_id
  * @property integer $presupuesto_id
+ *
+ * The followings are the available model relations:
+ * @property Accion[] $accions
+ * @property Adicional[] $adicionals
  */
 class MueblePresupuesto extends CActiveRecord
 {
@@ -26,11 +30,11 @@ class MueblePresupuesto extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('mueble_punto_id, presupuesto_id', 'required'),
-			array('mueble_punto_id, presupuesto_id', 'numerical', 'integerOnly'=>true),
+			array('servicio_mueble_id, presupuesto_id', 'required'),
+			array('servicio_mueble_id, mueble_punto_id ,presupuesto_id', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, mueble_punto_id, presupuesto_id', 'safe', 'on'=>'search'),
+			array('id, servicio_mueble_id, presupuesto_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -42,6 +46,11 @@ class MueblePresupuesto extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'acciones' => array(self::HAS_MANY, 'Accion', 'mueble_presupuesto_id'),
+			'adicionales' => array(self::HAS_MANY, 'Adicional', 'mueble_presupuesto_id'),
+			'presupuesto' => array(self::BELONGS_TO, 'Presupuesto', 'presupuesto_id'),
+			'servicio' => array(self::BELONGS_TO, 'ServicioMueble', 'servicio_mueble_id'),
+			'mueblepunto' => array(self::BELONGS_TO, 'MueblePunto', 'mueble_punto_id'),
 		);
 	}
 
@@ -52,7 +61,7 @@ class MueblePresupuesto extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'mueble_punto_id' => 'Mueble Punto',
+			'servicio_mueble_id' => 'Servicio Mueble',
 			'presupuesto_id' => 'Presupuesto',
 		);
 	}
@@ -76,7 +85,7 @@ class MueblePresupuesto extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('mueble_punto_id',$this->mueble_punto_id);
+		$criteria->compare('servicio_mueble_id',$this->servicio_mueble_id);
 		$criteria->compare('presupuesto_id',$this->presupuesto_id);
 
 		return new CActiveDataProvider($this, array(

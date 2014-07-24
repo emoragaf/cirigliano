@@ -17,6 +17,8 @@ $this->menu=array(
 	array('label'=>Yii::t('app','model.Punto.delete'),'url'=>'#','linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
 	array('label'=>Yii::t('app','model.MueblePunto')),
 	array('label'=>Yii::t('app','model.MueblePunto.create'),'url'=>array('/MueblePunto/create','id'=>$model->id)),
+    array('label'=>Yii::t('app','model.Visita')),
+    array('label'=>Yii::t('app','model.Visita.create'),'url'=>array('/Visita/create','id'=>$model->id)),
 );
 
 $fechaCreacionBetween = $this->widget('zii.widgets.jui.CJuiDatePicker', array(
@@ -121,6 +123,19 @@ $fechaVisitaBetween = $this->widget('zii.widgets.jui.CJuiDatePicker', array(
 	),
 )); ?>
 <h3><?php echo Yii::t('app','model.Visita');?></h3>
+<?php
+Yii::app()->clientScript->registerScript('search', "
+$('.search-form form').submit(function(){
+	$('#visita-grid').yiiGridView('update', {
+		data: $(this).serialize()
+	});
+	return false;
+});
+");
+?>
+
+<h1><?php echo Yii::t('app','model.Punto.admin'); ?></h1>
+
 <?php $this->widget('bootstrap.widgets.TbGridView',array(
 	'id'=>'visita-grid',
 	'dataProvider'=>$visitas->searchVisitasPunto($model->id),

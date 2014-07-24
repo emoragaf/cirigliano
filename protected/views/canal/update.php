@@ -11,9 +11,7 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>Yii::t('app','model.Canal.index'),'url'=>array('index')),
 	array('label'=>Yii::t('app','model.Canal.create'),'url'=>array('create')),
-	array('label'=>Yii::t('app','model.Canal.view'),'url'=>array('view','id'=>$model->id)),
 	array('label'=>Yii::t('app','model.Canal.admin'),'url'=>array('admin')),
 );
 ?>

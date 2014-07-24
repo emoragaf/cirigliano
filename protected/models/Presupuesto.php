@@ -37,7 +37,6 @@ class Presupuesto extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id, visita_id, user_id', 'required'),
 			array('id, visita_id, user_id, estado', 'numerical', 'integerOnly'=>true),
 			array('total', 'length', 'max'=>45),
 			array('nota, fecha_creacion, fecha_respuesta, fecha_asignacion, fecha_termino', 'safe'),
@@ -57,6 +56,7 @@ class Presupuesto extends CActiveRecord
 		return array(
 			'user' => array(self::BELONGS_TO, 'Users', 'user_id'),
 			'visita' => array(self::BELONGS_TO, 'Visita', 'visita_id'),
+			'mueblespresupuesto' => array(self::HAS_MANY, 'MueblePresupuesto', 'presupuesto_id'),
 		);
 	}
 

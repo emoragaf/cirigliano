@@ -33,6 +33,7 @@ class Visita extends CActiveRecord
     public $fecha_creacion_final;
     public $fecha_visita_inicio;
     public $fecha_visita_final;
+    public $mueble_punto;
 
 	/**
 	 * @return string the associated database table name
@@ -108,7 +109,7 @@ class Visita extends CActiveRecord
 			'fecha_visita' => 'Fecha Visita',
 			'punto_id' => 'Punto',
 			'tipo_visita_id' => 'Tipo Visita',
-			'persona_punto_id' => 'Persona Punto',
+			'persona_punto_id' => 'Solicitante',
 			'estado' => 'Estado',
 			'punto_direccion'=>'Dirección',
 			'punto_canal_id'=>'Canal',
@@ -154,7 +155,8 @@ class Visita extends CActiveRecord
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
 		$criteria=new CDbCriteria;
-		$criteria->condition = 'punto_id ='.$id;
+		$criteria->condition = 'punto_id = '.$id;
+		$criteria->together= true;
 		$criteria->compare('fecha_creacion',$this->fecha_creacion,true);
 		$criteria->compare('fecha_visita',$this->fecha_visita,true);
 		$criteria->compare('persona_punto_id',$this->persona_punto_id);

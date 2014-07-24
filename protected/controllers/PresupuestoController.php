@@ -1,6 +1,6 @@
 <?php
 
-class CanalController extends Controller
+class PresupuestoController extends Controller
 {
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -60,22 +60,47 @@ class CanalController extends Controller
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
 	 */
-	public function actionCreate()
+	public function actionCreate($id)
 	{
-		$model=new Canal;
-
+		$visita = Visita::model()->findByPk($id);
+		$model=new Presupuesto;
+		$model->visita_id = $id;
+		$model->user_id = yii::App()->user->getId();
+		$model->estado = 0;
+		$model->fecha_creacion = date('Y-m-d');
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
+		$muebles= MueblePunto::model()->findAll(array('condition'=>'t.punto_id=:id','params'=>array(':id'=>$visita->id)));
+		if (isset($_POST['Presupuesto']) && isset($_POST['Mueble']) ) {
+			$model->attributes=$_POST['Presupuesto'];
+			$model->total = 0;
+			$model->save();
+			$mueblesPunto = $_POST['Mueble'];
+			$flag = true;
+			foreach ($mueblesPunto as $key => $servicios) {
+				foreach ($servicios as $servicio) {
+					$mp = new mueblePresupuesto;
+					$mp->mueble_punto_id = $key;
+					$mp->servicio_mueble_id = $servicio;
+					$mp->presupuesto_id = $model->id;
+					$s = ServicioMueble::model()->findByPk($servicio);
+					$model->total += $s->tarifa;
+					$model->save();
+					if(!$mp->save())
+						$flag = false;
+				}
+			}
 
-		if (isset($_POST['Canal'])) {
-			$model->attributes=$_POST['Canal'];
-			if ($model->save()) {
-				$this->redirect(array('admin'));
+			if ($flag) {
+				$visita->estado = 1;
+				$visita->save();
+				$this->redirect(array('visita/view','id'=>$model->visita_id));
 			}
 		}
 
 		$this->render('create',array(
 			'model'=>$model,
+			'muebles'=>$muebles,
 		));
 	}
 
@@ -91,10 +116,10 @@ class CanalController extends Controller
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if (isset($_POST['Canal'])) {
-			$model->attributes=$_POST['Canal'];
+		if (isset($_POST['Presupuesto'])) {
+			$model->attributes=$_POST['Presupuesto'];
 			if ($model->save()) {
-				$this->redirect(array('admin'));
+				$this->redirect(array('view','id'=>$model->id));
 			}
 		}
 
@@ -128,7 +153,7 @@ class CanalController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('Canal');
+		$dataProvider=new CActiveDataProvider('Presupuesto');
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 		));
@@ -139,10 +164,10 @@ class CanalController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new Canal('search');
+		$model=new Presupuesto('search');
 		$model->unsetAttributes();  // clear any default values
-		if (isset($_GET['Canal'])) {
-			$model->attributes=$_GET['Canal'];
+		if (isset($_GET['Presupuesto'])) {
+			$model->attributes=$_GET['Presupuesto'];
 		}
 
 		$this->render('admin',array(
@@ -154,12 +179,12 @@ class CanalController extends Controller
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer $id the ID of the model to be loaded
-	 * @return Canal the loaded model
+	 * @return Presupuesto the loaded model
 	 * @throws CHttpException
 	 */
 	public function loadModel($id)
 	{
-		$model=Canal::model()->findByPk($id);
+		$model=Presupuesto::model()->findByPk($id);
 		if ($model===null) {
 			throw new CHttpException(404,'The requested page does not exist.');
 		}
@@ -168,11 +193,11 @@ class CanalController extends Controller
 
 	/**
 	 * Performs the AJAX validation.
-	 * @param Canal $model the model to be validated
+	 * @param Presupuesto $model the model to be validated
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if (isset($_POST['ajax']) && $_POST['ajax']==='canal-form') {
+		if (isset($_POST['ajax']) && $_POST['ajax']==='presupuesto-form') {
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}

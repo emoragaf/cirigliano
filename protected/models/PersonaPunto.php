@@ -39,7 +39,9 @@ class PersonaPunto extends CActiveRecord
 			array('id, persona_id, punto_id', 'safe', 'on'=>'search'),
 		);
 	}
-
+	public function getNombre(){
+		return isset($this->persona) ? $this->persona->nombre : null;
+	}
 	/**
 	 * @return array relational rules.
 	 */

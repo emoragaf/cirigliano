@@ -18,7 +18,8 @@
     <p class="help-block"><?php echo Yii::t('app','Fields with * are required.'); ?></p>
 
     <?php echo $form->errorSummary($model); ?>
-            
+            <?php echo $form->dropDownListControlGroup($model, 'mueble_id',
+                CHtml::listData(Mueble::model()->findAll(), 'id', 'descripcion'), array('empty' => 'Seleccione')); ?>
             <?php echo $form->textFieldControlGroup($model,'descripcion',array('span'=>5,'maxlength'=>45)); ?>
 
             <div class="control-group">

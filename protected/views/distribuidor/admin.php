@@ -1,29 +1,28 @@
 <?php
-/* @var $this MuebleController */
-/* @var $model Mueble */
+/* @var $this DistribuidorController */
+/* @var $model Distribuidor */
 
 
 $this->breadcrumbs=array(
-	Yii::t('app','model.Mueble')
+	Yii::t('app','model.Distribuidor')
 =>array('index'),
 	'Administrar',
 );
 
 $this->menu=array(
-	array('label'=>Yii::t('app','model.Mueble.create'),'url'=>array('create')),
+	array('label'=>Yii::t('app','model.Distribuidor.create'),'url'=>array('create')),
 );
 
 ?>
 
-<h1><?php echo Yii::t('app','model.Mueble.admin'); ?></h1>
+<h1><?php echo Yii::t('app','model.Distribuidor.admin'); ?></h1>
 
 <?php $this->widget('bootstrap.widgets.TbGridView',array(
-	'id'=>'mueble-grid',
+	'id'=>'distribuidor-grid',
 	'dataProvider'=>$model->search(),
 	'filter'=>$model,
 	'columns'=>array(
-		'codigo',
-		'descripcion',
+		'nombre',
 		array(
 			'class'=>'bootstrap.widgets.TbButtonColumn',
 			'template'=>'{update}{delete}',

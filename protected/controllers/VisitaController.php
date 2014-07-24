@@ -51,8 +51,9 @@ class VisitaController extends Controller
 	 */
 	public function actionView($id)
 	{
+		$model = $this->loadModel($id);
 		$this->render('view',array(
-			'model'=>$this->loadModel($id),
+			'model'=>$model,
 		));
 	}
 
@@ -60,10 +61,11 @@ class VisitaController extends Controller
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
 	 */
-	public function actionCreate()
+	public function actionCreate($id)
 	{
 		$model=new Visita;
-
+		$model->punto_id = $id;
+		$model->fecha_creacion = date('Y-m-d');
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
