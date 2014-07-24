@@ -57,9 +57,15 @@ class PuntoController extends Controller
 		                'params'=>array(':id'=>$id),
 		            ),
 		));
+		$visitas=new Visita('search');
+		$visitas->unsetAttributes();  // clear any default values
+		if (isset($_GET['Visita'])) {
+			$visitas->attributes=$_GET['Visita'];
+		}
 		$this->render('view',array(
 			'model'=>$this->loadModel($id),
 			'muebles'=>$muebles,
+			'visitas'=>$visitas,
 		));
 	}
 

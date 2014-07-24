@@ -1,32 +1,20 @@
 <?php
 
 /**
- * This is the model class for table "punto".
+ * This is the model class for table "distribuidor".
  *
- * The followings are the available columns in table 'punto':
+ * The followings are the available columns in table 'distribuidor':
  * @property integer $id
- * @property string $direccion
- * @property string $lat
- * @property string $lon
- * @property integer $region_id
- * @property integer $canal_id
- *
- * The followings are the available model relations:
- * @property MueblePunto[] $mueblePuntos
- * @property NotificarPersona[] $notificarPersonas
- * @property PersonaPunto[] $personaPuntos
- * @property Canal $canal
- * @property Region $region
- * @property Visita[] $visitas
+ * @property string $nombre
  */
-class Punto extends CActiveRecord
+class Distribuidor extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'punto';
+		return 'distribuidor';
 	}
 
 	/**
@@ -37,12 +25,11 @@ class Punto extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('region_id, canal_id', 'numerical', 'integerOnly'=>true),
-			array('direccion', 'length', 'max'=>45),
-			array('lat, lon', 'length', 'max'=>10),
+			array('nombre', 'required'),
+			array('nombre', 'length', 'max'=>255),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, direccion, lat, lon, region_id, canal_id', 'safe', 'on'=>'search'),
+			array('id, nombre', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -54,14 +41,6 @@ class Punto extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'mueblePuntos' => array(self::HAS_MANY, 'MueblePunto', 'punto_id'),
-			'notificarPersonas' => array(self::HAS_MANY, 'NotificarPersona', 'punto_id'),
-			'personaPuntos' => array(self::HAS_MANY, 'PersonaPunto', 'punto_id'),
-			'canal' => array(self::BELONGS_TO, 'Canal', 'canal_id'),
-			'distribuidor' => array(self::BELONGS_TO, 'Distribuidor', 'distribuidor_id'),
-			'region' => array(self::BELONGS_TO, 'Region', 'region_id'),
-			'comuna' => array(self::BELONGS_TO, 'Comuna', 'comuna_id'),
-			'visitas' => array(self::HAS_MANY, 'Visita', 'punto_id'),
 		);
 	}
 
@@ -72,14 +51,7 @@ class Punto extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'direccion' => 'Dirección',
-			'lat' => 'Lat',
-			'lon' => 'Lon',
-			'region_id' => 'Region',
-			'comuna_id' => 'Comuna',
-			'canal_id' => 'Canal',
-			'distribuidor_id'=>'Distribuidor'
-
+			'nombre' => 'Nombre',
 		);
 	}
 
@@ -102,11 +74,7 @@ class Punto extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('direccion',$this->direccion,true);
-		$criteria->compare('lat',$this->lat,true);
-		$criteria->compare('lon',$this->lon,true);
-		$criteria->compare('region_id',$this->region_id);
-		$criteria->compare('canal_id',$this->canal_id);
+		$criteria->compare('nombre',$this->nombre,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -117,7 +85,7 @@ class Punto extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return Punto the static model class
+	 * @return Distribuidor the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{

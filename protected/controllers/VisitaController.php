@@ -129,9 +129,17 @@ class VisitaController extends Controller
 	public function actionIndex()
 	{
 		$this->layout='//layouts/column1';
-		$model=new Visita;
+		$model=new Visita('search');
+		$model->unsetAttributes();  // clear any default values
+		$activos=new Visita('search');
+		$activos->unsetAttributes();  // clear any default values
+		if (isset($_GET['Visita'])) {
+			$model->attributes=$_GET['Visita'];
+			$activos->attributes=$_GET['Visita'];
+		}
 		$this->render('index',array(
 			'model'=>$model,
+			'activos'=>$activos,
 		));
 	}
 
