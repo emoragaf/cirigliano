@@ -2,6 +2,10 @@
 /* @var $this VisitaController */
 /* @var $model Visita */
 /* @var $form TbActiveForm */
+$filtroTipos = array();
+if($model->tipo_visita_id != 3){
+    $filtroTipos = CHtml::listData(TipoVisita::model()->findAll(array('condition'=>'id = 1 or id = 2','order'=>'nombre')),'id','nombre');
+}
 ?>
 
 <div class="form">
@@ -18,15 +22,27 @@
     <!--<p class="help-block"><?php echo Yii::t('app','Fields with * are required.'); ?></p>-->
 
     <?php echo $form->errorSummary($model); ?>
-            <label for="punto_id">Tipo Visita</label>
-            <select name="Visita[tipo_visita_id]" id="">
-                <option value="1">Reparación</option>
-                <option value="2">Limpieza</option>
-                <option value="3">Visita Preventiva</option>
-            </select>
 
+        <?php if($model->tipo_visita_id != 3){ ?>
+            <?php echo $form->dropDownListControlGroup($model, 'tipo_visita_id',
+                $filtroTipos, array('empty' => 'Seleccione')); ?>
+        <?php } ?>
             <?php echo $form->dropDownListControlGroup($model, 'persona_punto_id',
                 CHtml::listData(PersonaPunto::model()->findAll(array('condition'=>'punto_id = '.$model->punto_id)), 'id', 'Nombre'), array('empty' => 'Seleccione')); ?>
+
+            <label>Fecha Tentativa</label>
+
+            <?php $this->widget('yiiwheels.widgets.datepicker.WhDatePicker', array(
+        'model'=>$model,
+        'attribute'=>'fecha_visita',
+        'name' => 'Visita[fecha_visita]',
+        'pluginOptions' => array(
+            'format' => 'dd-mm-yyyy',
+            'language'=>'es',
+        )
+    ));
+?>
+ 
 
     <div>
         <?php echo TbHtml::submitButton($model->isNewRecord ? 'Crear' : 'Guardar',array(

@@ -1,26 +1,22 @@
 <?php
 
 /**
- * This is the model class for table "foto".
+ * This is the model class for table "campo_formulario".
  *
- * The followings are the available columns in table 'foto':
+ * The followings are the available columns in table 'campo_formulario':
  * @property integer $id
  * @property string $nombre
- * @property string $descripcion
- * @property string $path
- * @property string $extension
- *
- * The followings are the available model relations:
- * @property Adicional[] $adicionals
+ * @property integer $tipo_visita_id
+ * @property string $tipo_campo
  */
-class Foto extends CActiveRecord
+class CampoFormulario extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'foto';
+		return 'campo_formulario';
 	}
 
 	/**
@@ -31,14 +27,12 @@ class Foto extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id, path, extension', 'required'),
-			array('id', 'numerical', 'integerOnly'=>true),
-			array('nombre, descripcion', 'length', 'max'=>45),
-			array('path', 'length', 'max'=>255),
-			array('extension', 'length', 'max'=>30),
+			array('nombre, tipo_visita_id', 'required'),
+			array('tipo_visita_id, tipo_campo_id', 'numerical', 'integerOnly'=>true),
+			array('nombre, entidad', 'length', 'max'=>255),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, nombre, descripcion, path, extension', 'safe', 'on'=>'search'),
+			array('id, nombre, tipo_visita_id, tipo_campo_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -50,7 +44,8 @@ class Foto extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'fotoFormulario' => array(self::BELONGS_TO, 'FormularioFoto', 'foto_id'),
+			'formulario' => array(self::BELONGS_TO, 'Formuario', 'formulario_id'),
+			'tipo' => array(self::BELONGS_TO, 'TipoCampo', 'tipo_campo_id'),
 		);
 	}
 
@@ -62,9 +57,8 @@ class Foto extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'nombre' => 'Nombre',
-			'descripcion' => 'Descripcion',
-			'path' => 'Path',
-			'extension' => 'Extension',
+			'tipo_visita_id' => 'Tipo Visita',
+			'tipo_campo' => 'Tipo Campo',
 		);
 	}
 
@@ -88,9 +82,8 @@ class Foto extends CActiveRecord
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('nombre',$this->nombre,true);
-		$criteria->compare('descripcion',$this->descripcion,true);
-		$criteria->compare('path',$this->path,true);
-		$criteria->compare('extension',$this->extension,true);
+		$criteria->compare('tipo_visita_id',$this->tipo_visita_id);
+		$criteria->compare('tipo_campo_id',$this->tipo_campo_id,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -101,7 +94,7 @@ class Foto extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return Foto the static model class
+	 * @return CampoFormulario the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{

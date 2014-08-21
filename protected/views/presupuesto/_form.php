@@ -1,3 +1,4 @@
+
 <?php
 /* @var $this PresupuestoController */
 /* @var $model Presupuesto */
@@ -26,15 +27,21 @@
                     <?php if (!empty($mueble->servicioMuebles)): ?>
                     <table class="table table-striped table-bordered">
                         <tr>
-                            <th>Seleccionar</th>
+                            <th>Cantidad</th>
                             <th>Item</th>
-                            <th>Tarifa</th>
+                            <th>Tarifa 1</th>
+                            <th>Tarifa 2</th>
+                            <th>Tarifa 3</th>
                         </tr>
                         <?php foreach ($mueble->servicioMuebles as $servicio): ?>
                         <tr>
-                            <td><?php echo CHtml::checkBox('Mueble['.$mueble->id.']['.$servicio->id.']', false, array('value'=>$servicio->id)); ?></td>
+                            <td>
+                            <input type="number" name="Mueble[<?php echo $mueble->id?>][<?php echo $servicio->id?>]" min="0" value="0" style="width:30px;">
+                            </td>
                             <td><?php echo $servicio->descripcion;?></td>
-                            <td><?php echo $servicio->tarifa;?></td>
+                            <td><?php echo $servicio->tarifa;?> (1 a <?php echo  $servicio->cant_b;?>)</td>
+                            <td><?php echo $servicio->tarifa_b;?> (<?php echo  $servicio->cant_b+1;?> a <?php echo  $servicio->cant_c;?>)</td>
+                            <td><?php echo $servicio->tarifa_c;?> (Más de <?php echo  $servicio->cant_c;?>)</td>
                         </tr>
                         <?php endforeach ?>
                     </table>   

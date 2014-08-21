@@ -28,6 +28,8 @@ $this->menu=array(
 		),
 		'descripcion',
 		'tarifa',
+		'tarifa_b',
+		'tarifa_c',
 		array(
 			'class'=>'bootstrap.widgets.TbButtonColumn',
 			'template'=>'{update}{delete}',

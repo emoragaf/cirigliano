@@ -68,6 +68,7 @@ class ServicioMuebleController extends Controller
 
 		if (isset($_POST['ServicioMueble'])) {
 			$model->attributes=$_POST['ServicioMueble'];
+			$model->tarifa = str_replace('.', '', $model->tarifa);
 			if ($model->save()) {
 				$this->redirect(array('MueblePunto/view','id'=>$model->mueble_id));
 			}

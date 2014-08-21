@@ -34,6 +34,13 @@
 	        array(
 	            'class' => 'bootstrap.widgets.TbNav',
 	            'items' => array(
+	            	array('label'=>'Visitas', 'url' =>array('/Visita'),'items'=>array(
+	                	array('label' => 'Incidentes', 'url' =>array('/Visita/indexTipo/1')),
+	                	array('label' => 'Traslados', 'url' =>array('/Visita/indexTipo/3')),
+	                	array('label' => 'Excelencia', 'url' =>array('/Visita/indexTipo/4')),
+	                	array('label' => 'Meson Terminal', 'url' =>array('/Visita/indexTipo/5')),
+	                	array('label' => 'Racks', 'url' =>array('/Visita/indexTipo/6')),
+	                	)),
 	                array('label' => 'Puntos', 'url' =>array('/Punto/admin')),
 	                array('label'=>'Administracion','items'=>array(
 	                	array('label' => 'Distribuidores', 'url' =>array('/Distribuidor/admin')),
@@ -42,7 +49,7 @@
 	                	array('label' => 'Comunas', 'url' =>array('/Comuna/admin')),
 	                	array('label' => 'Muebles', 'url' =>array('/Mueble/admin')),
 	                	array('label' => 'Tarifas Muebles', 'url' =>array('/ServicioMueble/admin')),
-	                	))
+	                	)),
 	                //array('label' => '', 'url' => '#'),
 	                //array('label' => 'Link', 'url' => '#'),
 	            ),

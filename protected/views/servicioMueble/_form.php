@@ -22,11 +22,34 @@
                 CHtml::listData(Mueble::model()->findAll(), 'id', 'descripcion'), array('empty' => 'Seleccione')); ?>
             <?php echo $form->textFieldControlGroup($model,'descripcion',array('span'=>5,'maxlength'=>45)); ?>
 
+            <b>Hasta <input type="text" name="ServicioMueble[cant_b]" value="<?php echo $model->cant_b ?>" style="width:30px;"></b>
+
             <div class="control-group">
                 <label class="control-label" for="ServicioMueble_tarifa">Tarifa</label>
   
                         <?php $this->widget('yiiwheels.widgets.maskmoney.WhMaskMoney', array(
                         'name' => 'ServicioMueble[tarifa]',
+                        'pluginOptions'=>array('precision'=>0,'thousands'=>'.','prefix'=>'$'),
+                        'htmlOptions'=>array('id'=>'ServicioMueble_tarifa','class'=>'span5'),
+                        ));?>                
+            </div>
+            <b>Hasta <input type="text" name="ServicioMueble[cant_c]" value="<?php echo $model->cant_c ?>" style="width:30px;"></b>
+
+            <div class="control-group">
+                <label class="control-label" for="ServicioMueble_tarifa">Tarifa</label>
+  
+                        <?php $this->widget('yiiwheels.widgets.maskmoney.WhMaskMoney', array(
+                        'name' => 'ServicioMueble[tarifa_b]',
+                        'pluginOptions'=>array('precision'=>0,'thousands'=>'.','prefix'=>'$'),
+                        'htmlOptions'=>array('id'=>'ServicioMueble_tarifa','class'=>'span5'),
+                        ));?>                
+            </div>
+            <b>Cantidades Mayores</b>
+            <div class="control-group">
+                <label class="control-label" for="ServicioMueble_tarifa">Tarifa</label>
+  
+                        <?php $this->widget('yiiwheels.widgets.maskmoney.WhMaskMoney', array(
+                        'name' => 'ServicioMueble[tarifa_c]',
                         'pluginOptions'=>array('precision'=>0,'thousands'=>'.','prefix'=>'$'),
                         'htmlOptions'=>array('id'=>'ServicioMueble_tarifa','class'=>'span5'),
                         ));?>                

@@ -28,15 +28,15 @@ class VisitaController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
+				'actions'=>array(),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('index','view','indexTipo','create','update'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
+				'actions'=>array('admin','delete','AceptarPresupuesto','RechazarPresupuesto'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -71,8 +71,41 @@ class VisitaController extends Controller
 
 		if (isset($_POST['Visita'])) {
 			$model->attributes=$_POST['Visita'];
+			$model->fecha_visita = date('Y-m-d',strtotime($model->fecha_visita));
 			if ($model->save()) {
-				$this->redirect(array('view','id'=>$model->id));
+				$model->folio = 'R'.sprintf('%07d',$model->id);
+				$model->save();
+				if($model->tipo_visita_id != 3)
+					$this->redirect(array('Presupuesto/Create','id'=>$model->id));
+				if($model->tipo_visita_id == 3)
+					$this->redirect(array('View','id'=>$model->id));
+			}
+		}
+
+		$this->render('create',array(
+			'model'=>$model,
+		));
+	}
+
+	public function actionCreateTraslado($id)
+	{
+		$model=new Visita;
+		$model->punto_id = $id;
+		$model->fecha_creacion = date('Y-m-d');
+		$model->tipo_visita_id =3;
+		// Uncomment the following line if AJAX validation is needed
+		// $this->performAjaxValidation($model);
+
+		if (isset($_POST['Visita'])) {
+			$model->attributes=$_POST['Visita'];
+			$model->fecha_visita = date('Y-m-d',strtotime($model->fecha_visita));
+			if ($model->save()) {
+				$model->folio = 'T'.sprintf('%07d',$model->id);
+				$model->save();
+				if($model->tipo_visita_id != 3)
+					$this->redirect(array('Presupuesto/Create','id'=>$model->id));
+				if($model->tipo_visita_id == 3)
+					$this->redirect(array('View','id'=>$model->id));
 			}
 		}
 
@@ -151,15 +184,27 @@ class VisitaController extends Controller
 		$this->layout='//layouts/column1';
 		$model=new Visita('search');
 		$model->unsetAttributes();  // clear any default values
-		$activos=new Visita('search');
-		$activos->unsetAttributes();  // clear any default values
 		if (isset($_GET['Visita'])) {
 			$model->attributes=$_GET['Visita'];
 			$activos->attributes=$_GET['Visita'];
 		}
 		$this->render('index',array(
 			'model'=>$model,
-			'activos'=>$activos,
+		));
+	}
+
+	public function actionIndexTipo($id)
+	{
+		$this->layout='//layouts/column1';
+		$model=new Visita('search');
+		$model->unsetAttributes();  // clear any default values
+		if (isset($_GET['Visita'])) {
+			$model->attributes=$_GET['Visita'];
+			$activos->attributes=$_GET['Visita'];
+		}
+		$this->render('indexTipo',array(
+			'model'=>$model,
+			'tipo'=>$id,
 		));
 	}
 

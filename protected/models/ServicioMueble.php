@@ -32,8 +32,8 @@ class ServicioMueble extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('descripcion', 'required'),
-			array('id, mueble_id', 'numerical', 'integerOnly'=>true),
-			array('tarifa, descripcion', 'length', 'max'=>45),
+			array('id, tarifa,mueble_id', 'numerical', 'integerOnly'=>true),
+			array('descripcion', 'length', 'max'=>45),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, tarifa, descripcion, mueble_id', 'safe', 'on'=>'search'),
@@ -60,9 +60,11 @@ class ServicioMueble extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'tarifa' => 'Tarifa',
+			'tarifa' => 'Tarifa 1',
 			'descripcion' => 'Descripcion',
 			'mueble_id' => 'Mueble',
+			'tarifa_b'=> 'Tarifa 2',
+			'tarifa_c'=> 'Tarifa 3',
 		);
 	}
 

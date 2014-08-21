@@ -1,32 +1,20 @@
 <?php
-/* @var $this PuntoController */
-/* @var $model Punto */
+/* @var $this VisitaController */
+/* @var $dataProvider CActiveDataProvider */
+if($tipo == 1){
+    $filtroTipos = CHtml::listData(TipoVisita::model()->findAll(array('condition'=>'id = 1 or id = 2','order'=>'nombre')),'id','nombre');
+}
+else
+    $filtroTipos = array();
+$tipos = CHtml::listData(TipoVisita::model()->findAll(array('order'=>'nombre')),'id','nombre');
 ?>
-
-<?php
-$this->breadcrumbs=array(
-	Yii::t('app','model.Punto')=>array('index'),
-	$model->id,
-);
-
-$this->menu=array(
-	array('label'=>Yii::t('app','model.Punto')),
-	array('label'=>Yii::t('app','model.Punto.admin'),'url'=>array('admin')),
-	array('label'=>Yii::t('app','model.Punto.create'),'url'=>array('create')),
-	array('label'=>Yii::t('app','model.Punto.update'),'url'=>array('update','id'=>$model->id)),
-	array('label'=>Yii::t('app','model.Punto.delete'),'url'=>'#','linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
-	array('label'=>Yii::t('app','model.MueblePunto')),
-	array('label'=>Yii::t('app','model.MueblePunto.create'),'url'=>array('/MueblePunto/create','id'=>$model->id)),
-    array('label'=>Yii::t('app','model.Visita')),
-    array('label'=>Yii::t('app','model.Visita.create'),'url'=>array('/Visita/create','id'=>$model->id)),
-    array('label'=>Yii::t('app','model.Visita.createTraslado'),'url'=>array('/Visita/createTraslado','id'=>$model->id),'disabled'=>'true'),
-);
-
+<?php 
+// this is the date picker
 $fechaCreacionBetween = $this->widget('zii.widgets.jui.CJuiDatePicker', array(
                                         // 'model'=>$model,
                                     'name' => 'Visita[fecha_creacion_inicio]',
                                     'language' => 'es',
-                                        'value' => $visitas->fecha_creacion_inicio,
+                                        'value' => $model->fecha_creacion_inicio,
                                     // additional javascript options for the date picker plugin
                                     'options'=>array(
                                         'showAnim'=>'fold',
@@ -43,7 +31,7 @@ $fechaCreacionBetween = $this->widget('zii.widgets.jui.CJuiDatePicker', array(
                                         // 'model'=>$model,
                                     'name' => 'Visita[fecha_creacion_final]',
                                     'language' => 'es',
-                                        'value' => $visitas->fecha_creacion_final,
+                                        'value' => $model->fecha_creacion_final,
                                     // additional javascript options for the date picker plugin
                                     'options'=>array(
                                         'showAnim'=>'fold',
@@ -62,7 +50,7 @@ $fechaVisitaBetween = $this->widget('zii.widgets.jui.CJuiDatePicker', array(
                                         // 'model'=>$model,
                                     'name' => 'Visita[fecha_visita_inicio]',
                                     'language' => 'es',
-                                        'value' => $visitas->fecha_visita_inicio,
+                                        'value' => $model->fecha_visita_inicio,
                                     // additional javascript options for the date picker plugin
                                     'options'=>array(
                                         'showAnim'=>'fold',
@@ -79,7 +67,7 @@ $fechaVisitaBetween = $this->widget('zii.widgets.jui.CJuiDatePicker', array(
                                         // 'model'=>$model,
                                     'name' => 'Visita[fecha_visita_final]',
                                     'language' => 'es',
-                                        'value' => $visitas->fecha_visita_final,
+                                        'value' => $model->fecha_visita_final,
                                     // additional javascript options for the date picker plugin
                                     'options'=>array(
                                         'showAnim'=>'fold',
@@ -95,60 +83,28 @@ $fechaVisitaBetween = $this->widget('zii.widgets.jui.CJuiDatePicker', array(
                                 ),true);
 
 ?>
+<div class="container-fluid">
 
-<h1><?php echo Yii::t('app','model.Punto.view');?></h1>
+	<h1><?php echo $tipo ==1 ? 'Incidentes' : $tipos[$tipo]
+	;?></h1>
 
-<?php $this->widget('zii.widgets.CDetailView',array(
-    'htmlOptions' => array(
-        'class' => 'table table-striped table-condensed table-hover',
-    ),
-    'data'=>$model,
-    'attributes'=>array(
-		'direccion',
-		array(
-			'name'=>'region_id',
-			'value'=>isset($model->region) ? $model->region->nombre : null,
-			),
-		array(
-			'name'=>'comuna_id',
-			'value'=>isset($model->comuna) ? $model->comuna->nombre : null,
-			),
-		array(
-			'name'=>'distribuidor_id',
-			'value'=>isset($model->distribuidor) ? $model->distribuidor->nombre : null,
-			),
-		array(
-			'name'=>'canal_id',
-			'value'=>isset($model->canal) ? $model->canal->nombre : null,
-			),
-	),
-)); ?>
-<h3><?php echo Yii::t('app','model.Visita');?></h3>
-<?php
-Yii::app()->clientScript->registerScript('search', "
-$('.search-form form').submit(function(){
-	$('#visita-grid').yiiGridView('update', {
-		data: $(this).serialize()
-	});
-	return false;
-});
-");
-?>
-
-<h1><?php echo Yii::t('app','model.Punto.admin'); ?></h1>
-
-<?php $this->widget('bootstrap.widgets.TbGridView',array(
-	'id'=>'visita-grid',
-	'dataProvider'=>$visitas->searchVisitasPunto($model->id),
-	'afterAjaxUpdate'=>"function() {
+	<?php $this->widget('bootstrap.widgets.TbGridView',array(
+		'id'=>'visitaPendiente-grid',
+		'type'=>'bordered',
+		'dataProvider'=>$model->searchRelations(array('tipo'=>$tipo)),
+		'afterAjaxUpdate'=>"function() {
                                                 jQuery('#Visita_fecha_creacion_inicio').datepicker(jQuery.extend({showMonthAfterYear:false}, jQuery.datepicker.regional['es'], {'showAnim':'fold','dateFormat':'dd-mm-yy','changeMonth':'true','showButtonPanel':'true','changeYear':'true','constrainInput':'false'}));
                                                 jQuery('#Visita_fecha_creacion_final').datepicker(jQuery.extend({showMonthAfterYear:false}, jQuery.datepicker.regional['es'], {'showAnim':'fold','dateFormat':'dd-mm-yy','changeMonth':'true','showButtonPanel':'true','changeYear':'true','constrainInput':'false'}));
                                                 jQuery('#Visita_fecha_visita_inicio').datepicker(jQuery.extend({showMonthAfterYear:false}, jQuery.datepicker.regional['es'], {'showAnim':'fold','dateFormat':'dd-mm-yy','changeMonth':'true','showButtonPanel':'true','changeYear':'true','constrainInput':'false'}));
                                                 jQuery('#Visita_fecha_visita_final').datepicker(jQuery.extend({showMonthAfterYear:false}, jQuery.datepicker.regional['es'], {'showAnim':'fold','dateFormat':'dd-mm-yy','changeMonth':'true','showButtonPanel':'true','changeYear':'true','constrainInput':'false'}));
                                                 }",
-	'filter'=>$visitas,
-	'columns'=>array(
-        'folio',
+		'filter'=>$model,
+		'columns'=>array(
+            'folio',
+			array(
+				'name'=>'punto_direccion',
+				'value'=>'$data->punto->direccion'
+				),
 			array(
 				'name'=>'fecha_creacion',
 				'filter'=>$fechaCreacionBetween,
@@ -160,37 +116,41 @@ $('.search-form form').submit(function(){
 				'value'=>'$data->fecha_visita !== null ? date("d-m-Y",strtotime($data->fecha_visita)) : null'
 				),
 			array(
+				'name'=>'punto_canal_id',
+				'value'=>'isset($data->punto->canal) ? $data->punto->canal->nombre: null',
+				'filter'=>CHtml::listData(Canal::model()->findAll(array('order'=>'nombre')), 'id', 'nombre'),
+				),
+			array(
+				'name'=>'punto_distribuidor_id',
+				'value'=>'isset($data->punto->distribuidor) ? $data->punto->distribuidor->nombre: null',
+				'filter'=>CHtml::listData(Distribuidor::model()->findAll(array('order'=>'nombre')), 'id', 'nombre'),
+				),
+			array(
+				'name'=>'punto_region_id',
+				'value'=>'isset($data->punto->region) ? $data->punto->region->nombre : null',
+				'filter'=>CHtml::listData(Region::model()->findAll(array('order'=>'nombre')), 'id', 'nombre'),
+				),
+			array(
+				'name'=>'punto_comuna_id',
+				'value'=>'isset($data->punto->comuna) ? $data->punto->comuna->nombre :null',
+				'filter'=>CHtml::listData(Comuna::model()->findAll(array('order'=>'nombre')), 'id', 'nombre'),
+				),
+			array(
 				'name'=>'tipo_visita_id',
 				'value'=>'$data->tipoVisita->nombre',
-				'filter'=>CHtml::listData(TipoVisita::model()->findAll(array('order'=>'nombre')), 'id', 'nombre'),
+				'filter'=>$filtroTipos,
+                'visible'=> $tipo == 1? true : false,
 				),
 			array(
 				'name'=>'estado',
 				'value'=>'$data->nombreEstado',
-				'filter'=>Visita::model()->Estados,
+				'filter'=>$model->Estados,
 				),
 			array(
 				'class'=>'bootstrap.widgets.TbButtonColumn',
-                'buttons'=>array(
-                    'view' => array
-                    (
-                        'url'=>'Yii::app()->createUrl("Visita/View", array("id"=>$data->id))',
-                    ),
-                    'update' => array
-                    (
-                        'url'=>'Yii::app()->createUrl("Visita/Update", array("id"=>$data->id))',
-                    ),
-                    'delete' => array
-                    (
-                        'url'=>'Yii::app()->createUrl("Visita/Delete", array("id"=>$data->id))',
-                    ),
-                ),
 			),
-	),
-)); ?>
+		),
+	)); ?>
 
-<h3><?php echo Yii::t('app','model.MueblePunto');?></h3>
-<?php $this->widget('bootstrap.widgets.TbListView',array(
-	'dataProvider'=>$muebles,
-	'itemView'=>'_viewMuebles',
-)); ?>
+	
+</div>

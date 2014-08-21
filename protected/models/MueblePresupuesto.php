@@ -31,7 +31,7 @@ class MueblePresupuesto extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('servicio_mueble_id, presupuesto_id', 'required'),
-			array('servicio_mueble_id, mueble_punto_id ,presupuesto_id', 'numerical', 'integerOnly'=>true),
+			array('servicio_mueble_id, tarifa_servicio, cant_servicio,mueble_punto_id ,presupuesto_id', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, servicio_mueble_id, presupuesto_id', 'safe', 'on'=>'search'),

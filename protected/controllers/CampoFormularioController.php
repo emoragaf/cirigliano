@@ -1,6 +1,6 @@
 <?php
 
-class PresupuestoController extends Controller
+class CampoFormularioController extends Controller
 {
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -56,79 +56,26 @@ class PresupuestoController extends Controller
 		));
 	}
 
-	public function actionCreateTraslado($id)
-	{
-	}
-
-	public function actionUpdateTraslado($id)
-	{
-	}
 	/**
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
 	 */
-	public function actionCreate($id)
+	public function actionCreate()
 	{
-		$visita = Visita::model()->findByPk($id);
-		$model=new Presupuesto;
-		$model->visita_id = $id;
-		$model->user_id = yii::App()->user->getId();
-		$model->estado = 0;
-		$model->fecha_creacion = date('c');
+		$model=new CampoFormulario;
+
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
-		$muebles= MueblePunto::model()->findAll(array('condition'=>'t.punto_id=:id','params'=>array(':id'=>$visita->punto_id)));
-		if (isset($_POST['Presupuesto']) && isset($_POST['Mueble']) ) {
-			$model->attributes=$_POST['Presupuesto'];
-			$model->total = 0;
-			$model->save();
-			$mueblesPunto = $_POST['Mueble'];
-			$flag = false;
-			foreach ($mueblesPunto as $key => $servicios) {
-				//echo 'Mueble id:'.$key.'<br>';
-				foreach ($servicios as $servicio => $cant) {
-					//echo 'id Servicio: '.$servicio.' Cantidad: '.$cant.'<br>';
-					if($cant > 0){
-						$mp = new mueblePresupuesto;
-						$mp->mueble_punto_id = $key;
-						$mp->servicio_mueble_id = $servicio;
-						$mp->presupuesto_id = $model->id;
-						$mp->cant_servicio = $cant;
-						$s = ServicioMueble::model()->findByPk($servicio);
-						if($cant <= $s->cant_b){
-							$model->total += $s->tarifa*$cant;
-							$mp->tarifa_servicio =$s->tarifa;
-						}
-						if($cant > $s->cant_b && $cant <= $s->cant_c){
-							$model->total += $s->tarifa_b*$cant;
-							$mp->tarifa_servicio =$s->tarifa_b;
-						}
-						if($cant > $s->cant_c){
-							$model->total += $s->tarifa_c*$cant;
-							$mp->tarifa_servicio =$s->tarifa_c;
-						}
-						$model->save();
-						if($mp->save())
-							$flag = true;
-						else{
-							$model->delete();
-							$flag = false;
-							print_r($mp->getErrors());
-						}
-					}
-				}
-			}
 
-			if ($flag) {
-				$visita->estado = 1;
-				$visita->save();
-				$this->redirect(array('visita/view','id'=>$model->visita_id));
+		if (isset($_POST['CampoFormulario'])) {
+			$model->attributes=$_POST['CampoFormulario'];
+			if ($model->save()) {
+				$this->redirect(array('view','id'=>$model->id));
 			}
 		}
 
 		$this->render('create',array(
 			'model'=>$model,
-			'muebles'=>$muebles,
 		));
 	}
 
@@ -144,8 +91,8 @@ class PresupuestoController extends Controller
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if (isset($_POST['Presupuesto'])) {
-			$model->attributes=$_POST['Presupuesto'];
+		if (isset($_POST['CampoFormulario'])) {
+			$model->attributes=$_POST['CampoFormulario'];
 			if ($model->save()) {
 				$this->redirect(array('view','id'=>$model->id));
 			}
@@ -181,7 +128,7 @@ class PresupuestoController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('Presupuesto');
+		$dataProvider=new CActiveDataProvider('CampoFormulario');
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 		));
@@ -192,10 +139,10 @@ class PresupuestoController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new Presupuesto('search');
+		$model=new CampoFormulario('search');
 		$model->unsetAttributes();  // clear any default values
-		if (isset($_GET['Presupuesto'])) {
-			$model->attributes=$_GET['Presupuesto'];
+		if (isset($_GET['CampoFormulario'])) {
+			$model->attributes=$_GET['CampoFormulario'];
 		}
 
 		$this->render('admin',array(
@@ -207,12 +154,12 @@ class PresupuestoController extends Controller
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer $id the ID of the model to be loaded
-	 * @return Presupuesto the loaded model
+	 * @return CampoFormulario the loaded model
 	 * @throws CHttpException
 	 */
 	public function loadModel($id)
 	{
-		$model=Presupuesto::model()->findByPk($id);
+		$model=CampoFormulario::model()->findByPk($id);
 		if ($model===null) {
 			throw new CHttpException(404,'The requested page does not exist.');
 		}
@@ -221,11 +168,11 @@ class PresupuestoController extends Controller
 
 	/**
 	 * Performs the AJAX validation.
-	 * @param Presupuesto $model the model to be validated
+	 * @param CampoFormulario $model the model to be validated
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if (isset($_POST['ajax']) && $_POST['ajax']==='presupuesto-form') {
+		if (isset($_POST['ajax']) && $_POST['ajax']==='campo-formulario-form') {
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}
