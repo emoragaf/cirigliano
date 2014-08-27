@@ -35,7 +35,7 @@
 	            'class' => 'bootstrap.widgets.TbNav',
 	            'items' => array(
 	            	array('label'=>'Visitas', 'url' =>array('/Visita'),'items'=>array(
-	                	array('label' => 'Incidentes', 'url' =>array('/Visita/indexTipo/1')),
+	                	array('label' => 'Incidencias', 'url' =>array('/Visita/indexTipo/1')),
 	                	array('label' => 'Traslados', 'url' =>array('/Visita/indexTipo/3')),
 	                	array('label' => 'Excelencia', 'url' =>array('/Visita/indexTipo/4')),
 	                	array('label' => 'Meson Terminal', 'url' =>array('/Visita/indexTipo/5')),

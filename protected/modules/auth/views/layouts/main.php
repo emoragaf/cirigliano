@@ -1,7 +1,4 @@
-<?php
-/* @var $this AuthController */
-?>
-
+<?php $this->beginContent('//layouts/main'); ?>
 <div class="auth-module">
 
     <?php $this->widget(
@@ -32,7 +29,8 @@
             ),
         )
     );?>
+    
 
     <?php echo $content; ?>
-
+<?php $this->endWidget(); ?>
 </div>

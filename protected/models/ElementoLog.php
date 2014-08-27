@@ -1,31 +1,24 @@
 <?php
 
 /**
- * This is the model class for table "adicional".
+ * This is the model class for table "elemento_log".
  *
- * The followings are the available columns in table 'adicional':
+ * The followings are the available columns in table 'elemento_log':
  * @property integer $id
- * @property integer $mueble_presupuesto_id
- * @property string $tarifa
- * @property string $descripcion
- * @property integer $mueble_punto_id
- * @property integer $estado
- * @property string $fecha_termino
- * @property integer $foto_id
- * @property integer $cantidad
- *
- * The followings are the available model relations:
- * @property Foto $foto
- * @property MueblePunto $mueblePunto
+ * @property integer $elemento_mueble_id
+ * @property string $fecha
+ * @property integer $destino_id
+ * @property integer $tipo_accion
+ * @property integer $user_id
  */
-class Adicional extends CActiveRecord
+class ElementoLog extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'adicional';
+		return 'elemento_log';
 	}
 
 	/**
@@ -36,13 +29,11 @@ class Adicional extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id, mueble_presupuesto_id, mueble_punto_id, foto_id', 'required'),
-			array('id, mueble_presupuesto_id, mueble_punto_id, estado, foto_id, cantidad', 'numerical', 'integerOnly'=>true),
-			array('tarifa, descripcion', 'length', 'max'=>45),
-			array('fecha_termino', 'safe'),
+			array('elemento_mueble_id, fecha, destino_id, tipo_accion, user_id', 'required'),
+			array('elemento_mueble_id, destino_id, tipo_accion, user_id', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, mueble_presupuesto_id, tarifa, descripcion, mueble_punto_id, estado, fecha_termino, foto_id, cantidad', 'safe', 'on'=>'search'),
+			array('id, elemento_mueble_id, fecha, destino_id, tipo_accion, user_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -54,8 +45,6 @@ class Adicional extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'foto' => array(self::BELONGS_TO, 'Foto', 'foto_id'),
-			'mueblePunto' => array(self::BELONGS_TO, 'MueblePunto', 'mueble_punto_id'),
 		);
 	}
 
@@ -66,14 +55,11 @@ class Adicional extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'mueble_presupuesto_id' => 'Mueble Presupuesto',
-			'tarifa' => 'Tarifa',
-			'descripcion' => 'Descripcion',
-			'mueble_punto_id' => 'Mueble Punto',
-			'estado' => 'Estado',
-			'fecha_termino' => 'Fecha Termino',
-			'foto_id' => 'Foto',
-			'cantidad' => 'Cantidad',
+			'elemento_mueble_id' => 'Elemento Mueble',
+			'fecha' => 'Fecha',
+			'destino_id' => 'Destino',
+			'tipo_accion' => 'Tipo Accion',
+			'user_id' => 'User',
 		);
 	}
 
@@ -96,14 +82,11 @@ class Adicional extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('mueble_presupuesto_id',$this->mueble_presupuesto_id);
-		$criteria->compare('tarifa',$this->tarifa,true);
-		$criteria->compare('descripcion',$this->descripcion,true);
-		$criteria->compare('mueble_punto_id',$this->mueble_punto_id);
-		$criteria->compare('estado',$this->estado);
-		$criteria->compare('fecha_termino',$this->fecha_termino,true);
-		$criteria->compare('foto_id',$this->foto_id);
-		$criteria->compare('cantidad',$this->cantidad);
+		$criteria->compare('elemento_mueble_id',$this->elemento_mueble_id);
+		$criteria->compare('fecha',$this->fecha,true);
+		$criteria->compare('destino_id',$this->destino_id);
+		$criteria->compare('tipo_accion',$this->tipo_accion);
+		$criteria->compare('user_id',$this->user_id);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -114,7 +97,7 @@ class Adicional extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return Adicional the static model class
+	 * @return ElementoLog the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{

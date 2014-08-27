@@ -12,7 +12,7 @@
 echo "\n";
 $label="Yii::t('app','model.".$this->class2name($this->modelClass)."')\n";
 echo "\$this->breadcrumbs=array(
-	'$label'=>array('index'),
+	$label=>array('index'),
 	'Manage',
 );\n";
 ?>

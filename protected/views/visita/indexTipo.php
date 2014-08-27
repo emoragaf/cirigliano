@@ -85,7 +85,7 @@ $fechaVisitaBetween = $this->widget('zii.widgets.jui.CJuiDatePicker', array(
 ?>
 <div class="container-fluid">
 
-	<h1><?php echo $tipo ==1 ? 'Incidentes' : $tipos[$tipo]
+	<h1><?php echo $tipo ==1 ? 'Incidencias' : $tipos[$tipo]
 	;?></h1>
 
 	<?php $this->widget('bootstrap.widgets.TbGridView',array(

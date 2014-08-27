@@ -1,31 +1,24 @@
 <?php
 
 /**
- * This is the model class for table "adicional".
+ * This is the model class for table "mueble_log".
  *
- * The followings are the available columns in table 'adicional':
+ * The followings are the available columns in table 'mueble_log':
  * @property integer $id
- * @property integer $mueble_presupuesto_id
- * @property string $tarifa
- * @property string $descripcion
  * @property integer $mueble_punto_id
- * @property integer $estado
- * @property string $fecha_termino
- * @property integer $foto_id
- * @property integer $cantidad
- *
- * The followings are the available model relations:
- * @property Foto $foto
- * @property MueblePunto $mueblePunto
+ * @property integer $destino_id
+ * @property string $fecha
+ * @property integer $user_id
+ * @property integer $tipo_accion
  */
-class Adicional extends CActiveRecord
+class MuebleLog extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'adicional';
+		return 'mueble_log';
 	}
 
 	/**
@@ -36,13 +29,11 @@ class Adicional extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id, mueble_presupuesto_id, mueble_punto_id, foto_id', 'required'),
-			array('id, mueble_presupuesto_id, mueble_punto_id, estado, foto_id, cantidad', 'numerical', 'integerOnly'=>true),
-			array('tarifa, descripcion', 'length', 'max'=>45),
-			array('fecha_termino', 'safe'),
+			array('mueble_punto_id, destino_id, fecha, user_id, tipo_accion', 'required'),
+			array('mueble_punto_id, destino_id, user_id, tipo_accion', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, mueble_presupuesto_id, tarifa, descripcion, mueble_punto_id, estado, fecha_termino, foto_id, cantidad', 'safe', 'on'=>'search'),
+			array('id, mueble_punto_id, destino_id, fecha, user_id, tipo_accion', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -54,8 +45,6 @@ class Adicional extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'foto' => array(self::BELONGS_TO, 'Foto', 'foto_id'),
-			'mueblePunto' => array(self::BELONGS_TO, 'MueblePunto', 'mueble_punto_id'),
 		);
 	}
 
@@ -66,14 +55,11 @@ class Adicional extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'mueble_presupuesto_id' => 'Mueble Presupuesto',
-			'tarifa' => 'Tarifa',
-			'descripcion' => 'Descripcion',
 			'mueble_punto_id' => 'Mueble Punto',
-			'estado' => 'Estado',
-			'fecha_termino' => 'Fecha Termino',
-			'foto_id' => 'Foto',
-			'cantidad' => 'Cantidad',
+			'destino_id' => 'Destino',
+			'fecha' => 'Fecha',
+			'user_id' => 'User',
+			'tipo_accion' => 'Tipo Accion',
 		);
 	}
 
@@ -96,14 +82,11 @@ class Adicional extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('mueble_presupuesto_id',$this->mueble_presupuesto_id);
-		$criteria->compare('tarifa',$this->tarifa,true);
-		$criteria->compare('descripcion',$this->descripcion,true);
 		$criteria->compare('mueble_punto_id',$this->mueble_punto_id);
-		$criteria->compare('estado',$this->estado);
-		$criteria->compare('fecha_termino',$this->fecha_termino,true);
-		$criteria->compare('foto_id',$this->foto_id);
-		$criteria->compare('cantidad',$this->cantidad);
+		$criteria->compare('destino_id',$this->destino_id);
+		$criteria->compare('fecha',$this->fecha,true);
+		$criteria->compare('user_id',$this->user_id);
+		$criteria->compare('tipo_accion',$this->tipo_accion);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -114,7 +97,7 @@ class Adicional extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return Adicional the static model class
+	 * @return MuebleLog the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{

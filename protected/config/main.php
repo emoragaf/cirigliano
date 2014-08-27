@@ -39,7 +39,8 @@ return array(
 		  'userClass' => 'User', // the name of the user model class.
 		  'userIdColumn' => 'id', // the name of the user id column.
 		  'userNameColumn' => 'username', // the name of the user name column.
-		  'defaultLayout' => 'application.views.layouts.main', // the layout used by the module.
+		  //'defaultLayout' => 'application.views.layouts.main', // the layout used by the module.
+		  'defaultLayout' => 'webroot.protected.modules.auth.views.layouts.main',
 		  'viewDir' => null, // the path to view files to use with this module.
 		),
 		'user'=>array(

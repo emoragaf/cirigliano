@@ -1,31 +1,24 @@
 <?php
 
 /**
- * This is the model class for table "adicional".
+ * This is the model class for table "{{profiles}}".
  *
- * The followings are the available columns in table 'adicional':
- * @property integer $id
- * @property integer $mueble_presupuesto_id
- * @property string $tarifa
- * @property string $descripcion
- * @property integer $mueble_punto_id
- * @property integer $estado
- * @property string $fecha_termino
- * @property integer $foto_id
- * @property integer $cantidad
+ * The followings are the available columns in table '{{profiles}}':
+ * @property integer $user_id
+ * @property string $lastname
+ * @property string $firstname
  *
  * The followings are the available model relations:
- * @property Foto $foto
- * @property MueblePunto $mueblePunto
+ * @property Users $user
  */
-class Adicional extends CActiveRecord
+class Profiles extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'adicional';
+		return '{{profiles}}';
 	}
 
 	/**
@@ -36,13 +29,10 @@ class Adicional extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id, mueble_presupuesto_id, mueble_punto_id, foto_id', 'required'),
-			array('id, mueble_presupuesto_id, mueble_punto_id, estado, foto_id, cantidad', 'numerical', 'integerOnly'=>true),
-			array('tarifa, descripcion', 'length', 'max'=>45),
-			array('fecha_termino', 'safe'),
+			array('lastname, firstname', 'length', 'max'=>50),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, mueble_presupuesto_id, tarifa, descripcion, mueble_punto_id, estado, fecha_termino, foto_id, cantidad', 'safe', 'on'=>'search'),
+			array('user_id, lastname, firstname', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -54,8 +44,7 @@ class Adicional extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'foto' => array(self::BELONGS_TO, 'Foto', 'foto_id'),
-			'mueblePunto' => array(self::BELONGS_TO, 'MueblePunto', 'mueble_punto_id'),
+			'user' => array(self::BELONGS_TO, 'Users', 'user_id'),
 		);
 	}
 
@@ -65,15 +54,9 @@ class Adicional extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'mueble_presupuesto_id' => 'Mueble Presupuesto',
-			'tarifa' => 'Tarifa',
-			'descripcion' => 'Descripcion',
-			'mueble_punto_id' => 'Mueble Punto',
-			'estado' => 'Estado',
-			'fecha_termino' => 'Fecha Termino',
-			'foto_id' => 'Foto',
-			'cantidad' => 'Cantidad',
+			'user_id' => 'User',
+			'lastname' => 'Lastname',
+			'firstname' => 'Firstname',
 		);
 	}
 
@@ -95,15 +78,9 @@ class Adicional extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('id',$this->id);
-		$criteria->compare('mueble_presupuesto_id',$this->mueble_presupuesto_id);
-		$criteria->compare('tarifa',$this->tarifa,true);
-		$criteria->compare('descripcion',$this->descripcion,true);
-		$criteria->compare('mueble_punto_id',$this->mueble_punto_id);
-		$criteria->compare('estado',$this->estado);
-		$criteria->compare('fecha_termino',$this->fecha_termino,true);
-		$criteria->compare('foto_id',$this->foto_id);
-		$criteria->compare('cantidad',$this->cantidad);
+		$criteria->compare('user_id',$this->user_id);
+		$criteria->compare('lastname',$this->lastname,true);
+		$criteria->compare('firstname',$this->firstname,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -114,7 +91,7 @@ class Adicional extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return Adicional the static model class
+	 * @return Profiles the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{

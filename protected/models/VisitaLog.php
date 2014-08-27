@@ -1,24 +1,23 @@
 <?php
 
 /**
- * This is the model class for table "accion".
+ * This is the model class for table "visita_log".
  *
- * The followings are the available columns in table 'accion':
+ * The followings are the available columns in table 'visita_log':
  * @property integer $id
- * @property integer $mueble_presupuesto_id
- * @property integer $servicio_mueble_id
- * @property integer $estado
- * @property string $fecha_termino
- * @property integer $foto_id
+ * @property integer $visita_id
+ * @property integer $user_id
+ * @property string $fecha
+ * @property integer $tipo_accion
  */
-class Accion extends CActiveRecord
+class VisitaLog extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'accion';
+		return 'visita_log';
 	}
 
 	/**
@@ -29,12 +28,11 @@ class Accion extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id, mueble_presupuesto_id, servicio_mueble_id, foto_id', 'required'),
-			array('id, mueble_presupuesto_id, servicio_mueble_id, estado, foto_id', 'numerical', 'integerOnly'=>true),
-			array('fecha_termino', 'safe'),
+			array('visita_id, user_id, fecha, tipo_accion', 'required'),
+			array('visita_id, user_id, tipo_accion', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, mueble_presupuesto_id, servicio_mueble_id, estado, fecha_termino, foto_id', 'safe', 'on'=>'search'),
+			array('id, visita_id, user_id, fecha, tipo_accion', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -56,11 +54,10 @@ class Accion extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'mueble_presupuesto_id' => 'Mueble Presupuesto',
-			'servicio_mueble_id' => 'Servicio Mueble',
-			'estado' => 'Estado',
-			'fecha_termino' => 'Fecha Termino',
-			'foto_id' => 'Foto',
+			'visita_id' => 'Visita',
+			'user_id' => 'User',
+			'fecha' => 'Fecha',
+			'tipo_accion' => 'Tipo Accion',
 		);
 	}
 
@@ -83,11 +80,10 @@ class Accion extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('mueble_presupuesto_id',$this->mueble_presupuesto_id);
-		$criteria->compare('servicio_mueble_id',$this->servicio_mueble_id);
-		$criteria->compare('estado',$this->estado);
-		$criteria->compare('fecha_termino',$this->fecha_termino,true);
-		$criteria->compare('foto_id',$this->foto_id);
+		$criteria->compare('visita_id',$this->visita_id);
+		$criteria->compare('user_id',$this->user_id);
+		$criteria->compare('fecha',$this->fecha,true);
+		$criteria->compare('tipo_accion',$this->tipo_accion);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -98,7 +94,7 @@ class Accion extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return Accion the static model class
+	 * @return VisitaLog the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
