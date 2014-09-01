@@ -1,6 +1,6 @@
 <?php
 
-class FormularioController extends Controller
+class AdicionalController extends Controller
 {
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -28,7 +28,7 @@ class FormularioController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array(),
+				'actions'=>array('index','view'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -60,20 +60,15 @@ class FormularioController extends Controller
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
 	 */
-	public function actionCreate($id)
+	public function actionCreate()
 	{
-		$visita = Visita::model()->findByPK($id);
-		$campos = CampoFormulario::model()->findAll(array('condition'=>'tipo_visita_id ='.$visita->tipo_visita_id));
-		$presupuesto =$visita->presupuestos[0];
-		$MueblesPresupuesto = $presupuesto->mueblespresupuesto;
-		$model=new Formulario;
-		$model->visita_id = $visita->id;
+		$model=new Adicional;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if (isset($_POST['Formulario'])) {
-			$model->attributes=$_POST['Formulario'];
+		if (isset($_POST['Adicional'])) {
+			$model->attributes=$_POST['Adicional'];
 			if ($model->save()) {
 				$this->redirect(array('view','id'=>$model->id));
 			}
@@ -81,11 +76,6 @@ class FormularioController extends Controller
 
 		$this->render('create',array(
 			'model'=>$model,
-			'visita'=>$visita,
-			'campos'=>$campos,
-			'presupuesto'=>$presupuesto,
-			'MueblesPresupuesto'=>$MueblesPresupuesto,
-
 		));
 	}
 
@@ -101,8 +91,8 @@ class FormularioController extends Controller
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if (isset($_POST['Formulario'])) {
-			$model->attributes=$_POST['Formulario'];
+		if (isset($_POST['Adicional'])) {
+			$model->attributes=$_POST['Adicional'];
 			if ($model->save()) {
 				$this->redirect(array('view','id'=>$model->id));
 			}
@@ -138,7 +128,7 @@ class FormularioController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('Formulario');
+		$dataProvider=new CActiveDataProvider('Adicional');
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 		));
@@ -149,10 +139,10 @@ class FormularioController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new Formulario('search');
+		$model=new Adicional('search');
 		$model->unsetAttributes();  // clear any default values
-		if (isset($_GET['Formulario'])) {
-			$model->attributes=$_GET['Formulario'];
+		if (isset($_GET['Adicional'])) {
+			$model->attributes=$_GET['Adicional'];
 		}
 
 		$this->render('admin',array(
@@ -164,12 +154,12 @@ class FormularioController extends Controller
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer $id the ID of the model to be loaded
-	 * @return Formulario the loaded model
+	 * @return Adicional the loaded model
 	 * @throws CHttpException
 	 */
 	public function loadModel($id)
 	{
-		$model=Formulario::model()->findByPk($id);
+		$model=Adicional::model()->findByPk($id);
 		if ($model===null) {
 			throw new CHttpException(404,'The requested page does not exist.');
 		}
@@ -178,11 +168,11 @@ class FormularioController extends Controller
 
 	/**
 	 * Performs the AJAX validation.
-	 * @param Formulario $model the model to be validated
+	 * @param Adicional $model the model to be validated
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if (isset($_POST['ajax']) && $_POST['ajax']==='formulario-form') {
+		if (isset($_POST['ajax']) && $_POST['ajax']==='adicional-form') {
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}

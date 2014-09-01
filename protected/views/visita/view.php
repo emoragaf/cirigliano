@@ -18,8 +18,8 @@ $this->menu=array(
 	array('label'=>Yii::t('app','model.Visita.delete'),'url'=>'#','linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
 	array('label'=>Yii::t('app','model.Presupuesto.aceptar'),'url'=>array('Visita/AceptarPresupuesto','id'=>$model->id),'visible'=>$model->estado == 1 ? true : false),
 	array('label'=>Yii::t('app','model.Presupuesto.rechazar'),'url'=>array('Visita/RechazarPresupuesto','id'=>$model->id),'visible'=>$model->estado == 1 ? true : false),
-	array('label'=>Yii::t('app','model.Formulario'),'visible'=>$model->estado == 3 ? true : false),
-	array('label'=>Yii::t('app','model.Formulario.ingresarTrabajo'),'url'=>array('Formulario/create','id'=>$model->id),'visible'=>$model->estado == 3 ? true : false),
+	array('label'=>Yii::t('app','model.Formulario'),'visible'=>$model->estado == 1 && !isset($model->informe) ? true : false),
+	array('label'=>Yii::t('app','model.Formulario.ingresarTrabajo'),'url'=>array('Formulario/create','id'=>$model->id),'visible'=>$model->estado == 1 && !isset($model->informe) ? true : false),
 
 );
 ?>

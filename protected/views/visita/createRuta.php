@@ -16,4 +16,4 @@ $this->menu=array(
 ?>
 <h1> <?php echo $model->tipo_visita_id == 3?Yii::t('app','model.Visita.createTraslado'):Yii::t('app','model.Visita.create'); ?></h1>
 
-<?php $this->renderPartial('/visita/_form', array('model'=>$model)); ?>
+<?php $this->renderPartial('/visita/_formRuta', array('model'=>$model)); ?>

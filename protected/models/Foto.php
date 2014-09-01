@@ -31,7 +31,7 @@ class Foto extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id, path, extension', 'required'),
+			array('path, extension', 'required'),
 			array('id', 'numerical', 'integerOnly'=>true),
 			array('nombre, descripcion', 'length', 'max'=>45),
 			array('path', 'length', 'max'=>255),

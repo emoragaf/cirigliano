@@ -30,7 +30,7 @@ class PuntosRuta extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id_punto, estado, semana', 'numerical', 'integerOnly'=>true),
+			array('id_punto, visita_id ,ruta_id,estado, semana', 'numerical', 'integerOnly'=>true),
 			array('fecha_visita, fecha_asignacion_visita, created_at', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
@@ -46,6 +46,8 @@ class PuntosRuta extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'punto' => array(self::BELONGS_TO, 'Punto', 'id_punto'),
+			'ruta' => array(self::BELONGS_TO, 'Ruta', 'ruta_id'),
 		);
 	}
 

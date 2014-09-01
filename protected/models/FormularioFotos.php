@@ -19,7 +19,6 @@ class FormularioFotos extends CActiveRecord
 	{
 		return 'formulario_fotos';
 	}
-
 	/**
 	 * @return array validation rules for model attributes.
 	 */
@@ -29,7 +28,7 @@ class FormularioFotos extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('formulario_id, foto_id, tipo_foto_id', 'required'),
-			array('formulario_id, item_foto_id, foto_id, tipo_foto', 'numerical', 'integerOnly'=>true),
+			array('formulario_id, item_foto_id, foto_id, tipo_foto_id', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, formulario_id, item_foto_id, foto_id, tipo_foto_id', 'safe', 'on'=>'search'),

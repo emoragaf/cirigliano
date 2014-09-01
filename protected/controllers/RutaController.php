@@ -32,7 +32,7 @@ class RutaController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('create','update','CreateVisita'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -51,8 +51,17 @@ class RutaController extends Controller
 	 */
 	public function actionView($id)
 	{
+		$model =$this->loadModel($id);
+		$p = PuntosRuta::model()->findAll(array('condition'=>'ruta_id ='.$id,'order'=>'id_punto, orden'));
+		$puntos = array();
+		foreach ($p as $value) {
+			//$puntos[$value->id] = array();
+			$puntos[$value->id_punto][] = $value;
+
+		}
 		$this->render('view',array(
-			'model'=>$this->loadModel($id),
+			'model'=>$model,
+			'puntos'=>$puntos,
 		));
 	}
 
@@ -60,6 +69,39 @@ class RutaController extends Controller
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
 	 */
+	public function actionCreateVisita($id)
+	{
+		$ruta=PuntosRuta::model()->findByPk($id);
+
+		$model=new Visita;
+		$model->punto_id = $ruta->id_punto;
+		$model->tipo_visita_id = $ruta->ruta->tipo_ruta_id;
+		$model->fecha_creacion = date('Y-m-d');
+		// Uncomment the following line if AJAX validation is needed
+		// $this->performAjaxValidation($model);
+
+		if (isset($_POST['Visita'])) {
+			$model->attributes=$_POST['Visita'];
+			$model->fecha_visita = date('Y-m-d',strtotime($model->fecha_visita));
+			if ($model->save()) {
+				$model->folio = 'R'.sprintf('%07d',$model->id);
+				$model->save();
+				$ruta->estado = 1;
+				$ruta->visita_id =$model->id;
+				$ruta->save();
+				if($model->tipo_visita_id != 3)
+					$this->redirect(array('Presupuesto/Create','id'=>$model->id));
+				if($model->tipo_visita_id == 3)
+					$this->redirect(array('View','id'=>$model->id));
+			}
+		}
+		$this->render('//visita/createRuta',array('model'=>$model));
+
+		/*$this->render('//visita/create',array(
+			'model'=>$model,
+		));*/
+	}
+
 	public function actionCreate()
 	{
 		$model=new Ruta;
@@ -128,9 +170,14 @@ class RutaController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('Ruta');
-		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
+		$model=new Ruta('search');
+		$model->unsetAttributes();  // clear any default values
+		if (isset($_GET['Ruta'])) {
+			$model->attributes=$_GET['Ruta'];
+		}
+
+		$this->render('admin',array(
+			'model'=>$model,
 		));
 	}
 

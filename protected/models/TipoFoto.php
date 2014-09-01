@@ -26,7 +26,7 @@ class TipoFoto extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('nombre', 'required'),
-			array('nombre', 'length', 'max'=>255),
+			array('nombre, model', 'length', 'max'=>255),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, nombre', 'safe', 'on'=>'search'),

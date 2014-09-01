@@ -122,7 +122,9 @@ class PresupuestoController extends Controller
 			if ($flag) {
 				$visita->estado = 1;
 				$visita->save();
-				$this->redirect(array('visita/view','id'=>$model->visita_id));
+
+				$this->redirect(array('Formulario/Create','id'=>$visita->id));
+				//$this->redirect(array('visita/view','id'=>$model->visita_id));
 			}
 		}
 

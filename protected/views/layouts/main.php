@@ -42,6 +42,7 @@
 	                	array('label' => 'Racks', 'url' =>array('/Visita/indexTipo/6')),
 	                	)),
 	                array('label' => 'Puntos', 'url' =>array('/Punto/admin')),
+	                array('label' => 'Rutas', 'url' =>array('/Ruta')),
 	                array('label'=>'Administracion','items'=>array(
 	                	array('label' => 'Distribuidores', 'url' =>array('/Distribuidor/admin')),
 	                	array('label' => 'Canales', 'url' =>array('/Canal/admin')),

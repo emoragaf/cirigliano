@@ -18,7 +18,9 @@ return array(
 	),
 	'aliases' => array(
         'bootstrap' => realpath(__DIR__ . '/../extensions/bootstrap'), // change this if necessary
-        'yiiwheels' => realpath(__DIR__ . '/../extensions/yiiwheels')
+        'yiiwheels' => realpath(__DIR__ . '/../extensions/yiiwheels'),
+        'xupload' => realpath(__DIR__ . '/../extensions/xupload')
+
     ),
 	// autoloading model and component classes
 	'import'=>array(

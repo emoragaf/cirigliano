@@ -6,50 +6,45 @@
 
 <div class="form">
 
-    <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
-	'id'=>'formulario-form',
-	// Please note: When you enable ajax validation, make sure the corresponding
-	// controller action is handling ajax validation correctly.
-	// There is a call to performAjaxValidation() commented in generated controller code.
-	// See class documentation of CActiveForm for details on this.
-	'enableAjaxValidation'=>false,
-)); ?>
+    <?php 
+    $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array( 
+    	'enableAjaxValidation'=>true, 'id'=>'formulario-form',
+    	'htmlOptions'=>array('enctype'=>'multipart/form-data', ), ));
+?>
 
     <p class="help-block"><?php echo Yii::t('app','Fields with * are required.'); ?></p>
 
     <?php echo $form->errorSummary($model); ?>
-		
+ 
 	<?php foreach ($campos as $campo): ?>
-
 		<?php
 			$campo->entidad = str_replace('[', '', $campo->entidad);
 			$campo->entidad = str_replace(']', '', $campo->entidad);
 			if (strpos($campo->entidad,'n:') !== false) {
 			    $foo = explode(':', $campo->entidad);
 			    foreach ($$foo[1] as $mueble) {
-			    	if(strpos($campo->nombre,'%n') !== false){
-			    		$campo->nombre = str_replace('%n', $mueble->mueblepunto->mueble->descripcion.' '.$mueble->mueblepunto->codigo, $campo->nombre);
-			    		$fieldname = str_replace(' ', '', $campo->nombre);
-			    		echo $campo->nombre.'<br><br>';
+			    		$nombre = $campo->nombre;
+			    		//echo $mueble->codigo;
+			    	if(strpos($nombre,'%n') !== false){
+			    		$id = str_replace('%n', '', $nombre);
+			    		$nombre = str_replace('%n', $mueble->mueble->descripcion.' '.$mueble->codigo, $nombre);
+			    		//$fieldname = 'Foto_'.$id.'['.$mueble->id.']';
+			    		$fieldname = 'Foto'.str_replace(' ', '', $id).$mueble->id;
+			    		echo $nombre.'<br><br>';
 			    		if($campo->tipo->nombre == 'FotoMultiple'){
-							$this->widget(
-							    'yiiwheels.widgets.fileupload.WhFileUpload',
-							    array(
-							        'name'     => $fieldname,
-							        'url'      => $this->createUrl('site/upload', array('type' => 'fine')),
-							        'multiple' => true,
-							    )
-							);
+			    			
+						    $this->widget('CMultiFileUpload', array(
+					            'name' => $fieldname,
+					            'id'=>$fieldname,
+					            'accept' => 'jpeg|jpg|gif|png', // useful for verifying files
+					            'duplicate' => 'Archivo Duplicado!', // useful, i think
+					            'denied' => 'Tipo archivo inválido', // useful, i think
+					        ));
+
 			    		}
 			    		if($campo->tipo->nombre == 'FotoSimple'){
-							$this->widget(
-							    'yiiwheels.widgets.fileupload.WhFileUpload',
-							    array(
-							        'name'     => $fieldname,
-							        'url'      => $this->createUrl('site/upload', array('type' => 'fine')),
-							        'multiple' => false,
-							    )
-							);
+							echo CHtml::fileField($fieldname, '', array('id'=>$fieldname));
+
 			    		}
 			    	}
 			    }
@@ -58,24 +53,16 @@
 				echo $campo->nombre.'<br><br>';
 				$fieldname = str_replace(' ', '', $campo->nombre);
 				if($campo->tipo->nombre == 'FotoMultiple'){
-							$this->widget(
-							    'yiiwheels.widgets.fileupload.WhFileUpload',
-							    array(
-							        'name'     => $fieldname,
-							        'url'      => $this->createUrl('site/upload', array('type' => 'fine')),
-							        'multiple' => true,
-							    )
-							);
+							 $this->widget('CMultiFileUpload', array(
+				            'name' => $fieldname,
+				            'id'=>$fieldname,
+				            'accept' => 'jpeg|jpg|gif|png', // useful for verifying files
+				            'duplicate' => 'Archivo Duplicado!', // useful, i think
+				            'denied' => 'Tipo archivo inválido', // useful, i think
+				        ));
 			    		}
 			    		if($campo->tipo->nombre == 'FotoSimple'){
-							$this->widget(
-							    'yiiwheels.widgets.fileupload.WhFileUpload',
-							    array(
-							        'name'     => $fieldname,
-							        'url'      => $this->createUrl('site/upload', array('type' => 'fine')),
-							        'multiple' => false,
-							    )
-							);
+							echo CHtml::fileField($fieldname, '', array('id'=>$fieldname)).'<br>';
 			    		}
 			}
 

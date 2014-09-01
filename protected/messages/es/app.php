@@ -17,6 +17,14 @@ return array(
     'model.CampoFormulario.index'=>'Listar Campos',
     'model.CampoFormulario.view'=>'Detalles Campo',
     'model.CampoFormulario.delete'=>'Eliminar Campo',
+    //CAMPO Rutas
+    'model.Ruta'=>'Rutas',
+    'model.Ruta.create'=>'Nueva Ruta',
+    'model.Ruta.update'=>'Editar Ruta',
+    'model.Ruta.admin'=>'Administrar Rutas',
+    'model.Ruta.index'=>'Listar Rutas',
+    'model.Ruta.view'=>'Detalles Ruta',
+    'model.Ruta.delete'=>'Eliminar Ruta',
     //TIPO CAMPO
     'model.TipoCampo'=>'Tipo Campo',
     'model.TipoCampo.create'=>'Nuevo Tipo Campo',
