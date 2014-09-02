@@ -51,6 +51,7 @@
 	                	array('label' => 'Muebles', 'url' =>array('/Mueble/admin')),
 	                	array('label' => 'Tarifas Muebles', 'url' =>array('/ServicioMueble/admin')),
 	                	)),
+	                array('label'=>'Cerrar Sesión ('.Yii::app()->user->name.')', 'url'=>array('/user/logout'), 'visible'=>!Yii::app()->user->isGuest),
 	                //array('label' => '', 'url' => '#'),
 	                //array('label' => 'Link', 'url' => '#'),
 	            ),
