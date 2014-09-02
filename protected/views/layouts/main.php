@@ -40,9 +40,9 @@
 	                	array('label' => 'Excelencia', 'url' =>array('/Visita/indexTipo/4')),
 	                	array('label' => 'Meson Terminal', 'url' =>array('/Visita/indexTipo/5')),
 	                	array('label' => 'Racks', 'url' =>array('/Visita/indexTipo/6')),
-	                	)),
-	                array('label' => 'Puntos', 'url' =>array('/Punto/admin')),
-	                array('label' => 'Rutas', 'url' =>array('/Ruta')),
+	                	), 'visible'=>!Yii::app()->user->isGuest),
+	                array('label' => 'Puntos', 'url' =>array('/Punto/admin'), 'visible'=>!Yii::app()->user->isGuest),
+	                array('label' => 'Rutas', 'url' =>array('/Ruta'), 'visible'=>!Yii::app()->user->isGuest),
 	                array('label'=>'Administracion','items'=>array(
 	                	array('label' => 'Distribuidores', 'url' =>array('/Distribuidor/admin')),
 	                	array('label' => 'Canales', 'url' =>array('/Canal/admin')),
@@ -50,7 +50,7 @@
 	                	array('label' => 'Comunas', 'url' =>array('/Comuna/admin')),
 	                	array('label' => 'Muebles', 'url' =>array('/Mueble/admin')),
 	                	array('label' => 'Tarifas Muebles', 'url' =>array('/ServicioMueble/admin')),
-	                	)),
+	                	), 'visible'=>!Yii::app()->user->isGuest),
 	                array('label'=>'Login', 'url'=>array('/user/login'), 'visible'=>Yii::app()->user->isGuest),
 	                array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/user/logout'), 'visible'=>!Yii::app()->user->isGuest)
 	                //array('label' => '', 'url' => '#'),
