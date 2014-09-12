@@ -1,5 +1,7 @@
 <?php
 return array(
+    //General
+    'Fields with * are required.'=>'Campos con * requeridos',
 	//Visitas
     'model.Visita'=>'Visitas',
     'model.Visita.create'=>'Nueva Visita',

@@ -28,7 +28,7 @@ class MueblePuntoController extends Controller
 	{
 		return array(
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('index','view','create','update'),
+				'actions'=>array('index','view','create','update','AddNew'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -82,6 +82,43 @@ class MueblePuntoController extends Controller
 			'model'=>$model,
 		));
 	}
+
+	public function actionAddNew($id)
+	{
+        $model=new MueblePunto;
+        $model->punto_id = $id;
+ 
+        // Uncomment the following line if AJAX validation is needed
+        // $this->performAjaxValidation($model);
+ 
+        if(isset($_POST['MueblePunto']))
+        {
+            $model->attributes=$_POST['MueblePunto'];
+            if($model->save())
+            {
+                if (Yii::app()->request->isAjaxRequest)
+                {
+                    echo CJSON::encode(array(
+                        'status'=>'success', 
+                        'div'=>"Mueble Añadido correctamente"
+                        ));
+                    exit;               
+                }
+                else
+                    $this->redirect(array('/Punto/view','id'=>$model->punto_id));
+            }
+        }
+ 
+        if (Yii::app()->request->isAjaxRequest)
+        {
+            echo CJSON::encode(array(
+                'status'=>'failure', 
+                'div'=>$this->renderPartial('/MueblePunto/_form', array('model'=>$model), true)));
+            exit;               
+        }
+        else
+            $this->render('create',array('model'=>$model,));
+    }
 
 	/**
 	 * Updates a particular model.

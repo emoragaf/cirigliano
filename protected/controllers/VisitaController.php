@@ -28,7 +28,7 @@ class VisitaController extends Controller
 	{
 		return array(
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('index','view','indexTipo','create','update'),
+				'actions'=>array('index','view','indexTipo','create','update','crear'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -80,6 +80,35 @@ class VisitaController extends Controller
 
 		$this->render('create',array(
 			'model'=>$model,
+		));
+	}
+
+	public function actionCrear($id)
+	{
+		$model=new Visita;
+		$model->punto_id = $id;
+		$model->fecha_creacion = date('Y-m-d');
+		$muebles= MueblePunto::model()->findAll(array('condition'=>'t.punto_id=:id','params'=>array(':id'=>$id)));
+
+		// Uncomment the following line if AJAX validation is needed
+		// $this->performAjaxValidation($model);
+
+		if (isset($_POST['Visita'])) {
+			$model->attributes=$_POST['Visita'];
+			$model->fecha_visita = date('Y-m-d',strtotime($model->fecha_visita));
+			if ($model->save()) {
+				$model->folio = 'R'.sprintf('%07d',$model->id);
+				$model->save();
+				if($model->tipo_visita_id != 3)
+					$this->redirect(array('Presupuesto/Create','id'=>$model->id));
+				if($model->tipo_visita_id == 3)
+					$this->redirect(array('View','id'=>$model->id));
+			}
+		}
+
+		$this->render('crear',array(
+			'model'=>$model,
+			'muebles'=>$muebles,
 		));
 	}
 
