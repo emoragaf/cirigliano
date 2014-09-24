@@ -61,6 +61,18 @@ class SiteController extends Controller
 		$this->render('index',array('model'=>$model,'organizaciones'=>$organizaciones));
 	}
 
+	public function actionGStore()
+	{
+		
+		$this->render('gstore');
+	}
+
+	public function actionUpload()
+	{
+		
+		echo 'uploaded';
+	}
+
 	/**
 	 * This is the action to handle external exceptions.
 	 */

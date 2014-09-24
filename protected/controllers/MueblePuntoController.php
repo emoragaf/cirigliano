@@ -98,9 +98,10 @@ class MueblePuntoController extends Controller
             {
                 if (Yii::app()->request->isAjaxRequest)
                 {
+                	//echo CHtml::tag('li',array(),CHtml::tag('a',array('href'=>'javascript:void(0)',CHtml::tag('label',array('class'=>'checkbox'),CHtml::tag('input',array('type'=>'checkbox', 'value'=>$model->id),CHtml::encode($model->codigo),true),true),true),true),true);
                     echo CJSON::encode(array(
                         'status'=>'success', 
-                        'div'=>"Mueble Añadido correctamente"
+                        //'div'=>'<li class="active"><a href ="javascript:void(0)"><label class="checkbox"><input type="checkbox" value='.$model->id.'>'.CHtml::encode($model->Descripcion).'</input></label></a></li>'
                         ));
                     exit;               
                 }

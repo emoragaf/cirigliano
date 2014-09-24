@@ -28,7 +28,7 @@ class VisitaController extends Controller
 	{
 		return array(
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('index','view','indexTipo','create','update','crear'),
+				'actions'=>array('index','view','indexTipo','create','update','crear','UpdateMueblesPunto'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -82,6 +82,13 @@ class VisitaController extends Controller
 			'model'=>$model,
 		));
 	}
+	public function actionUpdateMueblesPunto($id){
+		Yii::app()->clientScript->scriptMap['jquery.js'] = false;
+		Yii::app()->clientScript->scriptMap['jquery.js'] = false; 
+		$muebles= MueblePunto::model()->findAll(array('condition'=>'t.punto_id=:id','params'=>array(':id'=>$id)));
+        $this->renderPartial('/visita/_formPresupuesto', array('muebles'=>$muebles,'id'=>$id),false,true);
+
+	}
 
 	public function actionCrear($id)
 	{
@@ -96,19 +103,74 @@ class VisitaController extends Controller
 		if (isset($_POST['Visita'])) {
 			$model->attributes=$_POST['Visita'];
 			$model->fecha_visita = date('Y-m-d',strtotime($model->fecha_visita));
+
+			$p=new Presupuesto;
+			
+			$p->user_id = yii::App()->user->getId();
+			$p->estado = 0;
+			$p->fecha_creacion = date('c');
+
 			if ($model->save()) {
+				$p->visita_id = $model->id;
+				$p->save();
 				$model->folio = 'R'.sprintf('%07d',$model->id);
 				$model->save();
-				if($model->tipo_visita_id != 3)
-					$this->redirect(array('Presupuesto/Create','id'=>$model->id));
-				if($model->tipo_visita_id == 3)
-					$this->redirect(array('View','id'=>$model->id));
-			}
+				if (isset($_POST['selectMueblePunto'])) {
+					$ids=$_POST['selectMueblePunto'];
+					$p->total = 0;
+					$p->save();
+					$mueblesPunto = $_POST['Mueble'];
+					$flag = false;
+					foreach ($mueblesPunto as $key => $servicios) {
+						if(in_array($key, $ids)){
+							foreach ($servicios as $servicio => $cant) {
+								if($cant > 0){
+									$mp = new mueblePresupuesto;
+									$mp->mueble_punto_id = $key;
+									$mp->servicio_mueble_id = $servicio;
+									$mp->presupuesto_id = $p->id;
+									$mp->cant_servicio = $cant;
+									$s = ServicioMueble::model()->findByPk($servicio);
+									if($cant <= $s->cant_b){
+										$p->total += $s->tarifa*$cant;
+										$mp->tarifa_servicio =$s->tarifa;
+									}
+									if($cant > $s->cant_b && $cant <= $s->cant_c){
+										$p->total += $s->tarifa_b*$cant;
+										$mp->tarifa_servicio =$s->tarifa_b;
+									}
+									if($cant > $s->cant_c){
+										$p->total += $s->tarifa_c*$cant;
+										$mp->tarifa_servicio =$s->tarifa_c;
+									}
+									$model->save();
+									if($mp->save())
+										$flag = true;
+									else{
+										$p->delete();
+										$flag = false;
+										//print_r($mp->getErrors());
+									}
+								}
+							}
+						}
+					}
+					if ($flag) {
+						$model->estado = 1;
+						$model->save();
+
+						$this->redirect(array('Formulario/Create','id'=>$visita->id));
+						//$this->redirect(array('visita/view','id'=>$model->visita_id));
+					}
+				}
+				$this->redirect(array('visita/view','id'=>$model->id));
+			}		
 		}
 
 		$this->render('crear',array(
 			'model'=>$model,
 			'muebles'=>$muebles,
+			'id'=>$id,
 		));
 	}
 

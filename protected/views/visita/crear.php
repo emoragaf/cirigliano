@@ -15,5 +15,18 @@ $this->menu=array(
 );
 ?>
 <h1> <?php echo $model->tipo_visita_id == 3?Yii::t('app','model.Visita.createTraslado'):Yii::t('app','model.Visita.create'); ?></h1>
-
-<?php $this->renderPartial('/visita/_form', array('model'=>$model,'muebles'=>$muebles)); ?>
+<div class="form">
+<?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
+    'id'=>'visita-form',
+    // Please note: When you enable ajax validation, make sure the corresponding
+    // controller action is handling ajax validation correctly.
+    // There is a call to performAjaxValidation() commented in generated controller code.
+    // See class documentation of CActiveForm for details on this.
+    'enableAjaxValidation'=>false,
+)); ?>
+<?php $this->renderPartial('/visita/_form', array('model'=>$model,'form'=>$form)); ?>
+<div id="mueblepunto">
+	<?php $this->renderPartial('/visita/_formPresupuesto', array('muebles'=>$muebles,'id'=>$id)); ?>
+</div>
+</div>
+<?php $this->endWidget(); ?>

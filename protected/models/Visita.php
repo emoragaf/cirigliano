@@ -51,7 +51,7 @@ class Visita extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('punto_id, tipo_visita_id, persona_punto_id', 'required'),
-			array('id, punto_id, tipo_visita_id, persona_punto_id, estado', 'numerical', 'integerOnly'=>true),
+			array('id, punto_id, tipo_visita_id, persona_punto_id, estado, visita_preventiva', 'numerical', 'integerOnly'=>true),
 			array('fecha_visita', 'length', 'max'=>45),
 			array('folio', 'length', 'max'=>255),
 			array('fecha_creacion', 'safe'),

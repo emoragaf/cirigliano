@@ -4,6 +4,8 @@
 // Yii::setPathOfAlias('local','path/to/local-folder');
 // This is the main Web application configuration. Any writable
 // CWebApplication properties can be configured here.
+Yii::setPathOfAlias('PhpOffice',Yii::getPathOfAlias('application.extensions.PhpOffice'));
+
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
 	'name'=>'Cirigliano',
@@ -17,6 +19,7 @@ return array(
 		'bootstrap'
 	),
 	'aliases' => array(
+		'PhpOffice'=> realpath(__DIR__ . '/../extensions/PhpOffice'),
         'bootstrap' => realpath(__DIR__ . '/../extensions/bootstrap'), // change this if necessary
         'yiiwheels' => realpath(__DIR__ . '/../extensions/yiiwheels'),
         'xupload' => realpath(__DIR__ . '/../extensions/xupload')
@@ -24,6 +27,14 @@ return array(
     ),
 	// autoloading model and component classes
 	'import'=>array(
+		'webroot.vendor.google.apiclient.src.google.auth.*',
+		'webroot.vendor.google.apiclient.src.google.cache.*',
+		'webroot.vendor.google.apiclient.src.google.http.*',
+		'webroot.vendor.google.apiclient.src.google.io.*',
+		'webroot.vendor.google.apiclient.src.google.service.*',
+		'webroot.vendor.google.apiclient.src.google.signer.*',
+		'webroot.vendor.google.apiclient.src.google.utils.*',
+		'webroot.vendor.google.apiclient.src.google.verifier.*',
 		'application.models.*',
 		'application.components.*',
 		'application.modules.user.models.*',
