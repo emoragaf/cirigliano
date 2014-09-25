@@ -10,6 +10,7 @@
  */
 class Formulario extends CActiveRecord
 {
+	private $tipofotos = array('1'=>'Antes','2'=>'Despues','3'=>'Acta','4'=>'General','5'=>'Otros');
 	/**
 	 * @return string the associated database table name
 	 */
@@ -49,7 +50,6 @@ class Formulario extends CActiveRecord
 			'visita' => array(self::BELONGS_TO, 'Visita', 'visita_id'),
 		);
 	}
-
 	/**
 	 * @return array customized attribute labels (name=>label)
 	 */

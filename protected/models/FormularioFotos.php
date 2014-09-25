@@ -43,7 +43,7 @@ class FormularioFotos extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'foto' => array(self::HAS_ONE, 'Foto', 'foto_id'),
+			'foto' => array(self::BELONGS_TO, 'Foto', 'foto_id'),
 			'formulario' => array(self::BELONGS_TO, 'Formuario', 'formulario_id'),
 			'tipo' => array(self::BELONGS_TO, 'TipoFoto', 'tipo_foto_id'),
 		);

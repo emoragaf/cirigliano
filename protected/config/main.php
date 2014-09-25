@@ -8,11 +8,11 @@ Yii::setPathOfAlias('PhpOffice',Yii::getPathOfAlias('application.extensions.PhpO
 
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-	'name'=>'Cirigliano',
+	'name'=>'Movistar Mantenciones',
 	'timeZone' => 'America/Santiago',
 	'language'=>'es', // Este es el lenguaje en el que querés que muestre las cosas
 	'sourceLanguage'=>'en', 
-	'defaultController' => 'Visita/index',
+	'defaultController' => 'Punto/Index',
 	// preloading 'log' component
 	'preload'=>array(
 		'log',

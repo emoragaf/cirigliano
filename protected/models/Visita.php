@@ -73,7 +73,7 @@ class Visita extends CActiveRecord
 			'punto' => array(self::BELONGS_TO, 'Punto', 'punto_id'),
 			'tipoVisita' => array(self::BELONGS_TO, 'TipoVisita', 'tipo_visita_id'),
 			'personaPunto' => array(self::BELONGS_TO, 'PersonaPunto', 'persona_punto_id'),
-			'mueblespresupuesto' => array(self::HAS_MANY, 'MueblePresupuesto', 'visita_id'),
+			'formulario' => array(self::HAS_ONE, 'Formulario', 'visita_id'),
 			'informe' => array(self::HAS_ONE, 'Formulario', 'visita_id'),
 		);
 	}

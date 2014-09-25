@@ -34,6 +34,7 @@
 	        array(
 	            'class' => 'bootstrap.widgets.TbNav',
 	            'items' => array(
+	            	array('label' => 'Nueva Visita', 'url' =>array('/Punto/Index'), 'visible'=>!Yii::app()->user->isGuest),
 	            	array('label'=>'Visitas', 'url' =>array('/Visita'),'items'=>array(
 	                	array('label' => 'Incidencias', 'url' =>array('/Visita/indexTipo/1')),
 	                	array('label' => 'Traslados', 'url' =>array('/Visita/indexTipo/3')),

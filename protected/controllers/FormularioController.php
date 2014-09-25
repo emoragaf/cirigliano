@@ -138,46 +138,53 @@ class FormularioController extends Controller
 					}
 					else {
 						$fieldname = str_replace(' ', '', $campo->nombre);
-						if($campo->tipo->nombre == 'FotoMultiple' || $campo->tipo->nombre == 'FotoSimple'){
-							if(isset($_POST[$fieldname]) && !empty($_POST[$fieldname])){
-								$images = CUploadedFile::getInstancesByName($fieldname);
-								if (isset($images) && count($images) > 0) {
-						            // go through each uploaded image
-						            foreach ($images as $image => $pic) {
-						            	if(!is_dir(Yii::getPathOfAlias('webroot').'/uploads/')) {
-									   		mkdir(Yii::getPathOfAlias('webroot').'/uploads/');
-								   			chmod(Yii::getPathOfAlias('webroot').'/uploads/', 0775); 
-								   		}
-							   			if(!is_dir(Yii::getPathOfAlias('webroot').'/uploads/visitas/')) {
-							   				mkdir(Yii::getPathOfAlias('webroot').'/uploads/visitas/');
-							   				chmod(Yii::getPathOfAlias('webroot').'/uploads/visitas/', 0775);
-							   			}	
-					   					if(!is_dir(Yii::getPathOfAlias('webroot').'/uploads/visitas/'.$visita->id)) {
-							   				mkdir(Yii::getPathOfAlias('webroot').'/uploads/visitas/'.$visita->id);
-							   				chmod(Yii::getPathOfAlias('webroot').'/uploads/visitas/'.$visita->id, 0775);
-							   			} 	
-										   
-					                    $formfoto = new FormularioFotos;
-					                    $foto = new Foto;
-					                    $foto->nombre = $pic->name; //it might be $img_add->name for you, filename is just what I chose to call it in my model
-					                    $foto->path = Yii::getPathOfAlias('webroot').'/uploads/visitas/'.$visita->id.'/';
-					                    $foto->extension = $pic->extensionName;
-					                    if($foto->save()){
-					                    	$tipo = TipoFoto::model()->find(array('condition'=>'nombre ="'.str_replace(' ', '', $fieldname).'"'));
-
+						if((strcmp($campo->nombre,'Acta')=== 0 || strcmp($campo->nombre,'General')=== 0 || strcmp($campo->nombre,'Otros')=== 0) && $campo->tipo->nombre == 'FotoMultiple'){
+							$images = CUploadedFile::getInstancesByName($fieldname);
+							if (isset($images)) {
+					            // go through each uploaded image
+					            foreach ($images as $image => $pic) {
+					            	if(!is_dir(Yii::getPathOfAlias('webroot').'/uploads/')) {
+								   		mkdir(Yii::getPathOfAlias('webroot').'/uploads/');
+							   			chmod(Yii::getPathOfAlias('webroot').'/uploads/', 0775); 
+							   		}
+						   			if(!is_dir(Yii::getPathOfAlias('webroot').'/uploads/visitas/')) {
+						   				mkdir(Yii::getPathOfAlias('webroot').'/uploads/visitas/');
+						   				chmod(Yii::getPathOfAlias('webroot').'/uploads/visitas/', 0775);
+						   			}	
+				   					if(!is_dir(Yii::getPathOfAlias('webroot').'/uploads/visitas/'.$visita->id.'/')) {
+						   				mkdir(Yii::getPathOfAlias('webroot').'/uploads/visitas/'.$visita->id.'/');
+						   				chmod(Yii::getPathOfAlias('webroot').'/uploads/visitas/'.$visita->id.'/', 0775);
+						   			} 	
+									   
+				                    $formfoto = new FormularioFotos;
+				                    $foto = new Foto;
+				                    $foto->nombre = $pic->name; //it might be $img_add->name for you, filename is just what I chose to call it in my model
+				                    $foto->path = Yii::getPathOfAlias('webroot').'/uploads/visitas/'.$visita->id.'/';
+				                    $foto->extension = $pic->extensionName;
+				                    if($foto->save()){
+				                    	$tipo = TipoFoto::model()->find(array('condition'=>'nombre ="'.str_replace(' ', '', $fieldname).'"'));
+				                    	if($tipo){
 					                    	$formfoto->formulario_id = $model->id;
 					                    	$formfoto->foto_id = $foto->id;
 					                    	$formfoto->item_foto_id = $visita->id;
 					                    	$formfoto->tipo_foto_id = $tipo->id;
-					                    	$formfoto->save();
-						                	$pic->saveAs($foto->path.$foto->id.'.'.$foto->extension);
-					                    }
-					                    else{
-					                    	print_r($foto->errors);
-					                    }
-						        	}
-								}
-			    			}
+					                    	if($formfoto->save()){
+						                		$pic->saveAs($foto->path.$foto->id.'.'.$foto->extension);
+					                    	}
+					                    	else{
+					                    		print_r($formfoto->errors);
+					                    	}
+				                    		
+				                    	}
+				                    	else{
+				                    	print_r($tipo->errors);
+				                    	}
+				                    }
+				                    else{
+				                    	print_r($foto->errors);
+				                    }
+					        	}
+							}
 						}
 					}
 				}
