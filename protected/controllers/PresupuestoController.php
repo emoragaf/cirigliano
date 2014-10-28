@@ -85,7 +85,7 @@ class PresupuestoController extends Controller
 				foreach ($servicios as $servicio => $cant) {
 					//echo 'id Servicio: '.$servicio.' Cantidad: '.$cant.'<br>';
 					if($cant > 0){
-						$mp = new mueblePresupuesto;
+						$mp = new MueblePresupuesto;
 						$mp->mueble_punto_id = $key;
 						$mp->servicio_mueble_id = $servicio;
 						$mp->presupuesto_id = $model->id;

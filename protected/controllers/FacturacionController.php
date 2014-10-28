@@ -162,11 +162,16 @@ class FacturacionController extends Controller
 			$bar[0] = $foo[0]-1;
 			$bar[1] = $foo[1]-1;
 		}
-		$criteria->addBetweenCondition('visita.fecha_visita',$bar[1].'-'.$bar[0].'-25',$foo[1].'-'.$foo[0].'-25');
-		$criteriaExcelencia->addBetweenCondition('visita.fecha_visita',$bar[1].'-'.$bar[0].'-25',$foo[1].'-'.$foo[0].'-25');
 
-		//$criteria->addCondition('visita.tipo_visita_id != 4');
-		//$criteriaExcelencia->addCondition('visita.tipo_visita_id = 4');
+		$desde = $bar[1].'-'.str_pad($bar[0],2,0,STR_PAD_LEFT).'-25';
+		$hasta = $foo[1].'-'.str_pad($foo[0],2,0,STR_PAD_LEFT).'-25';
+		
+		$criteria->addCondition('visita.tipo_visita_id != 4');
+		$criteriaExcelencia->addCondition('visita.tipo_visita_id = 4');
+
+		$criteria->addBetweenCondition('visita.fecha_visita',$desde,$hasta);
+		$criteriaExcelencia->addBetweenCondition('visita.fecha_visita',$desde,$hasta);
+
 
 		$presupuestos = Presupuesto::model()->with('visita')->findAll($criteria);
 		$presupuestosExcelencia = Presupuesto::model()->with('visita')->findAll($criteriaExcelencia);
@@ -178,6 +183,8 @@ class FacturacionController extends Controller
 			'adicionales'=>$adicionales,
 			'adicionalesDataProvider'=>$adicionalesDataProvider,
 			'option'=>$option,
+			'desde'=>$desde,
+			'hasta'=>$hasta,
 		));
 	}
 

@@ -216,7 +216,7 @@ class VisitaController extends Controller
 						if(in_array($key, $ids)){
 							foreach ($servicios as $servicio => $cant) {
 								if($cant > 0){
-									$mp = new mueblePresupuesto;
+									$mp = new MueblePresupuesto;
 									$mp->mueble_punto_id = $key;
 									$mp->servicio_mueble_id = $servicio;
 									$mp->presupuesto_id = $p->id;
@@ -361,6 +361,7 @@ class VisitaController extends Controller
 
 		$this->render('update',array(
 			'model'=>$model,
+			'id'=>$model->punto_id,
 		));
 	}
 

@@ -79,6 +79,7 @@ function addPersonaPunto()
         array(
                 'name'=>'Visita[fecha_visita]',
                 'language'=>'es',
+                'value'=>date('d-m-Y',strtotime($model->fecha_visita)),
                 // additional javascript options for the date picker plugin
                 'options'=>array('showAnim'=>'fold','dateFormat' => 'dd-mm-yy',),
                 'htmlOptions'=>array('style'=>'height:20px;'),
