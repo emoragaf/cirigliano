@@ -97,6 +97,8 @@ $fechaVisitaBetween = $this->widget('zii.widgets.jui.CJuiDatePicker', array(
                                                 jQuery('#Visita_fecha_creacion_final').datepicker(jQuery.extend({showMonthAfterYear:false}, jQuery.datepicker.regional['es'], {'showAnim':'fold','dateFormat':'dd-mm-yy','changeMonth':'true','showButtonPanel':'true','changeYear':'true','constrainInput':'false'}));
                                                 jQuery('#Visita_fecha_visita_inicio').datepicker(jQuery.extend({showMonthAfterYear:false}, jQuery.datepicker.regional['es'], {'showAnim':'fold','dateFormat':'dd-mm-yy','changeMonth':'true','showButtonPanel':'true','changeYear':'true','constrainInput':'false'}));
                                                 jQuery('#Visita_fecha_visita_final').datepicker(jQuery.extend({showMonthAfterYear:false}, jQuery.datepicker.regional['es'], {'showAnim':'fold','dateFormat':'dd-mm-yy','changeMonth':'true','showButtonPanel':'true','changeYear':'true','constrainInput':'false'}));
+                                                jQuery('#Visita_punto_comuna_id').select2({'placeholder':'Comuna'});
+                                                jQuery('#Visita_punto_distribuidor_id').select2({'placeholder':'Distribuidor'});
                                                 }",
 		'filter'=>$model,
 		'columns'=>array(
@@ -123,7 +125,15 @@ $fechaVisitaBetween = $this->widget('zii.widgets.jui.CJuiDatePicker', array(
 			array(
 				'name'=>'punto_distribuidor_id',
 				'value'=>'isset($data->punto->distribuidor) ? $data->punto->distribuidor->nombre: null',
-				'filter'=>CHtml::listData(Distribuidor::model()->findAll(array('order'=>'nombre')), 'id', 'nombre'),
+				'filter'=>$this->widget('yiiwheels.widgets.select2.WhSelect2', array(
+                    'name' => 'Visita[punto_distribuidor_id]',
+                    'data' => array(''=>'',0=>'Todos') + CHtml::listData(Distribuidor::model()->findAll(array('order'=>'nombre')), 'id', 'nombre'),
+                    'pluginOptions' => array(
+                        'placeholder' => 'Distribuidor',
+                        'allowClear' => true,
+                        'width' => '100%'
+                    )
+                    ),true),
 				),
 			array(
 				'name'=>'punto_region_id',
@@ -133,8 +143,16 @@ $fechaVisitaBetween = $this->widget('zii.widgets.jui.CJuiDatePicker', array(
 			array(
 				'name'=>'punto_comuna_id',
 				'value'=>'isset($data->punto->comuna) ? $data->punto->comuna->nombre :null',
-				'filter'=>CHtml::listData(Comuna::model()->findAll(array('order'=>'nombre')), 'id', 'nombre'),
-				),
+				'filter'=>$this->widget('yiiwheels.widgets.select2.WhSelect2', array(
+                    'name' => 'Visita[punto_comuna_id]',
+                    'data' => array(''=>'',0=>'Todos') + CHtml::listData(Comuna::model()->findAll(array('order'=>'nombre')), 'id', 'nombre'),
+                    'pluginOptions' => array(
+                        'placeholder' => 'Comuna',
+                        'allowClear' => true,
+                        'width' => '100%'
+                    )
+                    ),true),
+                ),
 			array(
 				'name'=>'tipo_visita_id',
 				'value'=>'$data->tipoVisita->nombre',

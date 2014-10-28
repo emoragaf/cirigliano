@@ -11,6 +11,8 @@ return array(
     'model.Visita.index'=>'Listar Visitas',
     'model.Visita.view'=>'Detalles Visita',
     'model.Visita.delete'=>'Eliminar Visita',
+    'model.Visita.descargaPpt'=>'Descargar Informe PPT',
+    'model.Visita.descargaPdf'=>'Descargar Informe PDF',
     //CAMPO FORMULARIO
     'model.CampoFormulario'=>'Campos Informe',
     'model.CampoFormulario.create'=>'Nuevo Campo',

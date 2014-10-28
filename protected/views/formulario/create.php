@@ -16,4 +16,4 @@ $this->menu=array(
 
 <h1> <?php echo Yii::t('app','model.Formulario.create'); ?></h1>
 
-<?php $this->renderPartial('_form', array('model'=>$model,'MueblesPresupuesto'=>$MueblesPresupuesto,'campos'=>$campos,'visita'=>$visita)); ?>
+<?php $this->renderPartial('_form', array('model'=>$model,'MueblesPresupuesto'=>$MueblesPresupuesto,'TrasladoPresupuesto'=>$TrasladoPresupuesto,'campos'=>$campos,'visita'=>$visita)); ?>

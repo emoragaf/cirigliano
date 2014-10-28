@@ -5,6 +5,7 @@
     $mps = CHtml::ListData(MueblePunto::model()->findAll(array('condition'=>'punto_id ='.$id)),'id','Descripcion');
 ?>
     <?php
+    if(!empty($mps)){
     $this->widget('yiiwheels.widgets.multiselect.WhMultiSelect', array(
             'name' => 'selectMueblePunto',
             'data' => CHtml::ListData(MueblePunto::model()->findAll(array('condition'=>'punto_id ='.$id)),'id','Descripcion'),
@@ -24,6 +25,11 @@
                     $("#mueble"+SelectedValues[j]).show();
                 }'),
         ));
+    }
+    else{
+
+    echo 'Punto sin muebles asignados.';
+    }
     ?>
     <br>
     <?php echo CHtml::link('Agregar mueble al punto', "",  // the link for open the dialog
@@ -91,7 +97,7 @@ function addMueblePunto()
         <div style="display:none" id="mueble<?php echo $mueble->id?>">
             
         
-        <h3><?php echo $mueble->mueble->descripcion.' '.$mueble->codigo; ?></h3>
+        <h3><?php echo $mueble->mueble->descripcion.'</h3>Cód.'.$mueble->codigo; ?>
             <?php if (!empty($mueble->servicioMuebles)): ?>
             <table class="table table-striped table-bordered table-condensed">
                 <tr>
@@ -126,29 +132,27 @@ function addMueblePunto()
             <table class="table table-bordered table-condensed" id="adicionales<?php echo $mueble->id?>">
                 <tr>
                     <th width="25px;">
-                    <?php echo TbHtml::button(TbHtml::icon(TbHtml::ICON_PLUS).' Agregar', array('color' => TbHtml::BUTTON_COLOR_INFO,'onclick'=>"i++; $('#adicionales".$mueble->id." tr:last').after('<tr><td><input placeholder=\"Descripción\" type=\"text\" value=\"\" name=\"Mueble[1][adicional' + i + '][descripcion]\" id=\"Mueble_1_adicional' + i + '_descripcion\"></td><td><input placeholder=\"Tarifa\" type=\"text\" value=\"\" name=\"Mueble[1][adicional' + i + '][tarifa]\" id=\"Mueble_1_adicional' + i + '_tarifa\"></td></tr>');
+                    <?php echo TbHtml::button(TbHtml::icon(TbHtml::ICON_PLUS).' Agregar', array('color' => TbHtml::BUTTON_COLOR_INFO,'onclick'=>"i++; $('#adicionales".$mueble->id." tr:last').after('<tr><td><input placeholder=\"Descripción\" type=\"text\" value=\"\" name=\"Adicional[".$mueble->id."][adicional' + i + '][descripcion]\" id=\"Adicional_".$mueble->id."_adicional' + i + '_descripcion\"></td><td><input placeholder=\"Tarifa\" type=\"text\" value=\"\" name=\"Adicional[".$mueble->id."][adicional' + i + '][tarifa]\" id=\"Adicional_".$mueble->id."_adicional' + i + '_tarifa\"></td></tr>');
 ")); ?>
                     </th>
                     <th colspan="2"> Adicionales</th>
                 </tr>
                 <tr>
                     <td>
-                                <?php echo TbHtml::textField('Mueble['.$mueble->id.'][adicional0][descripcion]', '', array('placeholder' => 'Descripción')); ?>
+                                <?php echo TbHtml::textField('Adicional['.$mueble->id.'][adicional0][descripcion]', '', array('placeholder' => 'Descripción')); ?>
 
                     </td>
                     <td>
-                                <?php echo TbHtml::textField('Mueble['.$mueble->id.'][adicional0][tarifa]', '', array('placeholder' => 'Tarifa')); ?>
+                                <?php echo TbHtml::textField('Adicional['.$mueble->id.'][adicional0][tarifa]', '', array('placeholder' => 'Tarifa')); ?>
 
                     </td>
                 </tr>
             </table>   
-            <?php else: ?>
-                Mueble sin elementos licitados para reparar.
             <?php endif ?>
         </div>
     <?php endforeach ?>
     <?php else: ?>
-        Punto sin muebles asignados.
+        
 <?php endif ?>
 <br>
 <br>

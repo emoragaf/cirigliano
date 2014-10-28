@@ -42,10 +42,15 @@ class Punto extends CActiveRecord
 			array('lat, lon', 'length', 'max'=>10),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, direccion, lat, lon, region_id, canal_id', 'safe', 'on'=>'search'),
+			array('id, direccion, lat, lon, region_id, canal_id, comuna_id, distribuidor_id', 'safe', 'on'=>'search'),
 		);
 	}
-
+	public function getDescripcion(){
+		if($this->distribuidor)
+			return $this->distribuidor->nombre.' '.$this->direccion;
+		else
+			return $this->direccion;
+	}
 	/**
 	 * @return array relational rules.
 	 */
@@ -106,7 +111,9 @@ class Punto extends CActiveRecord
 		$criteria->compare('lat',$this->lat,true);
 		$criteria->compare('lon',$this->lon,true);
 		$criteria->compare('region_id',$this->region_id);
+		$criteria->compare('comuna_id',$this->comuna_id);
 		$criteria->compare('canal_id',$this->canal_id);
+		$criteria->compare('distribuidor_id',$this->distribuidor_id);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

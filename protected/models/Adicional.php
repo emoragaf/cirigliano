@@ -36,7 +36,7 @@ class Adicional extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id, presupuesto_id, mueble_punto_id, foto_id', 'required'),
+			array('presupuesto_id, mueble_punto_id', 'required'),
 			array('id, mueble_presupuesto_id, mueble_punto_id, estado, foto_id, cantidad', 'numerical', 'integerOnly'=>true),
 			array('tarifa, descripcion', 'length', 'max'=>45),
 			array('fecha_termino', 'safe'),

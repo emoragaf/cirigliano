@@ -73,6 +73,8 @@ class MueblePuntoController extends Controller
 
 		if (isset($_POST['MueblePunto'])) {
 			$model->attributes=$_POST['MueblePunto'];
+			//$mueble = Mueble::model()->findByPk($model->mueble_id);
+        	$model->codigo = uniqid($model->mueble_id);
 			if ($model->save()) {
 				$this->redirect(array('/Punto/view','id'=>$model->punto_id));
 			}
@@ -94,6 +96,7 @@ class MueblePuntoController extends Controller
         if(isset($_POST['MueblePunto']))
         {
             $model->attributes=$_POST['MueblePunto'];
+        	$model->codigo = uniqid($model->mueble_id);
             if($model->save())
             {
                 if (Yii::app()->request->isAjaxRequest)
@@ -114,7 +117,7 @@ class MueblePuntoController extends Controller
         {
             echo CJSON::encode(array(
                 'status'=>'failure', 
-                'div'=>$this->renderPartial('/MueblePunto/_form', array('model'=>$model), true)));
+                'div'=>$this->renderPartial('/mueblePunto/_form', array('model'=>$model), true)));
             exit;               
         }
         else

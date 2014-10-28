@@ -24,7 +24,7 @@ class PersonaPunto extends CActiveRecord
 		return 'persona_punto';
 	}
 
-	/**
+	/** 
 	 * @return array validation rules for model attributes.
 	 */
 	public function rules()
@@ -32,7 +32,8 @@ class PersonaPunto extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id, persona_id, punto_id', 'required'),
+			array('punto_id', 'required','on'=>'addnew'),
+			array('persona_id, punto_id', 'required','on'=>'default'),
 			array('id, persona_id, punto_id', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.

@@ -24,7 +24,7 @@ $this->menu=array(
     // See class documentation of CActiveForm for details on this.
     'enableAjaxValidation'=>false,
 )); ?>
-<?php $this->renderPartial('/visita/_form', array('model'=>$model,'form'=>$form)); ?>
+<?php $this->renderPartial('/visita/_form', array('model'=>$model,'form'=>$form,'id'=>$id)); ?>
 <div id="mueblepunto">
 	<?php $this->renderPartial('/visita/_formPresupuesto', array('muebles'=>$muebles,'id'=>$id)); ?>
 </div>

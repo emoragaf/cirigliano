@@ -18,8 +18,8 @@ $this->menu=array(
 	array('label'=>Yii::t('app','model.MueblePunto')),
 	array('label'=>Yii::t('app','model.MueblePunto.create'),'url'=>array('/MueblePunto/create','id'=>$model->id)),
     array('label'=>Yii::t('app','model.Visita')),
-    array('label'=>Yii::t('app','model.Visita.create'),'url'=>array('/Visita/create','id'=>$model->id)),
-    array('label'=>Yii::t('app','model.Visita.createTraslado'),'url'=>array('/Visita/createTraslado','id'=>$model->id),'disabled'=>'true'),
+    array('label'=>Yii::t('app','model.Visita.create'),'url'=>array('/Visita/crear','id'=>$model->id)),
+    array('label'=>Yii::t('app','model.Visita.createTraslado'),'url'=>array('/Visita/createTraslado','id'=>$model->id)),
 );
 
 $fechaCreacionBetween = $this->widget('zii.widgets.jui.CJuiDatePicker', array(

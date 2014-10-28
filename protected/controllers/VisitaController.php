@@ -28,7 +28,7 @@ class VisitaController extends Controller
 	{
 		return array(
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('index','view','indexTipo','create','update','crear','UpdateMueblesPunto'),
+				'actions'=>array('index','view','indexTipo','create','update','crear','createTraslado','UpdateMueblesPunto','AddNewPersonaPunto'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -84,11 +84,85 @@ class VisitaController extends Controller
 	}
 	public function actionUpdateMueblesPunto($id){
 		Yii::app()->clientScript->scriptMap['jquery.js'] = false;
-		Yii::app()->clientScript->scriptMap['jquery.js'] = false; 
 		$muebles= MueblePunto::model()->findAll(array('condition'=>'t.punto_id=:id','params'=>array(':id'=>$id)));
         $this->renderPartial('/visita/_formPresupuesto', array('muebles'=>$muebles,'id'=>$id),false,true);
 
 	}
+	public function actionUpdateMueblesPuntoTraslado($id){
+		Yii::app()->clientScript->scriptMap['jquery.js'] = false;
+		$muebles= MueblePunto::model()->findAll(array('condition'=>'t.punto_id=:id','params'=>array(':id'=>$id)));
+        $this->renderPartial('/visita/_formPresupuestoTraslado', array('muebles'=>$muebles,'id'=>$id),false,true);
+
+	}
+	public function actionAddNewPersonaPunto($id)
+	{
+        $model=new PersonaPunto('addnew');
+        $model->punto_id = $id;
+        $persona = new Persona;
+        $alert='';
+        if(isset($_POST['PersonaPunto']) || isset($_POST['Persona'])){
+        	$alert = 'Seleccione o ingrese Solicitante';
+        }
+        if(isset($_POST['Persona']) &&  ( ($_POST['Persona']['nombre'] == '' && $_POST['Persona']['email'] != '') || ($_POST['Persona']['nombre'] != '' && $_POST['Persona']['email'] == '') ) ){
+        	$alert = 'Faltan datos para Nuevo Solicitante';
+        	$persona->attributes=$_POST['Persona'];
+        }
+ 		if(isset($_POST['PersonaPunto']) && $_POST['PersonaPunto']['persona_id'] != '')
+        {
+            $model->attributes=$_POST['PersonaPunto'];
+        	$check = PersonaPunto::model()->find(array('condition'=>'persona_id ='.$model->persona_id.' AND punto_id ='.$model->punto_id));
+            if(!$check){
+	            if($model->save())
+	            {
+	                if (Yii::app()->request->isAjaxRequest)
+	                {
+	                	//echo CHtml::tag('li',array(),CHtml::tag('a',array('href'=>'javascript:void(0)',CHtml::tag('label',array('class'=>'checkbox'),CHtml::tag('input',array('type'=>'checkbox', 'value'=>$model->id),CHtml::encode($model->codigo),true),true),true),true),true);
+	                    echo CJSON::encode(array(
+	                        'status'=>'success', 
+	                        'div'=>'<option value="'.$model->id.'">'.$model->persona->nombre.'</option>',
+	                        ));
+	                    exit;               
+	                }
+	            }
+            }
+            else{
+				echo CJSON::encode(array(
+                        'status'=>'success', 
+                        'div'=>'',
+                        ));
+            	exit;   
+            }
+        }
+        if(isset($_POST['Persona']) && $_POST['Persona']['nombre'] != '' && $_POST['Persona']['email'] != '')
+        {
+            $persona->attributes=$_POST['Persona'];
+            if($persona->save())
+            {
+            	$model->persona_id = $persona->id;
+            	$model->save();
+                if (Yii::app()->request->isAjaxRequest)
+                {
+                	//echo CHtml::tag('li',array(),CHtml::tag('a',array('href'=>'javascript:void(0)',CHtml::tag('label',array('class'=>'checkbox'),CHtml::tag('input',array('type'=>'checkbox', 'value'=>$model->id),CHtml::encode($model->codigo),true),true),true),true),true);
+                    echo CJSON::encode(array(
+                        'status'=>'success', 
+                        'div'=>'<option value="'.$model->id.'">'.$model->persona->nombre.'</option>',
+                        ));
+                    exit;               
+                }
+                else
+                    $this->redirect(array('/Punto/view','id'=>$model->punto_id));
+            }
+        }
+        if (Yii::app()->request->isAjaxRequest)
+        {
+            echo CJSON::encode(array(
+                'status'=>'failure', 
+                'div'=>$this->renderPartial('/visita/_formNewPersona', array('model'=>$model,'persona'=>$persona,'alert'=>$alert), true)));
+            exit;               
+        }
+        else
+            $this->render('create',array('model'=>$model,));
+    }
 
 	public function actionCrear($id)
 	{
@@ -113,12 +187,29 @@ class VisitaController extends Controller
 			if ($model->save()) {
 				$p->visita_id = $model->id;
 				$p->save();
+
 				$model->folio = 'R'.sprintf('%07d',$model->id);
 				$model->save();
 				if (isset($_POST['selectMueblePunto'])) {
 					$ids=$_POST['selectMueblePunto'];
 					$p->total = 0;
 					$p->save();
+
+					$adicionales = $_POST['Adicional'];
+					foreach ($adicionales as $key => $m) {
+
+						foreach ($m as $value) {
+							if($value['descripcion'] != '' && $value['tarifa'] != ''){
+								$adicional = new Adicional;
+								$adicional->presupuesto_id = $p->id;
+								$adicional->mueble_punto_id = $key;
+								$adicional->descripcion = $value['descripcion'];
+								$adicional->tarifa = $value['tarifa'];
+								$adicional->save();		
+							}
+						}
+					}
+
 					$mueblesPunto = $_POST['Mueble'];
 					$flag = false;
 					foreach ($mueblesPunto as $key => $servicios) {
@@ -143,6 +234,7 @@ class VisitaController extends Controller
 										$p->total += $s->tarifa_c*$cant;
 										$mp->tarifa_servicio =$s->tarifa_c;
 									}
+									$p->save();
 									$model->save();
 									if($mp->save())
 										$flag = true;
@@ -159,7 +251,7 @@ class VisitaController extends Controller
 						$model->estado = 1;
 						$model->save();
 
-						$this->redirect(array('Formulario/Create','id'=>$visita->id));
+						$this->redirect(array('Formulario/Create','id'=>$model->id));
 						//$this->redirect(array('visita/view','id'=>$model->visita_id));
 					}
 				}
@@ -176,28 +268,75 @@ class VisitaController extends Controller
 
 	public function actionCreateTraslado($id)
 	{
-		$model=new Visita;
+		$model=new Visita('traslado');
 		$model->punto_id = $id;
 		$model->fecha_creacion = date('Y-m-d');
 		$model->tipo_visita_id =3;
+		$muebles= MueblePunto::model()->findAll(array('condition'=>'t.punto_id=:id','params'=>array(':id'=>$id)));
+		$p=new Presupuesto('traslado');
+
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
 		if (isset($_POST['Visita'])) {
+			$p->attributes=$_POST['Presupuesto'];
 			$model->attributes=$_POST['Visita'];
 			$model->fecha_visita = date('Y-m-d',strtotime($model->fecha_visita));
+			//$model->destino_traslado_id = $_POST['destino'];
+
+			
+			$p->user_id = yii::App()->user->getId();
+			$p->estado = 0;
+			$p->fecha_creacion = date('c');
+
 			if ($model->save()) {
+				$p->visita_id = $model->id;
+				$tarifa = TarifaTraslado::model()->findByPk($p->tarifa_traslado);
+				switch ($p->tipo_tarifa_traslado) {
+					case '1':
+						$p->total = $tarifa->tarifa_a;
+						break;
+					case '2':
+					    $p->total = $tarifa->tarifa_b;
+						break;
+					case '3':
+					    $p->total = $tarifa->tarifa_c;
+						break;
+					case '4':
+					    $p->total = $tarifa->tarifa_d;
+						break;
+				}
+				$p->save();
 				$model->folio = 'T'.sprintf('%07d',$model->id);
 				$model->save();
-				if($model->tipo_visita_id != 3)
-					$this->redirect(array('Presupuesto/Create','id'=>$model->id));
-				if($model->tipo_visita_id == 3)
-					$this->redirect(array('View','id'=>$model->id));
+
+				$mueblesPunto = $_POST['Mueble'];
+				if($mueblesPunto){
+					foreach ($mueblesPunto as $key => $mueble) {
+						$mp = MueblePunto::model()->findByPk($key);
+						$tarifaInstalacion = TarifaInstalacion::model()->find(array('condition'=>'mueble_id ='.$mp->mueble_id));
+						$p->total += $tarifaInstalacion->tarifa_a;
+						$p->save();
+						$traslado = new TrasladoPresupuesto;
+						$traslado->presupuesto_id = $p->id;
+						$traslado->mueble_punto = $key;
+						$traslado->distancia = $tarifa->distancia;
+						$traslado->tarifa_instalacion = $tarifaInstalacion->tarifa_a;
+						$traslado->save();
+					}
+				}
+				$model->estado = 1;
+				$model->save();
+
+				$this->redirect(array('View','id'=>$model->id));
 			}
 		}
 
-		$this->render('create',array(
+		$this->render('createTraslado',array(
 			'model'=>$model,
+			'muebles'=>$muebles,
+			'id'=>$id,
+			'presupuesto'=>$p,
 		));
 	}
 
@@ -228,7 +367,15 @@ class VisitaController extends Controller
 	public function actionAceptarPresupuesto($id)
 	{
 		$model=$this->loadModel($id);
-		$model->estado = 3;
+
+		if($model->estado ==  1 && $model->formulario){
+			//Enviar email
+			$model->estado = 4;
+		}
+		else{
+			$model->estado = 3;
+		}
+
 		if ($model->save()) {
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -287,7 +434,10 @@ class VisitaController extends Controller
 		$model->unsetAttributes();  // clear any default values
 		if (isset($_GET['Visita'])) {
 			$model->attributes=$_GET['Visita'];
-			$activos->attributes=$_GET['Visita'];
+			if($_GET['Visita']['punto_comuna_id'] == 0)
+				$model->punto_comuna_id = null;
+			if($_GET['Visita']['punto_distribuidor_id'] == 0)
+				$model->punto_distribuidor_id = null;
 		}
 		$this->render('indexTipo',array(
 			'model'=>$model,

@@ -50,8 +50,9 @@ class Visita extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
+			array('destino_traslado_id', 'required','on'=>'traslado'),
 			array('punto_id, tipo_visita_id, persona_punto_id', 'required'),
-			array('id, punto_id, tipo_visita_id, persona_punto_id, estado, visita_preventiva', 'numerical', 'integerOnly'=>true),
+			array('id, punto_id, tipo_visita_id, persona_punto_id, destino_traslado_id, estado, visita_preventiva', 'numerical', 'integerOnly'=>true),
 			array('fecha_visita', 'length', 'max'=>45),
 			array('folio', 'length', 'max'=>255),
 			array('fecha_creacion', 'safe'),
@@ -75,6 +76,7 @@ class Visita extends CActiveRecord
 			'personaPunto' => array(self::BELONGS_TO, 'PersonaPunto', 'persona_punto_id'),
 			'formulario' => array(self::HAS_ONE, 'Formulario', 'visita_id'),
 			'informe' => array(self::HAS_ONE, 'Formulario', 'visita_id'),
+			'destino' => array(self::BELONGS_TO,'Punto','destino_traslado_id'),
 		);
 	}
 
@@ -215,9 +217,9 @@ class Visita extends CActiveRecord
         if((isset($this->fecha_visita_inicio) && trim($this->fecha_visita_inicio) != "") && (isset($this->fecha_visita_final) && trim($this->fecha_visita_final) != ""))
                         $criteria->addBetweenCondition('t.fecha_visita', ''.date('Y-m-d',strtotime($this->fecha_creacion_inicio)).'', ''.date('Y-m-d',strtotime($this->fecha_visita_final)).'');
 		$criteria->compare('punto.direccion',$this->punto_direccion,true);
-		$criteria->compare('punto.region_id',$this->punto_id,true);
-		$criteria->compare('punto.comuna_id',$this->punto_id,true);
-		$criteria->compare('punto.distribuidor_id',$this->punto_id,true);
+		$criteria->compare('punto.region_id',$this->punto_region_id,true);
+		$criteria->compare('punto.comuna_id',$this->punto_comuna_id,true);
+		$criteria->compare('punto.distribuidor_id',$this->punto_distribuidor_id,true);
 		$criteria->compare('punto.canal_id',$this->punto_canal_id,true);
 		$criteria->compare('t.folio',$this->folio,true);
 		$criteria->compare('t.persona_punto_id',$this->persona_punto_id);

@@ -19,7 +19,7 @@ class SiteController extends Controller
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
 				'actions'=>array(),
-				'users'=>array('admin'),
+				'users'=>array('admin','TestMail'),
 			),
 			array('deny',  // deny all users
 				'users'=>array('*'),
@@ -40,6 +40,44 @@ class SiteController extends Controller
 				'class'=>'CViewAction',
 			),
 		);
+	}
+	public function actionTestMail(){
+		$email = Yii::app()->mandrillwrap;
+		$email->mandrillKey = 'dLsiSqgctG1atlNvHqVdVg';
+		$email->text = "Prueba 2 mandrillwrap";
+		$email->html = "<h1>Prueba 3 mandrillwrap</h1>";
+		$email->subject = "Test";
+		$email->fromName = "emoraga";
+		$email->fromEmail = "emoraga@hbl.cl";
+		$email->to = array(
+            array(
+                'email' => 'o0eversor0o@gmail.com',
+                'name' => 'Eduardo Moraga',
+                'type' => 'to'
+            ),
+            array(
+                'email' => 'e.moraga@yahoo.com',
+                'name' => 'Eduardo Moraga',
+                'type' => 'cc'
+            ),
+            array(
+                'email' => 'e.moraga@live.cl',
+                'name' => 'Eduardo Moraga',
+                'type' => 'cc'
+            ),
+            array(
+                'email' => 'egallardo@hbl.cl',
+                'name' => 'Exequiel Gallardo',
+                'type' => 'cc'
+            ),
+        );
+		$email->attachments = array();
+		$email->images = array();
+		echo $email->sendEmail();
+
+		//$this->redirect(Yii::app()->homeUrl);
+
+
 	}
 
 	/**

@@ -30,9 +30,9 @@ class Persona extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id', 'required'),
 			array('id', 'numerical', 'integerOnly'=>true),
-			array('nombre, email, telefono', 'length', 'max'=>45),
+			array('nombre, telefono', 'length', 'max'=>45),
+			array('email','email'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, nombre, email, telefono', 'safe', 'on'=>'search'),

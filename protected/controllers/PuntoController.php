@@ -32,7 +32,7 @@ class PuntoController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
+				'actions'=>array('admin','delete','PoblarPersonaPunto'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -63,6 +63,19 @@ class PuntoController extends Controller
 			'muebles'=>$muebles,
 			'visitas'=>$visitas,
 		));
+	}
+
+	public function actionPoblarPersonaPunto()
+	{
+		$puntos = Punto::model()->findAll();
+
+		foreach ($puntos as $key => $value) {
+			$pp = new PersonaPunto;
+			$pp->punto_id = $value->id;
+			$pp->persona_id = 1;
+			$pp->save();
+		}
+		echo 'Completado';
 	}
 
 	/**
@@ -140,6 +153,10 @@ class PuntoController extends Controller
 		$model->unsetAttributes();  // clear any default values
 		if (isset($_GET['Punto'])) {
 			$model->attributes=$_GET['Punto'];
+			if($_GET['Punto']['comuna_id'] == 0)
+				$model->comuna_id = null;
+			if($_GET['Punto']['distribuidor_id'] == 0)
+				$model->distribuidor_id = null;
 		}
 
 		$this->render('admin',array(
@@ -153,6 +170,10 @@ class PuntoController extends Controller
 		$model->unsetAttributes();  // clear any default values
 		if (isset($_GET['Punto'])) {
 			$model->attributes=$_GET['Punto'];
+			if($_GET['Punto']['comuna_id'] == 0)
+				$model->comuna_id = null;
+			if($_GET['Punto']['distribuidor_id'] == 0)
+				$model->distribuidor_id = null;
 		}
 
 		$this->render('adminNewVisita',array(

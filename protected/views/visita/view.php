@@ -20,7 +20,9 @@ $this->menu=array(
 	array('label'=>Yii::t('app','model.Presupuesto.rechazar'),'url'=>array('Visita/RechazarPresupuesto','id'=>$model->id),'visible'=>$model->estado == 1 ? true : false),
 	array('label'=>Yii::t('app','model.Formulario'),'visible'=>$model->estado == 1 && !isset($model->informe) ? true : false),
 	array('label'=>Yii::t('app','model.Formulario.ingresarTrabajo'),'url'=>array('Formulario/create','id'=>$model->id),'visible'=>$model->estado == 1 && !isset($model->informe) ? true : false),
-
+	array('label'=>'Informe','visible'=>isset($model->informe) ? true : false),
+	array('label'=>Yii::t('app','model.Visita.descargaPdf'),'url'=>array('Informe/Download','id'=>$model->id,'tipo'=>'pdf'),'visible'=>isset($model->informe) ? true : false),
+	array('label'=>Yii::t('app','model.Visita.descargaPpt'),'url'=>array('Informe/Download','id'=>$model->id,'tipo'=>'pptx'),'visible'=>isset($model->informe) ? true : false)
 );
 ?>
 
@@ -87,6 +89,23 @@ $this->menu=array(
 			<td><?php echo $accion->cant_servicio ?></td>
 			<td><?php echo $accion->tarifa_servicio ?></td>
 			<td><?php echo $accion->tarifa_servicio*$accion->cant_servicio ?></td>
+		</tr>
+		</tr>
+		<?php endforeach ?>
+		<?php if ($presupuesto->tarifa_traslado && $presupuesto->tipo_tarifa_traslado): ?>
+			<tr>
+				<td>Tarifa Traslado</td>
+				<td>1</td>
+				<td><?php echo $presupuesto->TTraslado;?></td>
+				<td><?php echo $presupuesto->TTraslado;?></td>
+			</tr>
+		<?php endif ?>
+		<?php foreach ($presupuesto->trasladopresupuesto as $t): ?>
+		<tr>
+			<td><?php echo 'Instalación '.$t->mueblePunto->mueble->descripcion.' '.$t->mueblePunto->codigo?></td>
+			<td>1</td>
+			<td><?php echo $t->tarifa_instalacion ?></td>
+			<td><?php echo $t->tarifa_instalacion ?></td>
 		</tr>
 		</tr>
 		<?php endforeach ?>

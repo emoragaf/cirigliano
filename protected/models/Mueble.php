@@ -47,6 +47,7 @@ class Mueble extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'mueblePuntos' => array(self::HAS_MANY, 'MueblePunto', 'mueble_id'),
+			'tarifaInstalacion' => array(self::HAS_MANY, 'TarifaInstalacion', 'mueble_id'),
 		);
 	}
 

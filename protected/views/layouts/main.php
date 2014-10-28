@@ -44,6 +44,8 @@
 	                	), 'visible'=>!Yii::app()->user->isGuest),
 	                array('label' => 'Puntos', 'url' =>array('/Punto/admin'), 'visible'=>!Yii::app()->user->isGuest),
 	                array('label' => 'Rutas', 'url' =>array('/Ruta'), 'visible'=>!Yii::app()->user->isGuest),
+					array('label' => 'Histórico Reparaciones', 'url' =>array('/historico'), 'visible'=>!Yii::app()->user->isGuest),
+					array('label' => 'Facturación', 'url' =>array('/facturacion'), 'visible'=>!Yii::app()->user->isGuest),
 	                array('label'=>'Administracion','items'=>array(
 	                	array('label' => 'Distribuidores', 'url' =>array('/Distribuidor/admin')),
 	                	array('label' => 'Canales', 'url' =>array('/Canal/admin')),

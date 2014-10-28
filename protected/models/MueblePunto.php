@@ -43,7 +43,7 @@ class MueblePunto extends CActiveRecord
 	}
 
 	public function getDescripcion(){
-		return $this->mueble->descripcion.' '.$this->codigo;
+		return $this->mueble->descripcion.' Cód.'.$this->codigo;
 	}
 
 	/**

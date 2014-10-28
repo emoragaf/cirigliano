@@ -30,7 +30,8 @@
 			    		$nombre = str_replace('%n', $mueble->mueble->descripcion.' '.$mueble->codigo, $nombre);
 			    		//$fieldname = 'Foto_'.$id.'['.$mueble->id.']';
 			    		$fieldname = 'Foto'.str_replace(' ', '', $id).$mueble->id;
-			    		echo $nombre.'<br><br>';
+			    		echo '<div class="well">';
+			    		echo '<h4>'.$nombre.'</h4><br>';
 			    		if($campo->tipo->nombre == 'FotoMultiple'){
 			    			
 						    $this->widget('CMultiFileUpload', array(
@@ -46,24 +47,27 @@
 							echo CHtml::fileField($fieldname, '', array('id'=>$fieldname));
 
 			    		}
+			    		echo '</div>';
 			    	}
 			    }
 			}
 			else {
-				echo $campo->nombre.'<br><br>';
+				echo '<div class="well">';
+				echo '<h4>'.$campo->nombre.'</h4><br>';
 				$fieldname = str_replace(' ', '', $campo->nombre);
 				if($campo->tipo->nombre == 'FotoMultiple'){
-							 $this->widget('CMultiFileUpload', array(
-				            'name' => $fieldname,
-				            'id'=>$fieldname,
-				            'accept' => 'jpeg|jpg|gif|png', // useful for verifying files
-				            'duplicate' => 'Archivo Duplicado!', // useful, i think
-				            'denied' => 'Tipo archivo inválido', // useful, i think
-				        ));
-			    		}
-			    		if($campo->tipo->nombre == 'FotoSimple'){
-							echo CHtml::fileField($fieldname, '', array('id'=>$fieldname)).'<br>';
-			    		}
+					 $this->widget('CMultiFileUpload', array(
+		            'name' => $fieldname,
+		            'id'=>$fieldname,
+		            'accept' => 'jpeg|jpg|gif|png', // useful for verifying files
+		            'duplicate' => 'Archivo Duplicado!', // useful, i think
+		            'denied' => 'Tipo archivo inválido', // useful, i think
+		        ));
+	    		}
+	    		if($campo->tipo->nombre == 'FotoSimple'){
+					echo CHtml::fileField($fieldname, '', array('id'=>$fieldname)).'<br>';
+	    		}
+	    		echo '</div>';
 			}
 
 

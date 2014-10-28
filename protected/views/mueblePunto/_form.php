@@ -22,8 +22,6 @@
         <?php echo $form->dropDownListControlGroup($model, 'mueble_id',
                 CHtml::listData(Mueble::model()->findAll(array('order'=>'descripcion')), 'id', 'descripcion'), array('empty' => 'Seleccione')); ?>
         
-        <?php echo $form->textFieldControlGroup($model,'codigo',array('span'=>5,'maxlength'=>45)); ?>
-        
         <div class="form-actions">
         <?php echo TbHtml::submitButton($model->isNewRecord ? 'Agregar' : 'Guardar',array(
 		    'color'=>TbHtml::BUTTON_COLOR_PRIMARY,

@@ -62,6 +62,11 @@ class FormularioController extends Controller
 		$campos = CampoFormulario::model()->findAll(array('condition'=>'tipo_visita_id ='.$visita->tipo_visita_id));
 		$presupuesto =$visita->presupuestos[0];
 		$Muebles = $presupuesto->mueblespresupuesto;
+		$traslados = $presupuesto->trasladopresupuesto;
+		$TrasladoPresupuesto = array();
+		foreach ($traslados as $key => $value) {
+			$TrasladoPresupuesto[$value->mueble_punto] = $value->mueblePunto;
+		}
 		$MueblesPresupuesto = array();
 		foreach ($Muebles as $key => $value) {
 			$MueblesPresupuesto[$value->mueble_punto_id]= $value->mueblepunto;
@@ -188,6 +193,14 @@ class FormularioController extends Controller
 						}
 					}
 				}
+				if($visita->estado == 3){
+					//Enviar email
+
+					$visita->estado = 4;
+					$visita->save();
+				}
+				Informe::InformePpt($visita->id);
+				Informe::InformePdf($visita->id);
 				$this->redirect(array('Visita/view','id'=>$visita->id));
 			}
 			
@@ -199,6 +212,7 @@ class FormularioController extends Controller
 			'campos'=>$campos,
 			'presupuesto'=>$presupuesto,
 			'MueblesPresupuesto'=>$MueblesPresupuesto,
+			'TrasladoPresupuesto'=>$TrasladoPresupuesto,
 
 		));
 	}

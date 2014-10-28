@@ -36,10 +36,12 @@ return array(
 		'webroot.vendor.google.apiclient.src.google.utils.*',
 		'webroot.vendor.google.apiclient.src.google.verifier.*',
 		'application.models.*',
+		'application.vendors.*',
 		'application.components.*',
 		'application.modules.user.models.*',
         'application.modules.user.components.*',
         'application.extensions.phpass.*',
+        'application.extensions.*',
         'bootstrap.helpers.TbHtml',
         'bootstrap.helpers.TbArray',
         'bootstrap.behaviors.TbWidget',
@@ -47,6 +49,7 @@ return array(
 	),
 
 	'modules'=>array(
+        'historico',
 		'auth'=>array(
 		  'strictMode' => true, // when enabled authorization items cannot be assigned children of the same type.
 		  'userClass' => 'User', // the name of the user model class.
@@ -101,6 +104,10 @@ return array(
 
 	// application components
 	'components'=>array(
+		'mandrillwrap' => array(
+	         'class' => 'ext.mandrillwrap.mandrillwrap',
+	         //'options' => array(/.. additional curl options ../)
+	    ),
 		'authManager' => array(
 			'class' => 'auth.components.CachedDbAuthManager',
         	'cachingDuration' => 3600,
@@ -150,6 +157,13 @@ return array(
 			'password' => 'ciriglianodev',
 			'charset' => 'utf8',
 			'tablePrefix' => 'tbl_',
+		),
+		'db2'=>array(
+        	'connectionString' => 'pgsql:host=localhost;port=5432;dbname=ciri_trade2',
+			'username' => 'ciri_trade2',
+			'password' => 'ciriTrade2Dev',
+			'charset' => 'utf8',
+			'class' => 'CDbConnection'
 		),
 		'errorHandler'=>array(
 			// use 'site/error' action to display errors
