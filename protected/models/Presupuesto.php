@@ -57,10 +57,11 @@ class Presupuesto extends CActiveRecord
 		return array(
 			'user' => array(self::BELONGS_TO, 'Users', 'user_id'),
 			'visita' => array(self::BELONGS_TO, 'Visita', 'visita_id'),
-			'mueblespresupuesto' => array(self::HAS_MANY, 'MueblePresupuesto', 'presupuesto_id'),
+			'mueblespresupuesto' => array(self::HAS_MANY, 'MueblePresupuesto', 'presupuesto_id','order'=>'servicio_mueble_id'),
 			'trasladopresupuesto' => array(self::HAS_MANY, 'TrasladoPresupuesto', 'presupuesto_id'),
 			'adicionales' => array(self::HAS_MANY, 'Adicional', 'presupuesto_id'),
 			'tarifaTraslado'=>array(self::BELONGS_TO,'TarifaTraslado','tarifa_traslado'),
+			'manosobra'=>array(self::HAS_MANY,'ManoObraPresupuesto','presupuesto_id'),
 		);
 	}
 

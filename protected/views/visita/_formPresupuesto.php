@@ -99,7 +99,7 @@ function addMueblePunto()
         
         <h3><?php echo $mueble->mueble->descripcion.'</h3>Cód.'.$mueble->codigo; ?>
             <?php if (!empty($mueble->servicioMuebles)): ?>
-            <table class="table table-striped table-bordered table-condensed">
+            <table class="table table-striped table-bordered table-condensed servicio">
                 <tr>
                     <th>Cantidad</th>
                     <th>Item</th>

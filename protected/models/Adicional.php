@@ -37,12 +37,12 @@ class Adicional extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('presupuesto_id, mueble_punto_id', 'required'),
-			array('id, mueble_presupuesto_id, mueble_punto_id, estado, foto_id, cantidad', 'numerical', 'integerOnly'=>true),
+			array('id, mueble_punto_id, estado, foto_id, cantidad', 'numerical', 'integerOnly'=>true),
 			array('tarifa, descripcion', 'length', 'max'=>45),
 			array('fecha_termino', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, mueble_presupuesto_id, tarifa, descripcion, mueble_punto_id, estado, fecha_termino, foto_id, cantidad', 'safe', 'on'=>'search'),
+			array('id, tarifa, descripcion, mueble_punto_id, estado, fecha_termino, foto_id, cantidad', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -66,7 +66,6 @@ class Adicional extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'mueble_presupuesto_id' => 'Mueble Presupuesto',
 			'tarifa' => 'Tarifa',
 			'descripcion' => 'Descripcion',
 			'mueble_punto_id' => 'Mueble Punto',
@@ -96,7 +95,7 @@ class Adicional extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('mueble_presupuesto_id',$this->mueble_presupuesto_id);
+		$criteria->compare('presupuesto_id',$this->presupuesto_id);
 		$criteria->compare('tarifa',$this->tarifa,true);
 		$criteria->compare('descripcion',$this->descripcion,true);
 		$criteria->compare('mueble_punto_id',$this->mueble_punto_id);
@@ -108,6 +107,18 @@ class Adicional extends CActiveRecord
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
+	}
+	public function getDescripcion(){
+		if($this->descripcion && $this->mueblePunto)
+			return $this->descripcion.' '.$this->mueblePunto->Descripcion;
+		else
+			$this->descripcion;
+	}
+	public function getMueblePuntoDescripcion(){
+		return $this->mueblePunto->Descripcion;
+	}
+	public function getServicioDescripcion(){
+		return $this->descripcion;
 	}
 
 	/**

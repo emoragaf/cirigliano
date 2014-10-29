@@ -34,6 +34,12 @@ class TrasladoPresupuesto extends CActiveRecord
 			array('id, presupuesto_id, mueble_punto, distancia', 'safe', 'on'=>'search'),
 		);
 	}
+	public function getTarifa(){
+		return $this->tarifa_instalacion;
+	}
+	public function getcant_servicio(){
+		return 1;
+	}
 
 	/**
 	 * @return array relational rules.

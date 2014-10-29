@@ -45,8 +45,8 @@ class SiteController extends Controller
 		$email = Yii::app()->mandrillwrap;
 		$email->mandrillKey = 'dLsiSqgctG1atlNvHqVdVg';
 		$email->text = "Prueba 2 mandrillwrap";
-		$email->html = "<h1>Prueba 3 mandrillwrap</h1>";
-		$email->subject = "Test";
+		$email->html = "<h1>Prueba 4 mandrillwrap</h1><p>Este es un párrafo</p>";
+		$email->subject = "Prueba con registros dns";
 		$email->fromName = "emoraga";
 		$email->fromEmail = "emoraga@hbl.cl";
 		$email->to = array(
@@ -65,12 +65,8 @@ class SiteController extends Controller
                 'name' => 'Eduardo Moraga',
                 'type' => 'cc'
             ),
-            array(
-                'email' => 'egallardo@hbl.cl',
-                'name' => 'Exequiel Gallardo',
-                'type' => 'cc'
-            ),
         );
+        $email->tags = array('test','prueba');
 		$email->attachments = array();
 		$email->images = array();
 		echo $email->sendEmail();

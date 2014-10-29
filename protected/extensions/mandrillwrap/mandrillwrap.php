@@ -12,6 +12,7 @@ class mandrillwrap extends CApplicationComponent {
 	public $html;
 	public $subject;
 	public $important;
+	public $tags;
 	
 	public function init()
 	{
@@ -44,7 +45,7 @@ class mandrillwrap extends CApplicationComponent {
         'tracking_domain' => null,
         'signing_domain' => null,
         'return_path_domain' => null,
-        'tags' => array('password-resets'),
+        'tags' => $this->tags,
         'attachments' => $this->attachments,
         'images' => $this->images,
     	);

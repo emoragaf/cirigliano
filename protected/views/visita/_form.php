@@ -14,7 +14,7 @@ if($model->tipo_visita_id != 3){
         <div class="span3">
             <?php echo $form->dropDownListControlGroup($model, 'tipo_visita_id',
                 $filtroTipos, array('empty' => 'Seleccione')); ?>
-            <?php echo $form->checkBoxControlGroup($model, 'visita_preventiva', array()); ?>
+            <?php echo $form->checkBoxControlGroup($model, 'visita_preventiva', array('onclick'=>'if(this.checked){$(".servicio").hide();} else $(".servicio").show(); ')); ?>
         </div>
     <?php } ?>
 

@@ -52,7 +52,7 @@ class Visita extends CActiveRecord
 		return array(
 			array('destino_traslado_id', 'required','on'=>'traslado'),
 			array('punto_id, tipo_visita_id, persona_punto_id', 'required'),
-			array('id, punto_id, tipo_visita_id, persona_punto_id, destino_traslado_id, estado, visita_preventiva', 'numerical', 'integerOnly'=>true),
+			array('id, punto_id, tipo_visita_id, persona_punto_id, destino_traslado_id, estado, visita_preventiva, mimagen', 'numerical', 'integerOnly'=>true),
 			array('fecha_visita', 'length', 'max'=>45),
 			array('folio', 'length', 'max'=>255),
 			array('fecha_creacion', 'safe'),

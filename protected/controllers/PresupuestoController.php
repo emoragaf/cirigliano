@@ -82,6 +82,16 @@ class PresupuestoController extends Controller
 			$flag = false;
 			foreach ($mueblesPunto as $key => $servicios) {
 				//echo 'Mueble id:'.$key.'<br>';
+				if($visita->visita_preventiva == 0){
+					$tarifaManoObra = TarifaManoObra::model()->find(array('condition'=>'activo = 1 and tipo=1'));
+					$mano_obra = new ManoObraPresupuesto;
+					$mano_obra->presupuesto_id = $model->id;
+					$mano_obra->mueble_punto_id = $key;
+					$mano_obra->tarifa_mano_obra_id = $tarifaManoObra->tarifa;
+					$mano_obra->save();
+					$model->total += $mano_obra->tarifa_mano_obra_id;
+					$model->save();
+				}
 				foreach ($servicios as $servicio => $cant) {
 					//echo 'id Servicio: '.$servicio.' Cantidad: '.$cant.'<br>';
 					if($cant > 0){

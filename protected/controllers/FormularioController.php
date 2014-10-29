@@ -62,16 +62,15 @@ class FormularioController extends Controller
 		$campos = CampoFormulario::model()->findAll(array('condition'=>'tipo_visita_id ='.$visita->tipo_visita_id));
 		$presupuesto =$visita->presupuestos[0];
 		$Muebles = $presupuesto->mueblespresupuesto;
+		$Adicional = $presupuesto->adicionales;
 		$traslados = $presupuesto->trasladopresupuesto;
-		$TrasladoPresupuesto = array();
-		foreach ($traslados as $key => $value) {
-			$TrasladoPresupuesto[$value->mueble_punto] = $value->mueblePunto;
-		}
-		$MueblesPresupuesto = array();
-		foreach ($Muebles as $key => $value) {
+		$TrasladoPresupuesto = $traslados;
+		$MueblePresupuesto = $Muebles;
+		//$MueblesPresupuesto = array();
+		/*foreach ($Muebles as $key => $value) {
 			$MueblesPresupuesto[$value->mueble_punto_id]= $value->mueblepunto;
 			# code...
-		}
+		}*/
 		$model=new Formulario;
 		$model->visita_id = $visita->id;
 
@@ -122,7 +121,7 @@ class FormularioController extends Controller
 						                    $foto->path = Yii::getPathOfAlias('webroot').'/uploads/visitas/'.$visita->id.'/'.$mueble->id.'/';
 						                    $foto->extension = $pic->extensionName;
 						                    if($foto->save()){
-						                    	$tipo = TipoFoto::model()->find(array('condition'=>'nombre ="'.str_replace(' ', '', $id).'"'));
+						                    	$tipo = TipoFoto::model()->find(array('condition'=>'nombre ="'.str_replace(' ', '', $id).'" AND model ="'.$foo[1].'"'));
 
 						                    	$formfoto->formulario_id = $model->id;
 						                    	$formfoto->foto_id = $foto->id;
@@ -211,8 +210,9 @@ class FormularioController extends Controller
 			'visita'=>$visita,
 			'campos'=>$campos,
 			'presupuesto'=>$presupuesto,
-			'MueblesPresupuesto'=>$MueblesPresupuesto,
+			'MueblePresupuesto'=>$MueblePresupuesto,
 			'TrasladoPresupuesto'=>$TrasladoPresupuesto,
+			'Adicional'=>$Adicional,
 
 		));
 	}

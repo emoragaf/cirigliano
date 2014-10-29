@@ -169,6 +169,7 @@ class VisitaController extends Controller
 		$model=new Visita;
 		$model->punto_id = $id;
 		$model->fecha_creacion = date('Y-m-d');
+		$model->fecha_visita = date('d-m-Y');
 		$muebles= MueblePunto::model()->findAll(array('condition'=>'t.punto_id=:id','params'=>array(':id'=>$id)));
 
 		// Uncomment the following line if AJAX validation is needed
@@ -188,6 +189,7 @@ class VisitaController extends Controller
 				$p->visita_id = $model->id;
 				$p->save();
 
+
 				$model->folio = 'R'.sprintf('%07d',$model->id);
 				$model->save();
 				if (isset($_POST['selectMueblePunto'])) {
@@ -205,7 +207,11 @@ class VisitaController extends Controller
 								$adicional->mueble_punto_id = $key;
 								$adicional->descripcion = $value['descripcion'];
 								$adicional->tarifa = $value['tarifa'];
-								$adicional->save();		
+								$adicional->cantidad = 1;	
+								$adicional->save();	
+								$p->total += $adicional->tarifa;
+								$p->save();	
+								$flag = true;
 							}
 						}
 					}
@@ -214,6 +220,19 @@ class VisitaController extends Controller
 					$flag = false;
 					foreach ($mueblesPunto as $key => $servicios) {
 						if(in_array($key, $ids)){
+							if($model->visita_preventiva == 0){
+								$tarifaManoObra = TarifaManoObra::model()->find(array('condition'=>'activo = 1 and tipo=1'));
+								$mano_obra = new ManoObraPresupuesto;
+								$mano_obra->presupuesto_id = $p->id;
+								$mano_obra->mueble_punto_id = $key;
+								$mano_obra->tarifa_mano_obra_id = $tarifaManoObra->id;
+								$mano_obra->save();
+								$p->total += $mano_obra->tarifa_mano_obra_id;
+								$p->save();
+							}
+							else{
+								$flag = true;
+							}
 							foreach ($servicios as $servicio => $cant) {
 								if($cant > 0){
 									$mp = new MueblePresupuesto;
@@ -250,7 +269,6 @@ class VisitaController extends Controller
 					if ($flag) {
 						$model->estado = 1;
 						$model->save();
-
 						$this->redirect(array('Formulario/Create','id'=>$model->id));
 						//$this->redirect(array('visita/view','id'=>$model->visita_id));
 					}

@@ -1,25 +1,23 @@
 <?php
 
 /**
- * This is the model class for table "mueble_presupuesto".
+ * This is the model class for table "tarifa_mano_obra".
  *
- * The followings are the available columns in table 'mueble_presupuesto':
+ * The followings are the available columns in table 'tarifa_mano_obra':
  * @property integer $id
- * @property integer $servicio_mueble_id
- * @property integer $presupuesto_id
- *
- * The followings are the available model relations:
- * @property Accion[] $accions
- * @property Adicional[] $adicionals
+ * @property string $nombre
+ * @property integer $tarifa
+ * @property integer $activo
+ * @property integer $tipo
  */
-class MueblePresupuesto extends CActiveRecord
+class TarifaManoObra extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'mueble_presupuesto';
+		return 'tarifa_mano_obra';
 	}
 
 	/**
@@ -30,27 +28,13 @@ class MueblePresupuesto extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('servicio_mueble_id, presupuesto_id', 'required'),
-			array('servicio_mueble_id, tarifa_servicio, cant_servicio,mueble_punto_id ,presupuesto_id', 'numerical', 'integerOnly'=>true),
+			array('nombre, tarifa, tipo', 'required'),
+			array('tarifa, activo, tipo', 'numerical', 'integerOnly'=>true),
+			array('nombre', 'length', 'max'=>255),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, servicio_mueble_id, presupuesto_id', 'safe', 'on'=>'search'),
+			array('id, nombre, tarifa, activo, tipo', 'safe', 'on'=>'search'),
 		);
-	}
-	public function getDescripcion(){
-		if($this->servicio && $this->mueblepunto)
-			return $this->mueblepunto->Descripcion.' '.$this->servicio->descripcion;
-	}
-	public function getServicioDescripcion(){
-		if($this->servicio)
-			return $this->servicio->descripcion;
-	}
-	public function getTarifa(){
-			return $this->tarifa_servicio*$this->cant_servicio;
-	}
-	public function getMueblePuntoDescripcion(){
-		if($this->servicio)
-			return $this->mueblepunto->Descripcion;
 	}
 
 	/**
@@ -61,11 +45,6 @@ class MueblePresupuesto extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'acciones' => array(self::HAS_MANY, 'Accion', 'mueble_presupuesto_id'),
-			'adicionales' => array(self::HAS_MANY, 'Adicional', 'mueble_presupuesto_id'),
-			'presupuesto' => array(self::BELONGS_TO, 'Presupuesto', 'presupuesto_id'),
-			'servicio' => array(self::BELONGS_TO, 'ServicioMueble', 'servicio_mueble_id'),
-			'mueblepunto' => array(self::BELONGS_TO, 'MueblePunto', 'mueble_punto_id'),
 		);
 	}
 
@@ -76,8 +55,10 @@ class MueblePresupuesto extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'servicio_mueble_id' => 'Servicio Mueble',
-			'presupuesto_id' => 'Presupuesto',
+			'nombre' => 'Nombre',
+			'tarifa' => 'Tarifa',
+			'activo' => 'Activo',
+			'tipo' => 'Tipo',
 		);
 	}
 
@@ -100,8 +81,10 @@ class MueblePresupuesto extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('servicio_mueble_id',$this->servicio_mueble_id);
-		$criteria->compare('presupuesto_id',$this->presupuesto_id);
+		$criteria->compare('nombre',$this->nombre,true);
+		$criteria->compare('tarifa',$this->tarifa);
+		$criteria->compare('activo',$this->activo);
+		$criteria->compare('tipo',$this->tipo);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -112,7 +95,7 @@ class MueblePresupuesto extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return MueblePresupuesto the static model class
+	 * @return TarifaManoObra the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{

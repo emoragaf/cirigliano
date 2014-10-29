@@ -30,9 +30,15 @@ $this->menu=array(
 
 
 <table class="table table-condensed">
+<?php if ($model->visita_preventiva): ?>
+	<tr>
+		<td colspan="3"><h4><?php echo TbHtml::labelTb('Visita Preventiva', array('color' => TbHtml::LABEL_COLOR_INFO)); ?> Estado: <?php echo $model->nombreEstado; ?></h4></td>
+	</tr>
+<?php else: ?>
 <tr>
 	<td colspan="3"><h4>Estado: <?php echo $model->nombreEstado; ?></h4></td>
 </tr>
+<?php endif ?>
 <tr>
 	<td><b>Fecha Creación: <?php echo date("d-m-Y",strtotime($model->fecha_creacion)) ?></b></td>
 	<td><b>Fecha Visita: <?php echo $model->fecha_visita !== null ? date("d-m-Y",strtotime($model->fecha_visita)) : 'No asignado' ?></b></td>
@@ -92,6 +98,15 @@ $this->menu=array(
 		</tr>
 		</tr>
 		<?php endforeach ?>
+		<?php foreach ($presupuesto->manosobra as $a): ?>
+		<tr>
+			<td><?php echo $a->Descripcion?></td>
+			<td></td>
+			<td><?php echo $a->Tarifa ?></td>
+			<td><?php echo $a->Tarifa ?></td>
+		</tr>
+		</tr>
+		<?php endforeach ?>
 		<?php if ($presupuesto->tarifa_traslado && $presupuesto->tipo_tarifa_traslado): ?>
 			<tr>
 				<td>Tarifa Traslado</td>
@@ -106,6 +121,15 @@ $this->menu=array(
 			<td>1</td>
 			<td><?php echo $t->tarifa_instalacion ?></td>
 			<td><?php echo $t->tarifa_instalacion ?></td>
+		</tr>
+		</tr>
+		<?php endforeach ?>
+		<?php foreach ($presupuesto->adicionales as $a): ?>
+		<tr>
+			<td><?php echo $a->Descripcion?></td>
+			<td><?php echo $a->cantidad ?></td>
+			<td><?php echo $a->tarifa ?></td>
+			<td><?php echo $a->tarifa ?></td>
 		</tr>
 		</tr>
 		<?php endforeach ?>
