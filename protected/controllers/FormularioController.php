@@ -192,14 +192,44 @@ class FormularioController extends Controller
 						}
 					}
 				}
-				if($visita->estado == 3){
-					//Enviar email
-
-					$visita->estado = 4;
-					$visita->save();
-				}
 				Informe::InformePpt($visita->id);
 				Informe::InformePdf($visita->id);
+				if($visita->estado == 3){
+					//Enviar email
+					//Enviar email
+					$email = Yii::app()->mandrillwrap;
+					$email->mandrillKey = 'dLsiSqgctG1atlNvHqVdVg';
+					$email->text = "Informe Solicitud Reparación ".$visita->punto->direccion."\nFecha Ingreso: ".date('d-m-Y',strtotime($visita->fecha_visita));
+					$email->html = "<h1>Informe Solicitud Reparación ".$visita->punto->direccion."</h1><p>Fecha Ingreso: ".date('d-m-Y',strtotime($visita->fecha_visita))."</p>";
+					$email->subject = "Informe Solicitud Reparación";
+					$email->fromName = "emoraga";
+					$email->fromEmail = "emoraga@hbl.cl";
+					$email->to = array(
+			            array(
+			                'email' => 'o0eversor0o@gmail.com',
+			                'name' => 'Eduardo Moraga',
+			                'type' => 'to'
+			            ),
+			            array(
+			                'email' => 'e.moraga@yahoo.com',
+			                'name' => 'Eduardo Moraga',
+			                'type' => 'to'
+			            ),
+			            array(
+			                'email' => 'e.moraga@live.cl',
+			                'name' => 'Eduardo Moraga',
+			                'type' => 'to'
+			            ),
+			        );
+			        $content = base64_encode(file_get_contents(Yii::getPathOfAlias('webroot')."/uploads/informes/".$visita->punto_id."/".$visita->id.".pdf"));
+			        $email->tags = array('informe-MovistarMantencion','prueba');
+					$email->attachments = array(array('type'=>'application/pdf','name'=>'Informe Solicitud '.$visita->punto->direccion.' '.date('d-m-Y',strtotime($visita->fecha_visita)),'content'=>$content));
+					$email->images = array();
+					$email->sendEmail();
+					//$visita->estado = 4;
+					
+					$visita->save();
+				}
 				$this->redirect(array('Visita/view','id'=>$visita->id));
 			}
 			

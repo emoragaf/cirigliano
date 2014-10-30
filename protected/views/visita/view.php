@@ -142,3 +142,33 @@ $this->menu=array(
 <?php endforeach ?>
 
 <?php endif ?>
+<?php if ($model->estado != 0 && isset($model->informe)): ?>
+<h2>Fotos</h2>
+<div class="row">
+	<?php foreach ($model->informe->fotos as $foto): ?>	
+		<?php if ($foto->tipo_foto_id != 1 && $foto->tipo_foto_id != 2 && $foto->tipo_foto_id != 8 && $foto->tipo_foto_id != 9): ?>		
+			<div class="span4">
+				<h4><?php echo $foto->tipo->nombre; ?></h4>
+				<?php 
+				$url = Yii::app()->assetManager->publish($foto->foto->path.$foto->foto->id.'.'.$foto->foto->extension);
+				echo '<img src="'.$url.'">';
+				?>
+			</div>
+		<?php endif ?>		
+	<?php endforeach ?>
+</div>
+<h3>Reparaciones</h3>
+<div class="row">
+	<?php foreach ($model->informe->fotos as $foto): ?>	
+		<?php if ($foto->tipo_foto_id == 1 || $foto->tipo_foto_id == 2 || $foto->tipo_foto_id == 8 || $foto->tipo_foto_id == 9): ?>		
+			<div class="span3">
+				<h5><?php echo $foto->item != null? $foto->Item->Descripcion.' '.$foto->tipo->nombre : $foto->tipo->nombre?></h5>
+				<?php 
+				$url = Yii::app()->assetManager->publish($foto->foto->path.$foto->foto->id.'.'.$foto->foto->extension);
+				echo '<img src="'.$url.'">';
+				?>
+			</div>
+		<?php endif ?>		
+	<?php endforeach ?>
+</div>
+<?php endif ?>

@@ -46,7 +46,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 function addPersonaPunto()
 {
     <?php echo CHtml::ajax(array(
-            'url'=>array('Visita/AddNewPersonaPunto','id'=>$id),
+            'url'=>array('Visita/AddNewPersonaPunto','id'=>$model->id_punto),
             'data'=> "js:$(this).serialize()",
             'type'=>'post',
             'dataType'=>'json',

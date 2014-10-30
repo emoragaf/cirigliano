@@ -30,11 +30,11 @@ class NotificarPersona extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id, punto_id, persona_punto_id', 'required'),
-			array('id, punto_id, persona_punto_id', 'numerical', 'integerOnly'=>true),
+			array('punto_id, persona_id', 'required'),
+			array('id, punto_id, persona_id', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, punto_id, persona_punto_id', 'safe', 'on'=>'search'),
+			array('id, punto_id, persona_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -47,7 +47,7 @@ class NotificarPersona extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'punto' => array(self::BELONGS_TO, 'Punto', 'punto_id'),
-			'personaPunto' => array(self::BELONGS_TO, 'PersonaPunto', 'persona_punto_id'),
+			'persona' => array(self::BELONGS_TO, 'Persona', 'persona_id'),
 		);
 	}
 

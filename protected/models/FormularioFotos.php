@@ -52,6 +52,14 @@ class FormularioFotos extends CActiveRecord
 	/**
 	 * @return array customized attribute labels (name=>label)
 	 */
+	public function getItem(){
+		$model = $this->tipo->model;
+		$item = $model::model()->findByPk($this->item_foto_id);
+		if($item)
+			return $item;
+		else
+			return null;
+	}
 	public function attributeLabels()
 	{
 		return array(

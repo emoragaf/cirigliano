@@ -389,6 +389,36 @@ class VisitaController extends Controller
 
 		if($model->estado ==  1 && $model->formulario){
 			//Enviar email
+			$email = Yii::app()->mandrillwrap;
+			$email->mandrillKey = 'dLsiSqgctG1atlNvHqVdVg';
+			$email->text = "Informe Solicitud Reparación ".$model->punto->direccion."\nFecha Ingreso: ".date('d-m-Y',strtotime($model->fecha_visita));
+			$email->html = "<h1>Informe Solicitud Reparación ".$model->punto->direccion."</h1><p>Fecha Ingreso: ".date('d-m-Y',strtotime($model->fecha_visita))."</p>";
+			$email->subject = "Informe Solicitud Reparación";
+			$email->fromName = "emoraga";
+			$email->fromEmail = "emoraga@hbl.cl";
+			$email->to = array(
+	            array(
+	                'email' => 'o0eversor0o@gmail.com',
+	                'name' => 'Eduardo Moraga',
+	                'type' => 'to'
+	            ),
+	            array(
+	                'email' => 'e.moraga@yahoo.com',
+	                'name' => 'Eduardo Moraga',
+	                'type' => 'to'
+	            ),
+	            array(
+	                'email' => 'e.moraga@live.cl',
+	                'name' => 'Eduardo Moraga',
+	                'type' => 'to'
+	            ),
+	        );
+	        $content = base64_encode(file_get_contents(Yii::getPathOfAlias('webroot')."/uploads/informes/".$model->punto_id."/".$model->id.".pdf"));
+	        $email->tags = array('informe-MovistarMantencion','prueba');
+			$email->attachments = array(array('type'=>'application/pdf','name'=>'Informe Solicitud '.$model->punto->direccion.' '.date('d-m-Y',strtotime($model->fecha_visita)),'content'=>$content));
+			$email->images = array();
+			//$email->sendEmail();
+			
 			$model->estado = 4;
 		}
 		else{

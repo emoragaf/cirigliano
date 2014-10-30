@@ -52,6 +52,6 @@ class mandrillwrap extends CApplicationComponent {
 	    $async = false;
 	    $ip_pool = 'Main Pool';
 	    $result = $mandrill->messages->send($message, $async, $ip_pool);
-	    print_r($result);
+	    return $result;
 	    }
 	}

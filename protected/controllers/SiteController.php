@@ -48,28 +48,18 @@ class SiteController extends Controller
 		$email->html = "<h1>Prueba 4 mandrillwrap</h1><p>Este es un párrafo</p>";
 		$email->subject = "Prueba con registros dns";
 		$email->fromName = "emoraga";
-		$email->fromEmail = "emoraga@hbl.cl";
+		$email->fromEmail = "egallardo@hbl.cl";
 		$email->to = array(
             array(
                 'email' => 'o0eversor0o@gmail.com',
                 'name' => 'Eduardo Moraga',
                 'type' => 'to'
             ),
-            array(
-                'email' => 'e.moraga@yahoo.com',
-                'name' => 'Eduardo Moraga',
-                'type' => 'cc'
-            ),
-            array(
-                'email' => 'e.moraga@live.cl',
-                'name' => 'Eduardo Moraga',
-                'type' => 'cc'
-            ),
         );
         $email->tags = array('test','prueba');
 		$email->attachments = array();
 		$email->images = array();
-		echo $email->sendEmail();
+		print_r($email->sendEmail());
 
 		//$this->redirect(Yii::app()->homeUrl);
 
@@ -99,6 +89,17 @@ class SiteController extends Controller
 	{
 		
 		$this->render('gstore');
+	}
+	public function actionPoblarNotificarPersona()
+	{	
+		$puntos = Punto::model()->findAll();
+		foreach ($puntos as $punto) {
+			$notificar = new NotificarPersona;
+			$notificar->punto_id = $punto->id;
+			$notificar->persona_id = 1;
+			$notificar->save();
+		}
+		echo 'Completado';
 	}
 
 	public function actionUpload()
