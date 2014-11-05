@@ -188,6 +188,147 @@ class DefaultController extends Controller
 		}
 		echo 'Completado';
 	}
+
+	public function actionReporteElementos($year = null)
+	{
+		if($year){
+			//$total = 0;
+			//$criteria2 = new CDbCriteria();
+			//$criteria2->addBetweenCondition('fecha_ejecucion','2012-12-26','2013-12-25');
+			//$total2 = count(Reparacion::model()->findAll($criteria2));
+			$reparaciones = array();
+			for($i =1 ;$i<=12;$i++){
+				if($i == 1){
+					$desde = ($year-1).'-12-26';
+					
+				}
+				else
+					$desde = $year.'-'.($i-1).'-26';
+				$hasta = $year.'-'.$i.'-25';
+
+				//echo $desde.'-'.$hasta.' ';
+				
+				$criteria = new CDbCriteria();
+				$criteria->addBetweenCondition('fecha_ejecucion',$desde,$hasta);
+				$reparacionesMes[$i] = Reparacion::model()->findAll($criteria);
+				//$total += $reparacionesMes[$i];
+				//echo $reparacionesMes[$i];
+				//echo '<br>';
+			}
+
+			//var_dump($reparacionesMes);
+
+			
+			Yii::import('application.extensions.PHPExcel',true);
+
+
+			$objPHPExcel = new PHPExcel();
+	    	
+			$elementosMesRegion = array();
+			foreach ($reparacionesMes as $mes => $reparaciones) {
+				foreach ($reparaciones as $reparacion) {
+					if(!isset($elementosMesRegion[$mes]))
+						$elementosMesRegion[$mes] = array();
+					if (isset($elementosMesRegion[$mes][$reparacion->idPunto->idComuna->idProvincia->id_region])) {
+
+						foreach ($reparacion->detalleReparacions as $detalle) {
+							foreach ($detalle->presupuestoReparacionNormals as $pnormal) {	
+								if (isset($elementosMesRegion[$mes][$reparacion->idPunto->idComuna->idProvincia->id_region][$pnormal->idPrecioReparacion->descripcion] )) {
+									$elementosMesRegion[$mes][$reparacion->idPunto->idComuna->idProvincia->id_region][$pnormal->idPrecioReparacion->descripcion]['cantidad'] += $pnormal->cantidad;
+									if ($pnormal->cantidad <= 5){
+										$elementosMesRegion[$mes][$reparacion->idPunto->idComuna->idProvincia->id_region][$pnormal->idPrecioReparacion->descripcion]['monto'] += $pnormal->cantidad*$pnormal->idPrecioReparacion->mano_de_obra_rango_1;
+									}
+
+									if ($pnormal->cantidad > 5 && $pnormal->cantidad <= 10){
+										$elementosMesRegion[$mes][$reparacion->idPunto->idComuna->idProvincia->id_region][$pnormal->idPrecioReparacion->descripcion]['monto'] += $pnormal->cantidad*$pnormal->idPrecioReparacion->mano_de_obra_rango_2;
+
+									}
+									if ($pnormal->cantidad > 10){
+										$elementosMesRegion[$mes][$reparacion->idPunto->idComuna->idProvincia->id_region][$pnormal->idPrecioReparacion->descripcion]['monto'] += $pnormal->cantidad*$pnormal->idPrecioReparacion->mano_de_obra_rango_3;
+									}
+								}
+								else{
+									$elementosMesRegion[$mes][$reparacion->idPunto->idComuna->idProvincia->id_region][$pnormal->idPrecioReparacion->descripcion] = array('cantidad'=>$pnormal->cantidad);
+									if ($pnormal->cantidad <= 5){
+										$elementosMesRegion[$mes][$reparacion->idPunto->idComuna->idProvincia->id_region][$pnormal->idPrecioReparacion->descripcion]['monto'] = $pnormal->cantidad*$pnormal->idPrecioReparacion->mano_de_obra_rango_1;
+									}
+
+									if ($pnormal->cantidad > 5 && $pnormal->cantidad <= 10){
+										$elementosMesRegion[$mes][$reparacion->idPunto->idComuna->idProvincia->id_region][$pnormal->idPrecioReparacion->descripcion]['monto'] = $pnormal->cantidad*$pnormal->idPrecioReparacion->mano_de_obra_rango_2;
+
+									}
+									if ($pnormal->cantidad > 10){
+										$elementosMesRegion[$mes][$reparacion->idPunto->idComuna->idProvincia->id_region][$pnormal->idPrecioReparacion->descripcion]['monto'] = $pnormal->cantidad*$pnormal->idPrecioReparacion->mano_de_obra_rango_3;
+									}
+								}	
+							}
+						}
+						
+					}
+					else{
+						$elementosMesRegion[$mes][$reparacion->idPunto->idComuna->idProvincia->id_region]= array();
+						foreach ($reparacion->detalleReparacions as $detalle) {
+							foreach ($detalle->presupuestoReparacionNormals as $pnormal) {
+								$elementosMesRegion[$mes][$reparacion->idPunto->idComuna->idProvincia->id_region][$pnormal->idPrecioReparacion->descripcion] = array('cantidad'=>$pnormal->cantidad);
+								if ($pnormal->cantidad <= 5){
+									$elementosMesRegion[$mes][$reparacion->idPunto->idComuna->idProvincia->id_region][$pnormal->idPrecioReparacion->descripcion]['monto'] = $pnormal->cantidad*$pnormal->idPrecioReparacion->mano_de_obra_rango_1;
+								}
+
+								if ($pnormal->cantidad > 5 && $pnormal->cantidad <= 10){
+									$elementosMesRegion[$mes][$reparacion->idPunto->idComuna->idProvincia->id_region][$pnormal->idPrecioReparacion->descripcion]['monto'] = $pnormal->cantidad*$pnormal->idPrecioReparacion->mano_de_obra_rango_2;
+
+								}
+								if ($pnormal->cantidad > 10){
+									$elementosMesRegion[$mes][$reparacion->idPunto->idComuna->idProvincia->id_region][$pnormal->idPrecioReparacion->descripcion]['monto'] = $pnormal->cantidad*$pnormal->idPrecioReparacion->mano_de_obra_rango_3;
+								}
+							}
+						}
+					}
+				}
+			}
+
+
+			
+
+
+
+
+
+			$objPHPExcel->setActiveSheetIndex(0)
+		    ->setCellValue('A1', 'Elemento')
+		    ->setCellValue('B1', 'Cantidad')
+		    ->setCellValue('C1', 'Monto')
+		    ->setCellValue('D1', 'Mes')
+		    ->setCellValue('E1', 'Region');
+		    $row =2;
+			foreach ($elementosMesRegion as $mes => $elementosRegion) {
+				foreach ($elementosRegion as $regionId => $elementos) {
+					$objPHPExcel->setActiveSheetIndex(0);
+					$region = Region::model()->findByPk($regionId);
+					foreach ($elementos as $key => $value) {
+						$objPHPExcel->setActiveSheetIndex(0)
+						->setCellValueByColumnAndRow(0, $row, $key)
+						->setCellValueByColumnAndRow(1, $row, $value['cantidad'])
+						->setCellValueByColumnAndRow(2, $row, $value['monto'])
+						->setCellValueByColumnAndRow(3, $row, $mes)
+						->setCellValueByColumnAndRow(4, $row, $region->nombre);
+						
+						$row +=1;
+					}
+				}
+			}
+
+			header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+		    header('Content-Disposition: attachment;filename="Reparaciones Elementos '.$year.'.xlsx"');
+		    header('Cache-Control: max-age=0');
+		    $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+		    $objWriter->save('php://output');
+		    exit;
+		}
+	}
+
+
+
 	public function actionPoblarCanales()
 	{
 		$canales = Canal::model()->findAll();

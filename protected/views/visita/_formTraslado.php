@@ -3,7 +3,7 @@
 /* @var $model Visita */
 /* @var $form TbActiveForm */
 $tarifas = array();
-foreach(Tarifatraslado::model()->findAll(array('condition'=>'activo=1')) as $tarifa){
+foreach(TarifaTraslado::model()->findAll(array('condition'=>'activo=1')) as $tarifa){
     $tarifas[$tarifa->id] = array('1'=>$tarifa->tarifa_a,'2'=>$tarifa->tarifa_b,'3'=>$tarifa->tarifa_c,'4'=>$tarifa->tarifa_d);
 }
 ?>
@@ -21,21 +21,71 @@ foreach(Tarifatraslado::model()->findAll(array('condition'=>'activo=1')) as $tar
     <div class="span3">
          <?php echo $form->dropDownListControlGroup($model, 'persona_punto_id',
             CHtml::listData(PersonaPunto::model()->findAll(array('condition'=>'punto_id = '.$model->punto_id)), 'id', 'Nombre'), array('empty' => 'Seleccione')); ?>
-
+        <?php echo CHtml::link('Agregar Solicitante', "",  // the link for open the dialog
+        array(
+            'style'=>'cursor: pointer; text-decoration: underline;',
+            'onclick'=>"{addPersonaPunto(); $('#dialogPersonaPunto').dialog('open');}"));?>
     </div>
+    <?php
+$this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
+    'id'=>'dialogPersonaPunto',
+    'options'=>array(
+        'title'=>'Agregar Solicitante',
+        'autoOpen'=>false,
+        'modal'=>true,
+        'width'=>550,
+        'height'=>470,
+    ),
+));?>
+<div class="divForForm"></div>
+ 
+<?php $this->endWidget();?>
+ 
+<script type="text/javascript">
+// here is the magic
+function addPersonaPunto()
+{
+    <?php echo CHtml::ajax(array(
+            'url'=>array('Visita/AddNewPersonaPunto','id'=>$model->punto_id),
+            'data'=> "js:$(this).serialize()",
+            'type'=>'post',
+            'dataType'=>'json',
+            'success'=>"js:function(data)
+            {
+                if (data.status == 'failure')
+                {
+                    $('#dialogPersonaPunto div.divForForm').html(data.div);
+                          // Here is the trick: on submit-> once again this function!
+                    $('#dialogPersonaPunto div.divForForm form').submit(addPersonaPunto);
+                }
+                else
+                {   
+                    $('#dialogPersonaPunto').dialog('close');
+                    $('#Visita_persona_punto_id').append(data.div);
+                    
+                }
+ 
+            } ",
+            ))?>;
+    return false; 
+ 
+}
+ 
+</script>
     <div class="span3">
-        <label>Fecha Tentativa</label>
-
-        <?php $this->widget('yiiwheels.widgets.datepicker.WhDatePicker', array(
-            'model'=>$model,
-            'attribute'=>'fecha_visita',
-            'name' => 'Visita[fecha_visita]',
-            'pluginOptions' => array(
-                'format' => 'dd-mm-yyyy',
+         <label>Fecha Tentativa</label>
+        <?php 
+        $this->widget('zii.widgets.jui.CJuiDatePicker',
+        array(
+                'name'=>'Visita[fecha_visita]',
                 'language'=>'es',
-            )
-                ));
-            ?>
+                'value'=>date('d-m-Y'),
+                // additional javascript options for the date picker plugin
+                'options'=>array('showAnim'=>'fold','dateFormat' => 'dd-mm-yy',),
+                'htmlOptions'=>array('style'=>'height:20px;'),
+                        
+        ));
+        ?>
     </div>
 </div>
 <div class="row">

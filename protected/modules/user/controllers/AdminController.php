@@ -42,6 +42,8 @@ class AdminController extends Controller
         $model->unsetAttributes();  // clear any default values
         if(isset($_GET['User']))
             $model->attributes=$_GET['User'];
+        	$model->superuser = 0;
+        	$model->status = 1;
 
         $this->render('index',array(
             'model'=>$model,
@@ -90,7 +92,7 @@ class AdminController extends Controller
 					$profile->user_id=$model->id;
 					$profile->save();
 				}
-				$this->redirect(array('view','id'=>$model->id));
+				$this->redirect(array('admin'));
 			} else $profile->validate();
 		}
 

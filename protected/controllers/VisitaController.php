@@ -11,13 +11,12 @@ class VisitaController extends Controller
 	/**
 	 * @return array action filters
 	 */
-	public function filters()
-	{
-		return array(
-			'accessControl', // perform access control for CRUD operations
-			'postOnly + delete', // we only allow deletion via POST request
-		);
-	}
+	public function filters() {
+     return array( 
+        //it's important to add site/error, so an unpermitted user will get the error.
+        array('auth.filters.AuthFilter'),
+            );
+        }
 
 	/**
 	 * Specifies the access control rules.
@@ -178,7 +177,6 @@ class VisitaController extends Controller
 		if (isset($_POST['Visita'])) {
 			$model->attributes=$_POST['Visita'];
 			$model->fecha_visita = date('Y-m-d',strtotime($model->fecha_visita));
-
 			$p=new Presupuesto;
 			
 			$p->user_id = yii::App()->user->getId();
@@ -187,15 +185,20 @@ class VisitaController extends Controller
 
 			if ($model->save()) {
 				$p->visita_id = $model->id;
+				$p->total = 0;
 				$p->save();
+				if ($model->visita_preventiva == 1) {
+					$p->total += 27108;
+					$p->tarifa_visita_preventiva = 27108;
+					$p->save();
+				}
+
 
 
 				$model->folio = 'R'.sprintf('%07d',$model->id);
 				$model->save();
 				if (isset($_POST['selectMueblePunto'])) {
 					$ids=$_POST['selectMueblePunto'];
-					$p->total = 0;
-					$p->save();
 
 					$adicionales = $_POST['Adicional'];
 					foreach ($adicionales as $key => $m) {
@@ -215,9 +218,9 @@ class VisitaController extends Controller
 							}
 						}
 					}
-
 					$mueblesPunto = $_POST['Mueble'];
 					$flag = false;
+					
 					foreach ($mueblesPunto as $key => $servicios) {
 						if(in_array($key, $ids)){
 							if($model->visita_preventiva == 0){
@@ -266,14 +269,21 @@ class VisitaController extends Controller
 							}
 						}
 					}
-					if ($flag) {
+					if ($flag || $model->visita_preventiva == 1) {
 						$model->estado = 1;
 						$model->save();
 						$this->redirect(array('Formulario/Create','id'=>$model->id));
 						//$this->redirect(array('visita/view','id'=>$model->visita_id));
 					}
 				}
-				$this->redirect(array('visita/view','id'=>$model->id));
+				if ($model->visita_preventiva == 1) {
+						$model->estado = 1;
+						$model->save();
+						$this->redirect(array('Formulario/Create','id'=>$model->id));
+						//$this->redirect(array('visita/view','id'=>$model->visita_id));
+				}
+				else
+					$this->redirect(array('visita/view','id'=>$model->id));
 			}		
 		}
 
@@ -329,17 +339,33 @@ class VisitaController extends Controller
 				$model->save();
 
 				$mueblesPunto = $_POST['Mueble'];
+
+				if (isset($_POST['Instalacion'])) {
+					$mueblesPuntoD = $_POST['Instalacion'];
+					# code...
+				}
+				if (isset($_POST['Desinstalacion'])) {
+					$mueblesPuntoD = $_POST['Desinstalacion'];
+					# code...
+				}
 				if($mueblesPunto){
 					foreach ($mueblesPunto as $key => $mueble) {
 						$mp = MueblePunto::model()->findByPk($key);
 						$tarifaInstalacion = TarifaInstalacion::model()->find(array('condition'=>'mueble_id ='.$mp->mueble_id));
-						$p->total += $tarifaInstalacion->tarifa_a;
-						$p->save();
 						$traslado = new TrasladoPresupuesto;
 						$traslado->presupuesto_id = $p->id;
 						$traslado->mueble_punto = $key;
 						$traslado->distancia = $tarifa->distancia;
-						$traslado->tarifa_instalacion = $tarifaInstalacion->tarifa_a;
+						if(isset($_POST['Instalacion']) && isset($_POST['Instalacion'][$key])){
+							$traslado->tarifa_instalacion = $tarifaInstalacion->tarifa_a;
+							$p->total += $tarifaInstalacion->tarifa_a;
+							$p->save();
+						}
+						if(isset($_POST['Desinstalacion']) && isset($_POST['Desinstalacion'][$key])){
+							$traslado->tarifa_desinstalacion = $tarifaInstalacion->tarifa_a;
+							$p->total += $tarifaInstalacion->tarifa_a;
+							$p->save();
+						}
 						$traslado->save();
 					}
 				}

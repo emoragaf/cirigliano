@@ -67,7 +67,9 @@ function addMueblePunto()
             <tr>
                 <th>Seleccionar</th>
                 <th>Mueble</th>
-                <th>Tarifa Instalación</th>
+                <th>Instalación</th>
+                <th>Desinstalación</th>
+                <th>Tarifa Instalación/Desinstalación</th>
             </tr>
             <?php foreach ($muebles as $mueble): ?>
                 <tr>
@@ -86,6 +88,12 @@ function addMueblePunto()
                     </td>
                     <td>
                         <?php echo $mueble->mueble->descripcion.' '.$mueble->codigo;?>
+                    </td>
+                    <td>
+                        <input type="checkbox" id="Instalacion[<?php echo $mueble->id?>]" name="Instalacion[<?php echo $mueble->id?>]">
+                    </td>
+                    <td>
+                        <input type="checkbox" id="Desinstalacion[<?php echo $mueble->id?>]" name="Desinstalacion[<?php echo $mueble->id?>]">
                     </td>
                     <td>
                         <div style="display:none" id="i_<?php echo $mueble->id?>">

@@ -28,18 +28,6 @@
 		<?php echo $form->textField($model,'email',array('size'=>60,'maxlength'=>128)); ?>
 		<?php echo $form->error($model,'email'); ?>
 	</div>
-
-	<div class="row">
-		<?php echo $form->labelEx($model,'superuser'); ?>
-		<?php echo $form->dropDownList($model,'superuser',User::itemAlias('AdminStatus')); ?>
-		<?php echo $form->error($model,'superuser'); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->labelEx($model,'status'); ?>
-		<?php echo $form->dropDownList($model,'status',User::itemAlias('UserStatus')); ?>
-		<?php echo $form->error($model,'status'); ?>
-	</div>
 <?php 
 		$profileFields=$profile->getFields();
 		if ($profileFields) {

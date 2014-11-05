@@ -2,12 +2,12 @@
 setlocale(LC_ALL, 'es_ES');
 $meses=array();
 if(date('d') >= 25){
-    for($i=1; $i>-6; $i--){
+    for($i=1; $i>0; $i--){
     $meses[date('m-Y',strtotime($i.' month'))] = strftime("%B %Y", strtotime($i.' month'));
     }
 }
 else{
-    for($i=0; $i>-6; $i--){
+    for($i=0; $i>-1; $i--){
     $meses[date('m-Y',strtotime($i.' month'))] = strftime("%B %Y", strtotime($i.' month'));
     }
 }
@@ -16,20 +16,27 @@ else{
 <div class="container-fluid">
 	<h1>Facturación</h1>
     <div class="row">
+        <h5>Periodo</h5>
         <?php 
             $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array( 
                 'enableAjaxValidation'=>true, 'id'=>'formulario-form',
             ));
         ?>
-        <div class="span3">
+        <div class="span2">
             <?php echo TbHtml::dropDownList('filtros[mes]', $mes, $meses); ?>
         </div>
 
+        <div class="span2">
+            <?php echo TbHtml::submitButton('Seleccionar Periodo',array('class'=>'btn-info')); ?>
+        </div>
         <div class="span3">
-            <?php echo TbHtml::submitButton('Aceptar'); ?>
+            <?php echo CHtml::link(TbHtml::icon(TbHtml::ICON_DOWNLOAD_ALT,array('color'=>'white')).' Descargar Excel'
+,array('Facturacion/ExportarExcel','mes'=>$mes),array('class'=>'btn btn-success')); ?>
+            
         </div>
 
         <?php $this->endWidget(); ?>
+                                         
     </div>
     <div class="row">
          <?php $this->widget('bootstrap.widgets.TbTabs', array(

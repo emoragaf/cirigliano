@@ -9,7 +9,7 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>Yii::t('app','model.Punto.create'),'url'=>array('create')),
+	array('label'=>Yii::t('app','model.Punto.create'),'url'=>array('create'),'visible'=>Yii::app()->user->checkAccess('Punto.create')),
 );
 
 Yii::app()->clientScript->registerScript('search', "
@@ -52,6 +52,7 @@ foreach (CHtml::listData(Comuna::model()->findAll(array('order'=>'nombre')), 'id
 		            'url'=>'Yii::app()->createUrl("Visita/crear", array("id"=>$data->id))',
 		        ),
 		    ),
+            'visible'=>Yii::app()->user->checkAccess('Visita.crear'),
 		),
 		'direccion',
 		array(
@@ -63,7 +64,8 @@ foreach (CHtml::listData(Comuna::model()->findAll(array('order'=>'nombre')), 'id
 				'name'=>'comuna_id',
 				'value'=>'isset($data->comuna) ? $data->comuna->nombre : null',
 				'filter'=>$this->widget('yiiwheels.widgets.select2.WhSelect2', array(
-					'name' => 'Punto[comuna_id]',
+					'model' => $model,
+					'attribute'=>'comuna_id',
 					'data' => array(''=>'',0=>'Todos') + CHtml::listData(Comuna::model()->findAll(array('order'=>'nombre')), 'id', 'nombre'),
 					'pluginOptions' => array(
 			            'placeholder' => 'Comuna',
@@ -81,7 +83,8 @@ foreach (CHtml::listData(Comuna::model()->findAll(array('order'=>'nombre')), 'id
 				'name'=>'distribuidor_id',
 				'value'=>'isset($data->distribuidor) ? $data->distribuidor->nombre : null',
 				'filter'=>$this->widget('yiiwheels.widgets.select2.WhSelect2', array(
-					'name' => 'Punto[distribuidor_id]',
+					'model' => $model,
+					'attribute'=>'distribuidor_id',
 					'data' => array(''=>'',0=>'Todos') + CHtml::listData(Distribuidor::model()->findAll(array('order'=>'nombre')), 'id', 'nombre'),
 					'pluginOptions' => array(
 			            'placeholder' => 'Distribuidor',
@@ -92,7 +95,13 @@ foreach (CHtml::listData(Comuna::model()->findAll(array('order'=>'nombre')), 'id
 				),
 		array(
 			'class'=>'bootstrap.widgets.TbButtonColumn',
-			'template'=>'{view}{update}{delete}',
+			'template'=>Yii::app()->user->checkAccess('Punto.update') && Yii::app()->user->checkAccess('Punto.delete') ? '{view}{update}{delete}': '{view}',
+			'buttons'=>array
+		    (
+		        'view' => array
+		        (
+		        ),
+		    ),
 		),
 	),
 )); ?>

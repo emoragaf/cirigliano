@@ -43,6 +43,8 @@ class Informe
 			$fotosOtros = array();
 			$fotosMueble = array();
 			$fotosAdicionales = array();
+			$fotosVPreventivaAntes = array();
+			$fotosVPreventivaDespues = array();
 
 			foreach ($fotos as $foto) {
 				if($foto->tipo_foto_id == 1){
@@ -88,6 +90,12 @@ class Informe
 					}
 					else
 						$fotosAdicionales[$foto->item_foto_id] = array('Despues'=>array($foto));
+				}
+				if($foto->tipo_foto_id == 10){
+					$fotosVPreventivaAntes[] =$foto;
+				}
+				if($foto->tipo_foto_id == 11){
+					$fotosVPreventivaDespues[] =$foto;
 				}
 				if($foto->tipo_foto_id == 3){
 					$fotosActa[] = $foto;
@@ -344,6 +352,31 @@ class Informe
 				$cell->getBorders()->getBottom()->setLineWidth(2)
 				                                ->setLineStyle(PhpOffice\PhpPowerpoint\Style\Border::LINE_SINGLE);
             }
+            if ($visita->visita_preventiva == 1 && $p[0]->tarifa_visita_preventiva != null) {
+            	$row = $shape->createRow();
+				$row->getFill()->setFillType(PhpOffice\PhpPowerpoint\Style\Fill::FILL_SOLID)
+				               ->setStartColor(new PhpOffice\PhpPowerpoint\Style\Color('FFFFFFFF'));
+				$cell = $row->nextCell();
+				$cell->createTextRun('Visita Preventiva')->getFont()->setBold(true)
+				                                            ->setSize(14);
+                $cell->setWidth(400);
+				$cell->getBorders()->getBottom()->setLineWidth(2)
+				                                ->setLineStyle(PhpOffice\PhpPowerpoint\Style\Border::LINE_SINGLE);
+				$cell = $row->nextCell();
+				$cell->getActiveParagraph()->getAlignment()->setHorizontal( PhpOffice\PhpPowerpoint\Style\Alignment::HORIZONTAL_RIGHT );
+				$cell->createTextRun('1')->getFont()->setBold(true)
+				                                            ->setSize(14);
+                $cell->setWidth(120);
+				$cell->getBorders()->getBottom()->setLineWidth(2)
+				                                ->setLineStyle(PhpOffice\PhpPowerpoint\Style\Border::LINE_SINGLE);
+				$cell = $row->nextCell();
+	            $cell->getActiveParagraph()->getAlignment()->setHorizontal( PhpOffice\PhpPowerpoint\Style\Alignment::HORIZONTAL_RIGHT );
+				$cell->createTextRun($p[0]->tarifa_visita_preventiva)->getFont()->setBold(true)
+				                                            ->setSize(14);
+				$cell->setWidth(180);
+				$cell->getBorders()->getBottom()->setLineWidth(2)
+				                                ->setLineStyle(PhpOffice\PhpPowerpoint\Style\Border::LINE_SINGLE);
+            }
 			foreach ($mps as $accion) {
 				$row = $shape->createRow();
 				$row->getFill()->setFillType(PhpOffice\PhpPowerpoint\Style\Fill::FILL_SOLID)
@@ -563,6 +596,255 @@ class Informe
 				      ->setOffsetY(120 + $OffsetY);
 				}
 			}
+
+			// Otros
+			$cant = count($fotosOtros);
+			if($cant == 1)
+			{
+				$height = 500;
+				$OffsetY = 200;
+				$OffsetX = 550;
+			}
+			else{
+				$height = 250;
+				$OffsetY = 200;
+				$OffsetX = 400;
+			}
+			for ($i=1; $i <= $cant ; $i++) { 
+				$foto = $fotosOtros[$i-1];
+				if($i == 1 || $i%5 == 0){
+					$slide = $objPHPPowerPoint->createSlide();
+
+					$shape = $slide->createRichTextShape()
+					      ->setHeight(300)
+					      ->setWidth(600)
+					      ->setOffsetX(170)
+					      ->setOffsetY(50);
+					$shape->getActiveParagraph()->getAlignment()->setHorizontal( PhpOffice\PhpPowerpoint\Style\Alignment::HORIZONTAL_CENTER );
+					$textRun = $shape->createTextRun('Otros');
+					$textRun->getFont()->setBold(true)
+					                   ->setSize(30)
+					                   ->setColor( new PhpOffice\PhpPowerpoint\Style\Color( '000000' ) );
+
+					$shape = $slide->createDrawingShape();
+						$shape->setName('Movistar')
+				      ->setDescription('Logo Movistar')
+				       ->setPath(Yii::getPathOfAlias('webroot').'/images/logo_movistar.jpg')
+				      ->setHeight(80)
+				      ->setOffsetX(750)
+				      ->setOffsetY(10);
+
+			      	$shape = $slide->createDrawingShape();
+						$shape->setName('Cirigliano')
+				      ->setDescription('Logo Cirigliano')
+				      ->setPath(Yii::getPathOfAlias('webroot').'/images/logo_ciri.png')
+				      ->setHeight(60)
+				      ->setOffsetX(740)
+				      ->setOffsetY(650);
+				}
+				if($i%2 == 0 && $i%4 != 0) {
+					$shape = $slide->createDrawingShape();
+						$shape->setName('Otros')
+				      ->setDescription('Foto Otros')
+				      ->setPath($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension)
+				      ->setHeight($height)
+				      ->setOffsetX(120 + $OffsetX)
+				      ->setOffsetY(120);
+				}
+				if($i%2 == 0 && $i%4 == 0) {
+					$shape = $slide->createDrawingShape();
+						$shape->setName('Otros')
+				      ->setDescription('Foto Otros')
+				      ->setPath($foto->foto->path.'/'.$foto->foto_id.'.'.$foto->foto->extension)
+				      ->setHeight($height)
+				      ->setOffsetX(120 + $OffsetX)
+				      ->setOffsetY(120 + $OffsetY);
+				}
+				if($i%2 != 0 && $i%3 != 0) {
+					$shape = $slide->createDrawingShape();
+						$shape->setName('Otros')
+				      ->setDescription('Foto Otros')
+				      ->setPath($foto->foto->path.'/'.$foto->foto_id.'.'.$foto->foto->extension)
+				      ->setHeight($height)
+				      ->setOffsetX(120)
+				      ->setOffsetY(120);
+				}
+				if($i%2 != 0 && $i%3 == 0) {
+					$shape = $slide->createDrawingShape();
+						$shape->setName('Otros')
+				      ->setDescription('Foto Otros')
+				      ->setPath($foto->foto->path.'/'.$foto->foto_id.'.'.$foto->foto->extension)
+				      ->setHeight($height)
+				      ->setOffsetX(120)
+				      ->setOffsetY(120 + $OffsetY);
+				}
+			}
+			// Visita Preventiva Antes
+			$cant = count($fotosVPreventivaAntes);
+			if($cant == 1)
+			{
+				$height = 500;
+				$OffsetY = 200;
+				$OffsetX = 550;
+			}
+			else{
+				$height = 250;
+				$OffsetY = 200;
+				$OffsetX = 400;
+			}
+			for ($i=1; $i <= $cant ; $i++) { 
+				$foto = $fotosVPreventivaAntes[$i-1];
+				if($i == 1 || $i%5 == 0){
+					$slide = $objPHPPowerPoint->createSlide();
+
+					$shape = $slide->createRichTextShape()
+					      ->setHeight(300)
+					      ->setWidth(600)
+					      ->setOffsetX(170)
+					      ->setOffsetY(50);
+					$shape->getActiveParagraph()->getAlignment()->setHorizontal( PhpOffice\PhpPowerpoint\Style\Alignment::HORIZONTAL_CENTER );
+					$textRun = $shape->createTextRun('Antes');
+					$textRun->getFont()->setBold(true)
+					                   ->setSize(30)
+					                   ->setColor( new PhpOffice\PhpPowerpoint\Style\Color( '000000' ) );
+
+					$shape = $slide->createDrawingShape();
+						$shape->setName('Movistar')
+				      ->setDescription('Logo Movistar')
+				       ->setPath(Yii::getPathOfAlias('webroot').'/images/logo_movistar.jpg')
+				      ->setHeight(80)
+				      ->setOffsetX(750)
+				      ->setOffsetY(10);
+
+			      	$shape = $slide->createDrawingShape();
+						$shape->setName('Cirigliano')
+				      ->setDescription('Logo Cirigliano')
+				      ->setPath(Yii::getPathOfAlias('webroot').'/images/logo_ciri.png')
+				      ->setHeight(60)
+				      ->setOffsetX(740)
+				      ->setOffsetY(650);
+				}
+				if($i%2 == 0 && $i%4 != 0) {
+					$shape = $slide->createDrawingShape();
+						$shape->setName('Antes')
+				      ->setDescription('Visita Preventiva Antes')
+				      ->setPath($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension)
+				      ->setHeight($height)
+				      ->setOffsetX(120 + $OffsetX)
+				      ->setOffsetY(120);
+				}
+				if($i%2 == 0 && $i%4 == 0) {
+					$shape = $slide->createDrawingShape();
+						$shape->setName('Antes')
+				      ->setDescription('Visita Preventiva Antes')
+				      ->setPath($foto->foto->path.'/'.$foto->foto_id.'.'.$foto->foto->extension)
+				      ->setHeight($height)
+				      ->setOffsetX(120 + $OffsetX)
+				      ->setOffsetY(120 + $OffsetY);
+				}
+				if($i%2 != 0 && $i%3 != 0) {
+					$shape = $slide->createDrawingShape();
+						$shape->setName('Antes')
+				      ->setDescription('Visita Preventiva Antes')
+				      ->setPath($foto->foto->path.'/'.$foto->foto_id.'.'.$foto->foto->extension)
+				      ->setHeight($height)
+				      ->setOffsetX(120)
+				      ->setOffsetY(120);
+				}
+				if($i%2 != 0 && $i%3 == 0) {
+					$shape = $slide->createDrawingShape();
+						$shape->setName('Antes')
+				      ->setDescription('Visita Preventiva Antes')
+				      ->setPath($foto->foto->path.'/'.$foto->foto_id.'.'.$foto->foto->extension)
+				      ->setHeight($height)
+				      ->setOffsetX(120)
+				      ->setOffsetY(120 + $OffsetY);
+				}
+			}
+
+			// Visita Preventiva Despues
+			$cant = count($fotosVPreventivaDespues);
+			if($cant == 1)
+			{
+				$height = 500;
+				$OffsetY = 200;
+				$OffsetX = 550;
+			}
+			else{
+				$height = 250;
+				$OffsetY = 200;
+				$OffsetX = 400;
+			}
+			for ($i=1; $i <= $cant ; $i++) { 
+				$foto = $fotosVPreventivaDespues[$i-1];
+				if($i == 1 || $i%5 == 0){
+					$slide = $objPHPPowerPoint->createSlide();
+
+					$shape = $slide->createRichTextShape()
+					      ->setHeight(300)
+					      ->setWidth(600)
+					      ->setOffsetX(170)
+					      ->setOffsetY(50);
+					$shape->getActiveParagraph()->getAlignment()->setHorizontal( PhpOffice\PhpPowerpoint\Style\Alignment::HORIZONTAL_CENTER );
+					$textRun = $shape->createTextRun('Despues');
+					$textRun->getFont()->setBold(true)
+					                   ->setSize(30)
+					                   ->setColor( new PhpOffice\PhpPowerpoint\Style\Color( '000000' ) );
+
+					$shape = $slide->createDrawingShape();
+						$shape->setName('Movistar')
+				      ->setDescription('Logo Movistar')
+				       ->setPath(Yii::getPathOfAlias('webroot').'/images/logo_movistar.jpg')
+				      ->setHeight(80)
+				      ->setOffsetX(750)
+				      ->setOffsetY(10);
+
+			      	$shape = $slide->createDrawingShape();
+						$shape->setName('Cirigliano')
+				      ->setDescription('Logo Cirigliano')
+				      ->setPath(Yii::getPathOfAlias('webroot').'/images/logo_ciri.png')
+				      ->setHeight(60)
+				      ->setOffsetX(740)
+				      ->setOffsetY(650);
+				}
+				if($i%2 == 0 && $i%4 != 0) {
+					$shape = $slide->createDrawingShape();
+						$shape->setName('Despues')
+				      ->setDescription('Visita Preventiva Despues')
+				      ->setPath($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension)
+				      ->setHeight($height)
+				      ->setOffsetX(120 + $OffsetX)
+				      ->setOffsetY(120);
+				}
+				if($i%2 == 0 && $i%4 == 0) {
+					$shape = $slide->createDrawingShape();
+						$shape->setName('Despues')
+				      ->setDescription('Visita Preventiva Despues')
+				      ->setPath($foto->foto->path.'/'.$foto->foto_id.'.'.$foto->foto->extension)
+				      ->setHeight($height)
+				      ->setOffsetX(120 + $OffsetX)
+				      ->setOffsetY(120 + $OffsetY);
+				}
+				if($i%2 != 0 && $i%3 != 0) {
+					$shape = $slide->createDrawingShape();
+						$shape->setName('Despues')
+				      ->setDescription('Visita Preventiva Despues')
+				      ->setPath($foto->foto->path.'/'.$foto->foto_id.'.'.$foto->foto->extension)
+				      ->setHeight($height)
+				      ->setOffsetX(120)
+				      ->setOffsetY(120);
+				}
+				if($i%2 != 0 && $i%3 == 0) {
+					$shape = $slide->createDrawingShape();
+						$shape->setName('Despues')
+				      ->setDescription('Visita Preventiva Despues')
+				      ->setPath($foto->foto->path.'/'.$foto->foto_id.'.'.$foto->foto->extension)
+				      ->setHeight($height)
+				      ->setOffsetX(120)
+				      ->setOffsetY(120 + $OffsetY);
+				}
+			}
+
 
 			// Muebles
 			
@@ -915,6 +1197,8 @@ class Informe
 			$fotosOtros = array();
 			$fotosMueble = array();
 			$fotosAdicionales = array();
+			$fotosVPreventivaAntes = array();
+			$fotosVPreventivaDespues = array();
 
 			foreach ($fotos as $foto) {
 				if($foto->tipo_foto_id == 1){
@@ -960,6 +1244,12 @@ class Informe
 					}
 					else
 						$fotosAdicionales[$foto->item_foto_id] = array('Despues'=>array($foto));
+				}
+				if($foto->tipo_foto_id == 10){
+					$fotosVPreventivaAntes[] = $foto;
+				}
+				if($foto->tipo_foto_id == 11){
+					$fotosVPreventivaDespues[] = $foto;
 				}
 				if($foto->tipo_foto_id == 3){
 					$fotosActa[] = $foto;
@@ -1041,8 +1331,16 @@ class Informe
 				        <th style="width:15%;text-align:right">Monto</th>
 				    </tr>';
 			if($visita->tipo_visita_id == 3){
+
 				$tbl .='<tr><td>'.$p[0]->tarifaTraslado->Descripcion.'</td><td>1</td><td>'.$p[0]->TTraslado.'</td></tr>';
 			}
+			if ($visita->visita_preventiva == 1 && $p[0]->tarifa_visita_preventiva) {
+					$tbl .='<tr>
+			        <td style="width:75%;">Visita Preventiva</td>
+			        <td style="width:10%;text-align:right">1</td>
+			        <td style="width:15%;text-align:right">'.$p[0]->tarifa_visita_preventiva.'</td>
+			    </tr>';
+				}
 			foreach ($mps as $accion) {
 				$tbl .='<tr>
 			        <td style="width:75%;">'.$accion->Descripcion.'</td>
@@ -1079,7 +1377,8 @@ class Informe
 			$cant = count($fotosActa);
 			if($cant == 1)
 			{
-				$height = 400;
+				$height = 500;
+				$width = 350;
 				$baseY = 120;
 				$baseX = 120;
 			}
@@ -1087,9 +1386,16 @@ class Informe
 				$baseY = 120;
 				$baseX = 60;
 				$height = 250;
+				$width = 175;
 				$OffsetY = 200;
 				$OffsetX = 250;
 			}
+			/*
+			Image	($file,$x = '',$y = '',$w = 0,$h = 0,$type = '',$link = '',$align = '',$resize = false,$dpi = 300,$palign = '',$ismask = false,$imgmask = false,$border = 0,$fitbox = false,$hidden = false,$fitonpage = false,$alt = false,$altimgs = array() )		
+
+
+			*/
+
 			for ($i=1; $i <= $cant ; $i++) { 
 				$foto = $fotosActa[$i-1];
 				if($i == 1 || $i%5 == 0){
@@ -1099,23 +1405,24 @@ class Informe
 					$pdf->MultiCell(0,100,'Acta',0,"C",false);
 				}
 				if($i%2 == 0 && $i%4 != 0) {
-					$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX+$OffsetX, $baseY, $height, 0, $foto->foto->extension, "", "", true, 300);
+					$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX+$OffsetX, $baseY, $width, $height, $foto->foto->extension, "", "", true, 300,'',false,false,0,true);
 				}
 				if($i%2 == 0 && $i%4 == 0) {
-					$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX+$OffsetX, $baseY + $OffsetY, $height, 0, $foto->foto->extension, "", "", true, 300);
+					$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX+$OffsetX, $baseY + $OffsetY, $width, $height, $foto->foto->extension, "", "", true, 300,'',false,false,0,true);
 				}
 				if($i%2 != 0 && $i%3 != 0) {
-					$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX, $baseY, $height, 0, $foto->foto->extension, "", "", true, 300);
+					$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX, $baseY, $width, $height, $foto->foto->extension, "", "", true, 300,'',false,false,0,true);
 				}
 				if($i%2 != 0 && $i%3 == 0) {
-					$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX, $baseY + $OffsetY, $height, 0, $foto->foto->extension, "", "", true, 300);
+					$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX, $baseY + $OffsetY, $width, $height, $foto->foto->extension, "", "", true, 300,'',false,false,0,true);
 				}
 			}
 			// General
 			$cant = count($fotosGeneral);
 			if($cant == 1)
 			{
-				$height = 400;
+				$height = 500;
+				$width = 350;
 				$baseY = 120;
 				$baseX = 120;
 			}
@@ -1123,6 +1430,7 @@ class Informe
 				$baseY = 120;
 				$baseX = 60;
 				$height = 250;
+				$width = 175;
 				$OffsetY = 200;
 				$OffsetX = 250;
 			}
@@ -1135,34 +1443,154 @@ class Informe
 					$pdf->MultiCell(0,100,'General',0,"C",false);
 				}
 				if($i%2 == 0 && $i%4 != 0) {
-					$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX+$OffsetX, $baseY, $height, 0, $foto->foto->extension, "", "", true, 300);
+					$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX+$OffsetX, $baseY, $width, $height, $foto->foto->extension, "", "", true, 300,'',false,false,0,true);
 				}
 				if($i%2 == 0 && $i%4 == 0) {
-					$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX+$OffsetX, $baseY + $OffsetY, $height, 0, $foto->foto->extension, "", "", true, 300);
+					$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX+$OffsetX, $baseY + $OffsetY, $width, $height, $foto->foto->extension, "", "", true, 300,'',false,false,0,true);
 				}
 				if($i%2 != 0 && $i%3 != 0) {
-					$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX, $baseY, $height, 0, $foto->foto->extension, "", "", true, 300);
+					$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX, $baseY, $width, $height, $foto->foto->extension, "", "", true, 300,'',false,false,0,true);
 				}
 				if($i%2 != 0 && $i%3 == 0) {
-					$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX, $baseY + $OffsetY, $height, 0, $foto->foto->extension, "", "", true, 300);
+					$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX, $baseY + $OffsetY, $width, $height, $foto->foto->extension, "", "", true, 300,'',false,false,0,true);
 				}
 			}
+
+			// Otros
+			$cant = count($fotosOtros);
+			if($cant == 1)
+			{
+				$height = 500;
+				$width = 350;
+				$baseY = 120;
+				$baseX = 120;
+			}
+			else{
+				$baseY = 120;
+				$baseX = 60;
+				$height = 250;
+				$width = 175;
+				$OffsetY = 200;
+				$OffsetX = 250;
+			}
+			for ($i=1; $i <= $cant ; $i++) { 
+				$foto = $fotosOtros[$i-1];
+				if($i == 1 || $i%5 == 0){
+					$pdf->AddPage();
+					$pdf->SetFont("dejavusans", "", 18);
+					$pdf->SetY(1*$pdf->getPageHeight()/27);
+					$pdf->MultiCell(0,100,'Otros',0,"C",false);
+				}
+				if($i%2 == 0 && $i%4 != 0) {
+					$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX+$OffsetX, $baseY, $width, $height, $foto->foto->extension, "", "", true, 300,'',false,false,0,true);
+				}
+				if($i%2 == 0 && $i%4 == 0) {
+					$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX+$OffsetX, $baseY + $OffsetY, $width, $height, $foto->foto->extension, "", "", true, 300,'',false,false,0,true);
+				}
+				if($i%2 != 0 && $i%3 != 0) {
+					$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX, $baseY, $width, $height, $foto->foto->extension, "", "", true, 300,'',false,false,0,true);
+				}
+				if($i%2 != 0 && $i%3 == 0) {
+					$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX, $baseY + $OffsetY, $width, $height, $foto->foto->extension, "", "", true, 300,'',false,false,0,true);
+				}
+			}
+
+			// Visita Preventiva Antes
+			$cant = count($fotosVPreventivaAntes);
+			if($cant == 1)
+			{
+				$height = 500;
+				$width = 350;
+				$baseY = 120;
+				$baseX = 120;
+			}
+			else{
+				$baseY = 120;
+				$baseX = 60;
+				$height = 250;
+				$width = 175;
+				$OffsetY = 200;
+				$OffsetX = 250;
+			}
+			for ($i=1; $i <= $cant ; $i++) { 
+				$foto = $fotosVPreventivaAntes[$i-1];
+				if($i == 1 || $i%5 == 0){
+					$pdf->AddPage();
+					$pdf->SetFont("dejavusans", "", 18);
+					$pdf->SetY(1*$pdf->getPageHeight()/27);
+					$pdf->MultiCell(0,100,'Antes',0,"C",false);
+				}
+				if($i%2 == 0 && $i%4 != 0) {
+					$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX+$OffsetX, $baseY, $width, $height, $foto->foto->extension, "", "", true, 300,'',false,false,0,true);
+				}
+				if($i%2 == 0 && $i%4 == 0) {
+					$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX+$OffsetX, $baseY + $OffsetY, $width, $height, $foto->foto->extension, "", "", true, 300,'',false,false,0,true);
+				}
+				if($i%2 != 0 && $i%3 != 0) {
+					$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX, $baseY, $width, $height, $foto->foto->extension, "", "", true, 300,'',false,false,0,true);
+				}
+				if($i%2 != 0 && $i%3 == 0) {
+					$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX, $baseY + $OffsetY, $width, $height, $foto->foto->extension, "", "", true, 300,'',false,false,0,true);
+				}
+			}
+
+			// Visita Preventiva Despus
+			$cant = count($fotosVPreventivaDespues);
+			if($cant == 1)
+			{
+				$height = 500;
+				$width = 350;
+				$baseY = 120;
+				$baseX = 120;
+			}
+			else{
+				$baseY = 120;
+				$baseX = 60;
+				$height = 250;
+				$width = 175;
+				$OffsetY = 200;
+				$OffsetX = 250;
+			}
+			for ($i=1; $i <= $cant ; $i++) { 
+				$foto = $fotosVPreventivaDespues[$i-1];
+				if($i == 1 || $i%5 == 0){
+					$pdf->AddPage();
+					$pdf->SetFont("dejavusans", "", 18);
+					$pdf->SetY(1*$pdf->getPageHeight()/27);
+					$pdf->MultiCell(0,100,'Despues',0,"C",false);
+				}
+				if($i%2 == 0 && $i%4 != 0) {
+					$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX+$OffsetX, $baseY, $width, $height, $foto->foto->extension, "", "", true, 300,'',false,false,0,true);
+				}
+				if($i%2 == 0 && $i%4 == 0) {
+					$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX+$OffsetX, $baseY + $OffsetY, $width, $height, $foto->foto->extension, "", "", true, 300,'',false,false,0,true);
+				}
+				if($i%2 != 0 && $i%3 != 0) {
+					$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX, $baseY, $width, $height, $foto->foto->extension, "", "", true, 300,'',false,false,0,true);
+				}
+				if($i%2 != 0 && $i%3 == 0) {
+					$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX, $baseY + $OffsetY, $width, $height, $foto->foto->extension, "", "", true, 300,'',false,false,0,true);
+				}
+			}
+
 			//Muebles
 			foreach ($fotosMueble as $mueble) {
 				$cantAntes = count($mueble['Antes']);
 				$cantDespues = count($mueble['Despues']);
 				if($cantAntes == 1)
 				{
+					$height = 500;
+					$width = 350;
 					$baseY = 120;
 					$baseX = 120;
-					$height = 400;
 				}
 				else{
 					$baseY = 120;
 					$baseX = 60;
 					$height = 250;
+					$width = 175;
 					$OffsetY = 200;
-					$OffsetX = 400;
+					$OffsetX = 250;
 				}
 				for ($i=1; $i <= $cantAntes ; $i++) { 
 					$foto = $mueble['Antes'][$i-1];
@@ -1177,17 +1605,32 @@ class Informe
 						$pdf->writeHTML('<p>'.$mueblepunto->ServicioDescripcion.' Antes</p>', true, false, true, false, '');
 					}
 					if($i%2 == 0 && $i%4 != 0) {
-						$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX+$OffsetX, $baseY, $height, 0, $foto->foto->extension, "", "", true, 300);
+						$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX+$OffsetX, $baseY, $width, $height, $foto->foto->extension, "", "", true, 300,'',false,false,0,true);
 					}
 					if($i%2 == 0 && $i%4 == 0) {
-						$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX+$OffsetX, $baseY + $OffsetY, $height, 0, $foto->foto->extension, "", "", true, 300);
+						$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX+$OffsetX, $baseY + $OffsetY, $width, $height, $foto->foto->extension, "", "", true, 300,'',false,false,0,true);
 					}
 					if($i%2 != 0 && $i%3 != 0) {
-						$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX, $baseY, $height, 0, $foto->foto->extension, "", "", true, 300);
+						$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX, $baseY, $width, $height, $foto->foto->extension, "", "", true, 300,'',false,false,0,true);
 					}
 					if($i%2 != 0 && $i%3 == 0) {
-						$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX, $baseY + $OffsetY, $height, 0, $foto->foto->extension, "", "", true, 300);
+						$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX, $baseY + $OffsetY, $width, $height, $foto->foto->extension, "", "", true, 300,'',false,false,0,true);
 					}
+				}
+				if($cantDespues == 1)
+				{
+					$height = 500;
+					$width = 350;
+					$baseY = 120;
+					$baseX = 120;
+				}
+				else{
+					$baseY = 120;
+					$baseX = 60;
+					$height = 250;
+					$width = 175;
+					$OffsetY = 200;
+					$OffsetX = 250;
 				}
 				for ($i=1; $i <= $cantDespues ; $i++) { 
 					$foto = $mueble['Despues'][$i-1];
@@ -1203,16 +1646,16 @@ class Informe
 						//$pdf->MultiCell(0,100,$mueblepunto->Descripcion.' Despues',0,"C",false);
 					}
 					if($i%2 == 0 && $i%4 != 0) {
-						$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX+$OffsetX, $baseY, $height, 0, $foto->foto->extension, "", "", true, 300);
+						$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX+$OffsetX, $baseY, $width, $height, $foto->foto->extension, "", "", true, 300,'',false,false,0,true);
 					}
 					if($i%2 == 0 && $i%4 == 0) {
-						$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX+$OffsetX, $baseY + $OffsetY, $height, 0, $foto->foto->extension, "", "", true, 300);
+						$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX+$OffsetX, $baseY + $OffsetY, $width, $height, $foto->foto->extension, "", "", true, 300,'',false,false,0,true);
 					}
 					if($i%2 != 0 && $i%3 != 0) {
-						$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX, $baseY, $height, 0, $foto->foto->extension, "", "", true, 300);
+						$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX, $baseY, $width, $height, $foto->foto->extension, "", "", true, 300,'',false,false,0,true);
 					}
 					if($i%2 != 0 && $i%3 == 0) {
-						$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX, $baseY + $OffsetY, $height, 0, $foto->foto->extension, "", "", true, 300);
+						$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX, $baseY + $OffsetY, $width, $height, $foto->foto->extension, "", "", true, 300,'',false,false,0,true);
 					}
 				}
 			}
@@ -1222,16 +1665,18 @@ class Informe
 				$cantDespues = count($mueble['Despues']);
 				if($cantAntes == 1)
 				{
+					$height = 500;
+					$width = 350;
 					$baseY = 120;
 					$baseX = 120;
-					$height = 400;
 				}
 				else{
 					$baseY = 120;
 					$baseX = 60;
 					$height = 250;
+					$width = 175;
 					$OffsetY = 200;
-					$OffsetX = 400;
+					$OffsetX = 250;
 				}
 				for ($i=1; $i <= $cantAntes ; $i++) { 
 					$foto = $mueble['Antes'][$i-1];
@@ -1247,17 +1692,32 @@ class Informe
 						//$pdf->MultiCell(0,100,$mueblepunto->Descripcion.' Antes',0,"C",false);
 					}
 					if($i%2 == 0 && $i%4 != 0) {
-						$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX+$OffsetX, $baseY, $height, 0, $foto->foto->extension, "", "", true, 300);
+						$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX+$OffsetX, $baseY, $width, $height, $foto->foto->extension, "", "", true, 300,'',false,false,0,true);
 					}
 					if($i%2 == 0 && $i%4 == 0) {
-						$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX+$OffsetX, $baseY + $OffsetY, $height, 0, $foto->foto->extension, "", "", true, 300);
+						$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX+$OffsetX, $baseY + $OffsetY, $width, $height, $foto->foto->extension, "", "", true, 300,'',false,false,0,true);
 					}
 					if($i%2 != 0 && $i%3 != 0) {
-						$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX, $baseY, $height, 0, $foto->foto->extension, "", "", true, 300);
+						$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX, $baseY, $width, $height, $foto->foto->extension, "", "", true, 300,'',false,false,0,true);
 					}
 					if($i%2 != 0 && $i%3 == 0) {
-						$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX, $baseY + $OffsetY, $height, 0, $foto->foto->extension, "", "", true, 300);
+						$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX, $baseY + $OffsetY, $width, $height, $foto->foto->extension, "", "", true, 300,'',false,false,0,true);
 					}
+				}
+				if($cantDespues == 1)
+				{
+					$height = 500;
+					$width = 350;
+					$baseY = 120;
+					$baseX = 120;
+				}
+				else{
+					$baseY = 120;
+					$baseX = 60;
+					$height = 250;
+					$width = 175;
+					$OffsetY = 200;
+					$OffsetX = 250;
 				}
 				for ($i=1; $i <= $cantDespues ; $i++) { 
 					$foto = $mueble['Despues'][$i-1];
@@ -1272,16 +1732,16 @@ class Informe
 						$pdf->writeHTML('<p>'.$mueblepunto->ServicioDescripcion.' Despues</p>', true, false, true, false, '');
 					}
 					if($i%2 == 0 && $i%4 != 0) {
-						$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX+$OffsetX, $baseY, $height, 0, $foto->foto->extension, "", "", true, 300);
+						$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX+$OffsetX, $baseY, $width, $height, $foto->foto->extension, "", "", true, 300,'',false,false,0,true);
 					}
 					if($i%2 == 0 && $i%4 == 0) {
-						$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX+$OffsetX, $baseY + $OffsetY, $height, 0, $foto->foto->extension, "", "", true, 300);
+						$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX+$OffsetX, $baseY + $OffsetY, $width, $height, $foto->foto->extension, "", "", true, 300,'',false,false,0,true);
 					}
 					if($i%2 != 0 && $i%3 != 0) {
-						$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX, $baseY, $height, 0, $foto->foto->extension, "", "", true, 300);
+						$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX, $baseY, $width, $height, $foto->foto->extension, "", "", true, 300,'',false,false,0,true);
 					}
 					if($i%2 != 0 && $i%3 == 0) {
-						$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX, $baseY + $OffsetY, $height, 0, $foto->foto->extension, "", "", true, 300);
+						$pdf->Image($foto->foto->path.'/'.$foto->foto->id.'.'.$foto->foto->extension, $baseX, $baseY + $OffsetY, $width, $height, $foto->foto->extension, "", "", true, 300,'',false,false,0,true);
 					}
 				}
 			}

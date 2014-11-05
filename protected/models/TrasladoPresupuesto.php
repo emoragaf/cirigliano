@@ -40,6 +40,18 @@ class TrasladoPresupuesto extends CActiveRecord
 	public function getcant_servicio(){
 		return 1;
 	}
+	public function getMueblePuntoDescripcion(){
+		if($this->tarifa_instalacion || $this->tarifa_desinstalacion)
+			return $this->mueblePunto->Descripcion;
+	}
+	public function getServicioDescripcion(){
+		if($this->tarifa_instalacion && $this->tarifa_desinstalacion)
+			return 'Instalación/Desinstalación '.$this->mueblePunto->Descripcion;
+		if($this->tarifa_instalacion && !$this->tarifa_desinstalacion)
+			return 'Instalación '.$this->mueblePunto->Descripcion;
+		if(!$this->tarifa_instalacion && $this->tarifa_desinstalacion)
+			return 'Desinstalación '.$this->mueblePunto->Descripcion;
+	}
 
 	/**
 	 * @return array relational rules.

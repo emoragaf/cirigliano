@@ -49,6 +49,8 @@ $('.search-form form').submit(function(){
 		'fecha_visita',
 		array(
 			'class'=>'bootstrap.widgets.TbButtonColumn',
+			'template'=>Yii::app()->user->checkAccess('Visita.update') && Yii::app()->user->checkAccess('Visita.delete') ? '{view}{update}{delete}': '{view}',
+
 		),
 	),
 )); ?>

@@ -11,15 +11,15 @@ $this->breadcrumbs=array(
 
 $this->menu=array(
 	array('label'=>Yii::t('app','model.Punto')),
-	array('label'=>Yii::t('app','model.Punto.admin'),'url'=>array('admin')),
-	array('label'=>Yii::t('app','model.Punto.create'),'url'=>array('create')),
-	array('label'=>Yii::t('app','model.Punto.update'),'url'=>array('update','id'=>$model->id)),
-	array('label'=>Yii::t('app','model.Punto.delete'),'url'=>'#','linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
-	array('label'=>Yii::t('app','model.MueblePunto')),
-	array('label'=>Yii::t('app','model.MueblePunto.create'),'url'=>array('/MueblePunto/create','id'=>$model->id)),
-    array('label'=>Yii::t('app','model.Visita')),
-    array('label'=>Yii::t('app','model.Visita.create'),'url'=>array('/Visita/crear','id'=>$model->id)),
-    array('label'=>Yii::t('app','model.Visita.createTraslado'),'url'=>array('/Visita/createTraslado','id'=>$model->id)),
+	array('label'=>Yii::t('app','model.Punto.admin'),'url'=>array('admin'),'visible'=>Yii::app()->user->checkAccess('Punto.admin')),
+	array('label'=>Yii::t('app','model.Punto.create'),'url'=>array('create'),'visible'=>Yii::app()->user->checkAccess('Punto.create')),
+	array('label'=>Yii::t('app','model.Punto.update'),'url'=>array('update','id'=>$model->id),'visible'=>Yii::app()->user->checkAccess('Punto.update')),
+	array('label'=>Yii::t('app','model.Punto.delete'),'url'=>'#','linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?'),'visible'=>Yii::app()->user->checkAccess('Punto.delete')),
+	array('label'=>Yii::t('app','model.MueblePunto'),'visible'=>Yii::app()->user->checkAccess('MueblePunto.create')),
+	array('label'=>Yii::t('app','model.MueblePunto.create'),'url'=>array('/MueblePunto/create','id'=>$model->id),'visible'=>Yii::app()->user->checkAccess('MueblePunto.create')),
+    array('label'=>Yii::t('app','model.Visita'),'visible'=>Yii::app()->user->checkAccess('Visita.crear')),
+    array('label'=>Yii::t('app','model.Visita.create'),'url'=>array('/Visita/crear','id'=>$model->id),'visible'=>Yii::app()->user->checkAccess('Visita.crear')),
+    array('label'=>Yii::t('app','model.Visita.createTraslado'),'url'=>array('/Visita/createTraslado','id'=>$model->id),'visible'=>Yii::app()->user->checkAccess('Visita.crearTraslado')),
 );
 
 $fechaCreacionBetween = $this->widget('zii.widgets.jui.CJuiDatePicker', array(
@@ -123,19 +123,8 @@ $fechaVisitaBetween = $this->widget('zii.widgets.jui.CJuiDatePicker', array(
 			),
 	),
 )); ?>
-<h3><?php echo Yii::t('app','model.Visita');?></h3>
-<?php
-Yii::app()->clientScript->registerScript('search', "
-$('.search-form form').submit(function(){
-	$('#visita-grid').yiiGridView('update', {
-		data: $(this).serialize()
-	});
-	return false;
-});
-");
-?>
 
-<h1><?php echo Yii::t('app','model.Punto.admin'); ?></h1>
+<h2><?php echo Yii::t('app','model.Visita'); ?></h2>
 
 <?php $this->widget('bootstrap.widgets.TbGridView',array(
 	'id'=>'visita-grid',
@@ -171,6 +160,7 @@ $('.search-form form').submit(function(){
 				),
 			array(
 				'class'=>'bootstrap.widgets.TbButtonColumn',
+                'template'=>Yii::app()->user->checkAccess('Visita.update') && Yii::app()->user->checkAccess('Visita.delete') ? '{view}{update}{delete}': '{view}',
                 'buttons'=>array(
                     'view' => array
                     (
@@ -189,7 +179,7 @@ $('.search-form form').submit(function(){
 	),
 )); ?>
 
-<h3><?php echo Yii::t('app','model.MueblePunto');?></h3>
+<h2><?php echo Yii::t('app','model.MueblePunto');?></h2>
 <?php $this->widget('bootstrap.widgets.TbListView',array(
 	'dataProvider'=>$muebles,
 	'itemView'=>'_viewMuebles',

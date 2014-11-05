@@ -13,6 +13,18 @@
                 <th>Total</th>
             </tr>
             <?php foreach ($presupuestos as $presupuesto): ?>
+                <?php if ($presupuesto->tarifa_visita_preventiva != null && $presupuesto->tarifa_visita_preventiva != 0): ?>
+                    <tr>
+                        <td><?php echo $presupuesto->visita->folio ?></td>
+                        <td><?php echo $presupuesto->visita->punto->Descripcion ?></td>
+                        <td><?php echo date('d-m-Y',strtotime($presupuesto->visita->fecha_visita)); ?></td>
+                        <td>Visita Preventiva</td>
+                        <td>Visita Preventiva</td>
+                        <td>1</td>
+                        <td><?php echo Yii::app()->numberFormatter->format('###,###,###,###',$presupuesto->tarifa_visita_preventiva); ?></td>
+                        <td><?php echo Yii::app()->numberFormatter->format('###,###,###,###',$presupuesto->tarifa_visita_preventiva); ?></td>
+                    </tr>
+                <?php endif ?>
                 <?php foreach ($presupuesto->mueblespresupuesto as $mueblepresupuesto): ?>
                     <tr>
                         <td><?php echo $mueblepresupuesto->presupuesto->visita->folio ?></td>

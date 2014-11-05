@@ -10,19 +10,18 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>Yii::t('app','model.Visita.index'),'url'=>array('index')),
-	array('label'=>Yii::t('app','model.Presupuesto.create'),'url'=>array('Presupuesto/create','id'=>$model->id),'visible'=>($model->estado == 0 && $model->tipo_visita_id != 3)? true : false),
-	array('label'=>Yii::t('app','model.Presupuesto.update'),'url'=>array('Presupuesto/update','id'=>$model->id),'visible'=>($model->estado == 2 && $model->tipo_visita_id != 3)? true : false),
-	array('label'=>Yii::t('app','model.Presupuesto.create'),'url'=>array('Presupuesto/createTraslado','id'=>$model->id),'visible'=>($model->estado == 0 && $model->tipo_visita_id == 3)? true : false),
-	array('label'=>Yii::t('app','model.Presupuesto.update'),'url'=>array('Presupuesto/updateTraslado','id'=>$model->id),'visible'=>($model->estado == 2 && $model->tipo_visita_id == 3)? true : false),		
-	array('label'=>Yii::t('app','model.Visita.delete'),'url'=>'#','linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
-	array('label'=>Yii::t('app','model.Presupuesto.aceptar'),'url'=>array('Visita/AceptarPresupuesto','id'=>$model->id),'visible'=>$model->estado == 1 ? true : false),
-	array('label'=>Yii::t('app','model.Presupuesto.rechazar'),'url'=>array('Visita/RechazarPresupuesto','id'=>$model->id),'visible'=>$model->estado == 1 ? true : false),
-	array('label'=>Yii::t('app','model.Formulario'),'visible'=>$model->estado == 1 && !isset($model->informe) ? true : false),
-	array('label'=>Yii::t('app','model.Formulario.ingresarTrabajo'),'url'=>array('Formulario/create','id'=>$model->id),'visible'=>$model->estado == 1 && !isset($model->informe) ? true : false),
-	array('label'=>'Informe','visible'=>isset($model->informe) ? true : false),
-	array('label'=>Yii::t('app','model.Visita.descargaPdf'),'url'=>array('Informe/Download','id'=>$model->id,'tipo'=>'pdf'),'visible'=>isset($model->informe) ? true : false),
-	array('label'=>Yii::t('app','model.Visita.descargaPpt'),'url'=>array('Informe/Download','id'=>$model->id,'tipo'=>'pptx'),'visible'=>isset($model->informe) ? true : false)
+	array('label'=>Yii::t('app','model.Presupuesto.create'),'url'=>array('Presupuesto/create','id'=>$model->id),'visible'=>(Yii::app()->user->checkAccess('Presupuesto.create') && $model->estado == 0 && $model->tipo_visita_id != 3)? true : false),
+	array('label'=>Yii::t('app','model.Presupuesto.update'),'url'=>array('Presupuesto/update','id'=>$model->id),'visible'=>(Yii::app()->user->checkAccess('Presupuesto.update') &&$model->estado == 2 && $model->tipo_visita_id != 3)? true : false),
+	array('label'=>Yii::t('app','model.Presupuesto.create'),'url'=>array('Presupuesto/createTraslado','id'=>$model->id),'visible'=>(Yii::app()->user->checkAccess('Presupuesto.createTraslado') && $model->estado == 0 && $model->tipo_visita_id == 3)? true : false),
+	array('label'=>Yii::t('app','model.Presupuesto.update'),'url'=>array('Presupuesto/updateTraslado','id'=>$model->id),'visible'=>(Yii::app()->user->checkAccess('Presupuesto.updateTRaslado') && $model->estado == 2 && $model->tipo_visita_id == 3)? true : false),		
+	array('label'=>Yii::t('app','model.Visita.delete'),'url'=>'#','linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?'),'visible'=>Yii::app()->user->checkAccess('Visita.delete')),
+	array('label'=>Yii::t('app','model.Presupuesto.aceptar'),'url'=>array('Visita/AceptarPresupuesto','id'=>$model->id),'visible'=>(Yii::app()->user->checkAccess('Visita.aceptarPresupuesto') && $model->estado == 1) ? true : false),
+	array('label'=>Yii::t('app','model.Presupuesto.rechazar'),'url'=>array('Visita/RechazarPresupuesto','id'=>$model->id),'visible'=>(Yii::app()->user->checkAccess('Visita.rechazarPresupuesto') && $model->estado == 1) ? true : false),
+	array('label'=>Yii::t('app','model.Formulario'),'visible'=>Yii::app()->user->checkAccess('Formulario.create') && $model->estado == 1 && !isset($model->informe) ? true : false),
+	array('label'=>Yii::t('app','model.Formulario.ingresarTrabajo'),'url'=>array('Formulario/create','id'=>$model->id),'visible'=>Yii::app()->user->checkAccess('Formulario.create') && $model->estado == 1 && !isset($model->informe) ? true : false),
+	array('label'=>'Informe','visible'=>Yii::app()->user->checkAccess('Informe.Download') && isset($model->informe) ? true : false),
+	array('label'=>Yii::t('app','model.Visita.descargaPdf'),'url'=>array('Informe/Download','id'=>$model->id,'tipo'=>'pdf'),'visible'=>Yii::app()->user->checkAccess('Informe.Download') && isset($model->informe) ? true : false),
+	array('label'=>Yii::t('app','model.Visita.descargaPpt'),'url'=>array('Informe/Download','id'=>$model->id,'tipo'=>'pptx'),'visible'=>Yii::app()->user->checkAccess('Informe.Download') && isset($model->informe) ? true : false)
 );
 ?>
 
@@ -45,6 +44,7 @@ $this->menu=array(
 	<td><b>Solicitante: <?php echo $model->personaPunto->Nombre?></b></td>
 </tr>
 </table>
+
 <h2>Datos Punto</h2>
 <?php $this->widget('zii.widgets.CDetailView',array(
     'htmlOptions' => array(
@@ -107,6 +107,14 @@ $this->menu=array(
 		</tr>
 		</tr>
 		<?php endforeach ?>
+		<?php if ($presupuesto->tarifa_visita_preventiva): ?>
+			<tr>
+				<td>Visita Preventiva</td>
+				<td>1</td>
+				<td><?php echo $presupuesto->tarifa_visita_preventiva;?></td>
+				<td><?php echo $presupuesto->tarifa_visita_preventiva;?></td>
+			</tr>
+		<?php endif ?>
 		<?php if ($presupuesto->tarifa_traslado && $presupuesto->tipo_tarifa_traslado): ?>
 			<tr>
 				<td>Tarifa Traslado</td>
@@ -116,12 +124,23 @@ $this->menu=array(
 			</tr>
 		<?php endif ?>
 		<?php foreach ($presupuesto->trasladopresupuesto as $t): ?>
-		<tr>
-			<td><?php echo 'Instalación '.$t->mueblePunto->mueble->descripcion.' '.$t->mueblePunto->codigo?></td>
-			<td>1</td>
-			<td><?php echo $t->tarifa_instalacion ?></td>
-			<td><?php echo $t->tarifa_instalacion ?></td>
-		</tr>
+			<?php if ($t->tarifa_instalacion != null): ?>
+				<tr>
+					<td><?php echo 'Instalación '.$t->mueblePunto->mueble->descripcion.' '.$t->mueblePunto->codigo?></td>
+					<td>1</td>
+					<td><?php echo $t->tarifa_instalacion ?></td>
+					<td><?php echo $t->tarifa_instalacion ?></td>
+				</tr>
+			<?php endif ?>
+			<?php if ($t->tarifa_desinstalacion != null): ?>
+				<tr>
+					<td><?php echo 'Desinstalación '.$t->mueblePunto->mueble->descripcion.' '.$t->mueblePunto->codigo?></td>
+					<td>1</td>
+					<td><?php echo $t->tarifa_desinstalacion ?></td>
+					<td><?php echo $t->tarifa_desinstalacion ?></td>
+				</tr>
+			<?php endif ?>
+		
 		</tr>
 		<?php endforeach ?>
 		<?php foreach ($presupuesto->adicionales as $a): ?>
@@ -142,11 +161,12 @@ $this->menu=array(
 <?php endforeach ?>
 
 <?php endif ?>
+
 <?php if ($model->estado != 0 && isset($model->informe)): ?>
 <h2>Fotos</h2>
 <div class="row">
 	<?php foreach ($model->informe->fotos as $foto): ?>	
-		<?php if ($foto->tipo_foto_id != 1 && $foto->tipo_foto_id != 2 && $foto->tipo_foto_id != 8 && $foto->tipo_foto_id != 9): ?>		
+		<?php if ($foto->tipo_foto_id != 1 && $foto->tipo_foto_id != 2 && $foto->tipo_foto_id != 8 && $foto->tipo_foto_id != 9 && $foto->tipo_foto_id != 10 && $foto->tipo_foto_id != 11): ?>		
 			<div class="span4">
 				<h4><?php echo $foto->tipo->nombre; ?></h4>
 				<?php 
@@ -157,12 +177,25 @@ $this->menu=array(
 		<?php endif ?>		
 	<?php endforeach ?>
 </div>
-<h3>Reparaciones</h3>
+<br>
 <div class="row">
 	<?php foreach ($model->informe->fotos as $foto): ?>	
 		<?php if ($foto->tipo_foto_id == 1 || $foto->tipo_foto_id == 2 || $foto->tipo_foto_id == 8 || $foto->tipo_foto_id == 9): ?>		
 			<div class="span3">
-				<h5><?php echo $foto->item != null? $foto->Item->Descripcion.' '.$foto->tipo->nombre : $foto->tipo->nombre?></h5>
+				<h4><?php echo $foto->item_foto_id != null ? $foto->Item->Descripcion.' '.$foto->tipo->nombre : $foto->tipo->nombre?></h4>
+				<?php 
+				$url = Yii::app()->assetManager->publish($foto->foto->path.$foto->foto->id.'.'.$foto->foto->extension);
+				echo '<img src="'.$url.'">';
+				?>
+			</div>
+		<?php endif ?>		
+	<?php endforeach ?>
+</div>
+<div class="row">
+	<?php foreach ($model->informe->fotos as $foto): ?>	
+		<?php if ($foto->tipo_foto_id == 10 || $foto->tipo_foto_id == 11): ?>		
+			<div class="span3">
+				<h4><?php echo $foto->tipo->nombre?></h4>
 				<?php 
 				$url = Yii::app()->assetManager->publish($foto->foto->path.$foto->foto->id.'.'.$foto->foto->extension);
 				echo '<img src="'.$url.'">';
@@ -172,3 +205,5 @@ $this->menu=array(
 	<?php endforeach ?>
 </div>
 <?php endif ?>
+
+

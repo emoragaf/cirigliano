@@ -21,6 +21,16 @@ return array(
     'model.CampoFormulario.index'=>'Listar Campos',
     'model.CampoFormulario.view'=>'Detalles Campo',
     'model.CampoFormulario.delete'=>'Eliminar Campo',
+
+     //Personas a Notificar
+    'model.NotificarPersona'=>'Personas a Notificar',
+    'model.NotificarPersona.create'=>'Nueva Persona a Notificar',
+    'model.NotificarPersona.update'=>'Editar Notificacion',
+    'model.NotificarPersona.admin'=>'Administrar Personas a Notificar',
+    'model.NotificarPersona.index'=>'Listar Personas a Notificar',
+    'model.NotificarPersona.view'=>'Detalles Persona a Notificar',
+    'model.NotificarPersona.delete'=>'Eliminar Persona a Notificar',
+
     //CAMPO Rutas
     'model.Ruta'=>'Rutas',
     'model.Ruta.create'=>'Nueva Ruta',

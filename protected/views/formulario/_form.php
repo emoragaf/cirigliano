@@ -80,12 +80,38 @@
 	    		}
 	    		echo '</div>';
 			}
-
-
 		?>
 	
 	<?php endforeach ?>
+	<?php
+		if($visita->visita_preventiva == 1){
+				echo '<h3>Antes</h3>';
+				echo '<div class="well">';
+					 $this->widget('CMultiFileUpload', array(
+		            'name' => 'VPreventivaAntes[]',
+		            'id'=>'VPreventivaAntes',
+		            'accept' => 'jpeg|jpg|gif|png', // useful for verifying files
+		            'duplicate' => 'Archivo Duplicado!', // useful, i think
+		            'denied' => 'Tipo archivo inválido', // useful, i think
+		            'htmlOptions' => array('multiple' => 'multiple', 'size' => 25),
+		        ));
+	    		
+	    		echo '</div>';
 
+	    		echo '<h3>Despues</h3>';
+				echo '<div class="well">';
+					 $this->widget('CMultiFileUpload', array(
+		            'name' => 'VPreventivaDespues[]',
+		            'id'=>'VPreventivaDespues',
+		            'accept' => 'jpeg|jpg|gif|png', // useful for verifying files
+		            'duplicate' => 'Archivo Duplicado!', // useful, i think
+		            'denied' => 'Tipo archivo inválido', // useful, i think
+		            'htmlOptions' => array('multiple' => 'multiple', 'size' => 25),
+		        ));
+	    		
+	    		echo '</div>';
+			}
+	 ?>
         <?php echo $form->textAreaControlGroup($model,'notas',array('rows'=>6,'span'=>8)); ?>
 
         <div>

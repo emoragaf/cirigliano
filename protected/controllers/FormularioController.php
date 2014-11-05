@@ -11,13 +11,12 @@ class FormularioController extends Controller
 	/**
 	 * @return array action filters
 	 */
-	public function filters()
-	{
-		return array(
-			'accessControl', // perform access control for CRUD operations
-			'postOnly + delete', // we only allow deletion via POST request
-		);
-	}
+	public function filters() {
+     return array( 
+        //it's important to add site/error, so an unpermitted user will get the error.
+        array('auth.filters.AuthFilter'),
+            );
+        }
 
 	/**
 	 * Specifies the access control rules.
@@ -191,6 +190,82 @@ class FormularioController extends Controller
 							}
 						}
 					}
+				}
+				if($visita->visita_preventiva == 1){
+					$imagesAntes = CUploadedFile::getInstancesByName('VPreventivaAntes');
+    				if (isset($imagesAntes) && count($imagesAntes) > 0) {
+			            // go through each uploaded image
+			            foreach ($imagesAntes as $image => $pic) {
+			            	if(!is_dir(Yii::getPathOfAlias('webroot').'/uploads/')) {
+						   		mkdir(Yii::getPathOfAlias('webroot').'/uploads/');
+					   			chmod(Yii::getPathOfAlias('webroot').'/uploads/', 0775); 
+					   		}
+				   			if(!is_dir(Yii::getPathOfAlias('webroot').'/uploads/visitas/')) {
+				   				mkdir(Yii::getPathOfAlias('webroot').'/uploads/visitas/');
+				   				chmod(Yii::getPathOfAlias('webroot').'/uploads/visitas/', 0775);
+				   			}
+		   					if(!is_dir(Yii::getPathOfAlias('webroot').'/uploads/visitas/'.$visita->id.'/')) {
+				   				mkdir(Yii::getPathOfAlias('webroot').'/uploads/visitas/'.$visita->id.'/');
+				   				chmod(Yii::getPathOfAlias('webroot').'/uploads/visitas/'.$visita->id.'/', 0775);
+				   			} 
+		   					
+								   
+		                    $formfoto = new FormularioFotos;
+		                    $foto = new Foto;
+		                    $foto->nombre = $pic->name; //it might be $img_add->name for you, filename is just what I chose to call it in my model
+		                    $foto->path = Yii::getPathOfAlias('webroot').'/uploads/visitas/'.$visita->id.'/';
+		                    $foto->extension = $pic->extensionName;
+		                    if($foto->save()){
+		                    	$formfoto->formulario_id = $model->id;
+		                    	$formfoto->foto_id = $foto->id;
+		                    	$formfoto->item_foto_id = null;
+		                    	$formfoto->tipo_foto_id = 10;
+		                    	$formfoto->save();
+			                	$pic->saveAs($foto->path.$foto->id.'.'.$foto->extension);
+		                    }
+		                    else{
+	                    		print_r($foto->errors);
+		                    }
+			                
+				        }
+				    }
+				    $imagesDespues = CUploadedFile::getInstancesByName('VPreventivaDespues');
+    				if (isset($imagesDespues) && count($imagesDespues) > 0) {
+			            // go through each uploaded image
+			            foreach ($imagesDespues as $image => $pic) {
+			            	if(!is_dir(Yii::getPathOfAlias('webroot').'/uploads/')) {
+						   		mkdir(Yii::getPathOfAlias('webroot').'/uploads/');
+					   			chmod(Yii::getPathOfAlias('webroot').'/uploads/', 0775); 
+					   		}
+				   			if(!is_dir(Yii::getPathOfAlias('webroot').'/uploads/visitas/')) {
+				   				mkdir(Yii::getPathOfAlias('webroot').'/uploads/visitas/');
+				   				chmod(Yii::getPathOfAlias('webroot').'/uploads/visitas/', 0775);
+				   			}
+		   					if(!is_dir(Yii::getPathOfAlias('webroot').'/uploads/visitas/'.$visita->id.'/')) {
+				   				mkdir(Yii::getPathOfAlias('webroot').'/uploads/visitas/'.$visita->id.'/');
+				   				chmod(Yii::getPathOfAlias('webroot').'/uploads/visitas/'.$visita->id.'/', 0775);
+				   			} 
+		   					
+								   
+		                    $formfoto = new FormularioFotos;
+		                    $foto = new Foto;
+		                    $foto->nombre = $pic->name; //it might be $img_add->name for you, filename is just what I chose to call it in my model
+		                    $foto->path = Yii::getPathOfAlias('webroot').'/uploads/visitas/'.$visita->id.'/';
+		                    $foto->extension = $pic->extensionName;
+		                    if($foto->save()){
+		                    	$formfoto->formulario_id = $model->id;
+		                    	$formfoto->foto_id = $foto->id;
+		                    	$formfoto->item_foto_id = null;
+		                    	$formfoto->tipo_foto_id = 11;
+		                    	$formfoto->save();
+			                	$pic->saveAs($foto->path.$foto->id.'.'.$foto->extension);
+		                    }
+		                    else{
+	                    		print_r($foto->errors);
+		                    }
+			                
+				        }
+				    }
 				}
 				Informe::InformePpt($visita->id);
 				Informe::InformePdf($visita->id);

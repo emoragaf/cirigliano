@@ -15,6 +15,10 @@ $medios = array('1'=>'Camioneta, 3,5Mts3','2'=>'Camión ¾, 6,5Mts3','3'=>'Cami�
             </tr>
             <?php foreach ($presupuestos as $presupuesto): ?>
                 <?php $citems = count($presupuesto->trasladopresupuesto)+1; ?>
+                <?php foreach ($presupuesto->trasladopresupuesto as $traslado){
+                    if ($traslado->tarifa_desinstalacion != null && $traslado->tarifa_desinstalacion != 0)
+                        $citems++;
+                }?>
                 <?php $neto += $presupuesto->TTraslado;?>
                 <?php if ($presupuesto->visita->tipo_visita_id == 3): ?>
                     <tr>
@@ -27,11 +31,20 @@ $medios = array('1'=>'Camioneta, 3,5Mts3','2'=>'Camión ¾, 6,5Mts3','3'=>'Cami�
                         <td><?php echo Yii::app()->numberFormatter->format('###,###,###,###',$presupuesto->TTraslado); ?></td>   
                     </tr>
                     <?php foreach ($presupuesto->trasladopresupuesto as $traslado): ?>
-                            <tr>
-                                <td colspan="2"><?php echo 'Instalación '.$traslado->mueblePunto->Descripcion; ?></td>
-                                <td><?php echo Yii::app()->numberFormatter->format('###,###,###,###',$traslado->tarifa_instalacion); ?></td>
-                            </tr>
+                            <?php if ($traslado->tarifa_instalacion != null && $traslado->tarifa_instalacion != 0): ?>
+                                <tr>
+                                    <td colspan="2"><?php echo 'Instalación '.$traslado->mueblePunto->Descripcion; ?></td>
+                                    <td><?php echo Yii::app()->numberFormatter->format('###,###,###,###',$traslado->tarifa_instalacion); ?></td>
+                                </tr>
+                            <?php endif ?>
+                             <?php if ($traslado->tarifa_desinstalacion != null && $traslado->tarifa_desinstalacion != 0): ?>
+                                <tr>
+                                    <td colspan="2"><?php echo 'Desinstalación '.$traslado->mueblePunto->Descripcion; ?></td>
+                                    <td><?php echo Yii::app()->numberFormatter->format('###,###,###,###',$traslado->tarifa_desinstalacion); ?></td>
+                                </tr>
+                            <?php endif ?>
                     <?php $neto += $traslado->tarifa_instalacion;?>
+                    <?php $neto += $traslado->tarifa_desinstalacion;?>
                     <?php endforeach ?> 
                 <?php endif ?>
             <?php endforeach ?>

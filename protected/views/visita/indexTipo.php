@@ -166,6 +166,8 @@ $fechaVisitaBetween = $this->widget('zii.widgets.jui.CJuiDatePicker', array(
 				),
 			array(
 				'class'=>'bootstrap.widgets.TbButtonColumn',
+                'template'=>Yii::app()->user->checkAccess('Visita.update') && Yii::app()->user->checkAccess('Visita.delete') ? '{view}{update}{delete}': '{view}',
+
 			),
 		),
 	)); ?>

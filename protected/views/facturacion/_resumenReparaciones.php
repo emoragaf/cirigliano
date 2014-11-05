@@ -30,7 +30,7 @@
  ?>
 <div class="row">
 	<div class="span12">
-		<table class="table table-condensed table-bordered">
+		<table class="table table-condensed table-bordered table-hover">
 			<tr>
 				<th>Item</th>
 				<th class="span4">Espera Aprobacion Presupuesto</th>
@@ -57,7 +57,7 @@
 				<td><b>Total</b></td>
 				<td><?php echo Yii::app()->numberFormatter->format('###,###,###,###',$subtotales['traslados']['espPresup']+$subtotales['reparaciones']['espPresup']); ?></td>
 				<td><?php echo Yii::app()->numberFormatter->format('###,###,###,###',$subtotales['traslados']['finalizados']+$subtotales['reparaciones']['finalizados']); ?></td>
-				<td><?php echo Yii::app()->numberFormatter->format('###,###,###,###',$subtotales['traslados']['total']+$subtotales['reparaciones']['total']); ?></td>
+				<td><?php echo Yii::app()->numberFormatter->format('###,###,###,###',$subtotales['traslados']['total']+$subtotales['reparaciones']['total']+$totalAdicionales); ?></td>
 			</tr>
 		</table>
 	</div>
@@ -65,16 +65,16 @@
 <br>
 <div class="row">
 	<div class="span12 well">
-		<p><b>Neto: </b><?php echo(Yii::app()->numberFormatter->format('###,###,###,###',$subtotales['traslados']['total']+$subtotales['reparaciones']['total']));?></p>
-		<p><b>IVA: </b><?php echo(Yii::app()->numberFormatter->format('###,###,###,###',0.19*($subtotales['traslados']['total']+$subtotales['reparaciones']['total'])));?></p>
-		<p><b>Total: </b><?php echo(Yii::app()->numberFormatter->format('###,###,###,###',1.19*($subtotales['traslados']['total']+$subtotales['reparaciones']['total'])));?></p>
+		<p><b>Neto: </b><?php echo(Yii::app()->numberFormatter->format('###,###,###,###',$subtotales['traslados']['total']+$subtotales['reparaciones']['total']+$totalAdicionales));?></p>
+		<p><b>IVA: </b><?php echo(Yii::app()->numberFormatter->format('###,###,###,###',0.19*($subtotales['traslados']['total']+$subtotales['reparaciones']['total']+$totalAdicionales)));?></p>
+		<p><b>Total: </b><?php echo(Yii::app()->numberFormatter->format('###,###,###,###',1.19*($subtotales['traslados']['total']+$subtotales['reparaciones']['total']+$totalAdicionales)));?></p>
 	</div>
 </div>
 <div class="row">
 	<div class="span12 well">
 		<p><b>Presupuesto Total: </b><?php echo Yii::app()->numberFormatter->format('###,###,###,###',20000000) ?></p>
-		<p><b>Neto: </b><?php echo(Yii::app()->numberFormatter->format('###,###,###,###',($subtotales['traslados']['total']+$subtotales['reparaciones']['total'])));?></p>
-		<p><b>Presupuesto Disponible: </b><?php echo(Yii::app()->numberFormatter->format('###,###,###,###',20000000-($subtotales['traslados']['total']+$subtotales['reparaciones']['total'])));?></p>
+		<p><b>Neto: </b><?php echo(Yii::app()->numberFormatter->format('###,###,###,###',($subtotales['traslados']['total']+$subtotales['reparaciones']['total']+$totalAdicionales)));?></p>
+		<p><b>Presupuesto Disponible: </b><?php echo(Yii::app()->numberFormatter->format('###,###,###,###',20000000-($subtotales['traslados']['total']+$subtotales['reparaciones']['total']+$totalAdicionales)));?></p>
 	</div>
 </div>
 

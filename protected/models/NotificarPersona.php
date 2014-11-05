@@ -30,12 +30,17 @@ class NotificarPersona extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('punto_id, persona_id', 'required'),
-			array('id, punto_id, persona_id', 'numerical', 'integerOnly'=>true),
+			array('persona_id', 'required'),
+			array('id, punto_id, persona_id, tipo_notificacion, global', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, punto_id, persona_id', 'safe', 'on'=>'search'),
+			array('id, punto_id, persona_id, tipo_notificacion, global', 'safe', 'on'=>'search'),
 		);
+	}
+
+	public function getTipoNotificacion(){
+		$tipos = array('1'=>'Presupuesto Solicitud','2'=>'Informe');
+		return $tipos[$this->tipo_notificacion];
 	}
 
 	/**
@@ -59,7 +64,8 @@ class NotificarPersona extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'punto_id' => 'Punto',
-			'persona_punto_id' => 'Persona Punto',
+			'persona_id' => 'Persona',
+			'tipo_notificacion'=>'Tipo Notificación',
 		);
 	}
 
@@ -83,7 +89,9 @@ class NotificarPersona extends CActiveRecord
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('punto_id',$this->punto_id);
-		$criteria->compare('persona_punto_id',$this->persona_punto_id);
+		$criteria->compare('persona_id',$this->persona_id);
+		$criteria->compare('tipo_notificacion',$this->tipo_notificacion);
+		$criteria->compare('global',$this->global);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

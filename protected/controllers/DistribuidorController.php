@@ -11,13 +11,12 @@ class DistribuidorController extends Controller
 	/**
 	 * @return array action filters
 	 */
-	public function filters()
-	{
-		return array(
-			'accessControl', // perform access control for CRUD operations
-			'postOnly + delete', // we only allow deletion via POST request
-		);
-	}
+	public function filters() {
+     return array( 
+        //it's important to add site/error, so an unpermitted user will get the error.
+        array('auth.filters.AuthFilter'),
+            );
+        }
 
 	/**
 	 * Specifies the access control rules.
@@ -26,7 +25,7 @@ class DistribuidorController extends Controller
 	 */
 	public function accessRules()
 	{
-		return array(			),
+		return array(
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
 				'users'=>array('@'),
 			),

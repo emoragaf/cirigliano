@@ -6,6 +6,12 @@ class SiteController extends Controller
 	 * Declares class-based actions.
 	 */
 	//public $layout='//layouts/column2';
+	public function filters() {
+     return array( 
+        //it's important to add site/error, so an unpermitted user will get the error.
+        array('auth.filters.AuthFilter - user/login user/logout site/error'),
+            );
+        }
 	public function accessRules()
 	{
 		return array(
