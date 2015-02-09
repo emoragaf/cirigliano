@@ -8,7 +8,8 @@
 
     <?php 
     $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array( 
-    	'enableAjaxValidation'=>true, 'id'=>'formulario-form',
+		'id'=>'formulario-form',
+		'enableAjaxValidation'=>false,
     	'htmlOptions'=>array('enctype'=>'multipart/form-data', ), ));
 ?>
 
@@ -42,14 +43,15 @@
 			    		echo '<h4>'.$mueble->MueblePuntoDescripcion.'</h4>';
 			    		echo '<h5>'.$mueble->ServicioDescripcion.'</h5>';
 			    		if($campo->tipo->nombre == 'FotoMultiple'){
-			    			
+
 						    $this->widget('CMultiFileUpload', array(
 					            'name' => $fieldname,
-					            'id'=>$fieldname,
+					            'id'=>str_replace('[]', '', $fieldname),
 					            'accept' => 'jpeg|jpg|gif|png', // useful for verifying files
 					            'duplicate' => 'Archivo Duplicado!', // useful, i think
 					            'denied' => 'Tipo archivo inválido', // useful, i think
-					            'htmlOptions' => array('multiple' => 'multiple', 'size' => 25),
+					            //'htmlOptions' => array('multiple'=>true),
+					            'remove'=>'[x]',
 					        ));
 
 			    		}
@@ -67,12 +69,13 @@
 				$fieldname = str_replace(' ', '', $campo->nombre);
 				if($campo->tipo->nombre == 'FotoMultiple'){
 					 $this->widget('CMultiFileUpload', array(
-		            'name' => $fieldname.'[]',
+		            'name' => $fieldname,
 		            'id'=>$fieldname,
 		            'accept' => 'jpeg|jpg|gif|png', // useful for verifying files
 		            'duplicate' => 'Archivo Duplicado!', // useful, i think
 		            'denied' => 'Tipo archivo inválido', // useful, i think
-		            'htmlOptions' => array('multiple' => 'multiple', 'size' => 25),
+		            //'htmlOptions' => array('multiple'=>'multiple'),
+		            'remove'=>'[x]',
 		        ));
 	    		}
 	    		if($campo->tipo->nombre == 'FotoSimple'){
@@ -93,7 +96,8 @@
 		            'accept' => 'jpeg|jpg|gif|png', // useful for verifying files
 		            'duplicate' => 'Archivo Duplicado!', // useful, i think
 		            'denied' => 'Tipo archivo inválido', // useful, i think
-		            'htmlOptions' => array('multiple' => 'multiple', 'size' => 25),
+		            //'htmlOptions' => array('multiple' => true),
+		            'remove'=>'[x]',
 		        ));
 	    		
 	    		echo '</div>';
@@ -106,7 +110,7 @@
 		            'accept' => 'jpeg|jpg|gif|png', // useful for verifying files
 		            'duplicate' => 'Archivo Duplicado!', // useful, i think
 		            'denied' => 'Tipo archivo inválido', // useful, i think
-		            'htmlOptions' => array('multiple' => 'multiple', 'size' => 25),
+		            //'htmlOptions' => array('multiple' => 'multiple'),
 		        ));
 	    		
 	    		echo '</div>';

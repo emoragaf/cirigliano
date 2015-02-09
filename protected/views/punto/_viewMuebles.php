@@ -5,7 +5,7 @@
 
 <div class="well">
   
-	<b><?php echo CHtml::encode($data->mueble->getAttributeLabel('descripcion')); ?>:</b>
+	<b>Descripción:</b>
 	<?php echo CHtml::link(CHtml::encode($data->mueble->descripcion),array('/mueblePunto/view','id'=>$data->id)); ?>
 	<br />
 	<b><?php echo CHtml::encode($data->getAttributeLabel('codigo')); ?>:</b>
@@ -17,7 +17,7 @@
 		    <div class="panel-heading">
 		      <h4 class="panel-title">
 		        <a data-toggle="collapse" data-parent="#accordion" href="#collapse<?php echo $data->id; ?>">
-		          Elementos
+		          Tarifa Elementos
 		        </a>
 		      </h4>
 		    </div>

@@ -97,7 +97,16 @@ function addMueblePunto()
                     </td>
                     <td>
                         <div style="display:none" id="i_<?php echo $mueble->id?>">
-                            <?php echo TarifaInstalacion::model()->find(array('condition'=>'mueble_id ='.$mueble->mueble_id.' AND activo =1'))->tarifa_a ?>
+                            <?php 
+                                $tarifa = TarifaInstalacion::model()->find(array('condition'=>'mueble_id ='.$mueble->mueble_id.' AND activo =1'));
+                                if($tarifa)
+                                    echo $tarifa->tarifa_a;
+                                else{
+                                    $tarifa = TarifaInstalacion::model()->find(array('condition'=>'mueble_id ='.$mueble->mueble->categoria_precio.' AND activo =1'));
+                                    if($tarifa)
+                                        echo $tarifa->tarifa_a;
+                                }
+                                ?>
                         </div>
                     </td>
                 </tr>

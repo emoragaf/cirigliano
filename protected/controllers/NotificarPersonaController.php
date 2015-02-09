@@ -77,7 +77,13 @@ class NotificarPersonaController extends Controller
 				$model->attributes=$_POST['NotificarPersona'];
 				if(!NotificarPersona::model()->exists('persona_id ='.$model->persona_id.' AND tipo_notificacion ='.$key)){
 					$model->tipo_notificacion = $key;
-					$model->global = 1;
+					if(isset($_POST['opcion']['canal']) && $_POST['opcion']['canal']!=''){
+						$model->global = 0;
+						$model->canal_id = $_POST['opcion']['canal'];
+					}
+					else{
+						$model->global = 1;
+					}
 					if($model->save())
 						$flag++;
 				}
@@ -97,7 +103,13 @@ class NotificarPersonaController extends Controller
 				$model=new NotificarPersona;
 				$model->persona_id = $persona->id;
 				$model->tipo_notificacion = $key;
-				$model->global = 1;
+				if(isset($_POST['opcion']['canal']) && $_POST['opcion']['canal']!=''){
+						$model->global = 0;
+						$model->canal_id = $_POST['opcion']['canal'];
+				}
+				else{
+					$model->global = 1;
+				}
 				if($model->save())
 					$flag++;
 			}

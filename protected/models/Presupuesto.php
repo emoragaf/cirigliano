@@ -37,7 +37,7 @@ class Presupuesto extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('tarifa_traslado, tipo_tarifa_traslado','required','on'=>'traslado'),
+			array('tipo_tarifa_traslado','required','on'=>'traslado'),
 			array('id, visita_id, user_id, estado, tarifa_traslado, tipo_tarifa_traslado', 'numerical', 'integerOnly'=>true),
 			array('total', 'length', 'max'=>45),
 			array('nota, fecha_creacion, fecha_respuesta, fecha_asignacion, fecha_termino', 'safe'),
@@ -60,7 +60,7 @@ class Presupuesto extends CActiveRecord
 			'mueblespresupuesto' => array(self::HAS_MANY, 'MueblePresupuesto', 'presupuesto_id','order'=>'servicio_mueble_id'),
 			'trasladopresupuesto' => array(self::HAS_MANY, 'TrasladoPresupuesto', 'presupuesto_id'),
 			'adicionales' => array(self::HAS_MANY, 'Adicional', 'presupuesto_id'),
-			'tarifaTraslado'=>array(self::BELONGS_TO,'TarifaTraslado','tarifa_traslado'),
+			'tarifasTraslado'=>array(self::HAS_MANY,'TarifaTrasladoMultiple','id_presupuesto'),
 			'manosobra'=>array(self::HAS_MANY,'ManoObraPresupuesto','presupuesto_id'),
 		);
 	}
@@ -84,29 +84,6 @@ class Presupuesto extends CActiveRecord
 			'tarifa_traslado'=>'Origen - Destino Traslado',
 			'tipo_tarifa_traslado'=>'Nombre Proveedor',
 		);
-	}
-
-	public function getTTraslado(){
-		if($this->tarifaTraslado && $this->tipo_tarifa_traslado){
-			switch ($this->tipo_tarifa_traslado) {
-				case '1':
-					return $this->tarifaTraslado->tarifa_a;
-					break;
-				case '2':
-					return $this->tarifaTraslado->tarifa_b;
-					break;
-				case '3':
-					return $this->tarifaTraslado->tarifa_c;
-					break;
-				case '4':
-					return $this->tarifaTraslado->tarifa_d;
-					break;
-				default:
-					return null;
-					break;
-			}
-		}
-		return 'Tarifa No asignada';
 	}
 	/**
 	 * Retrieves a list of models based on the current search/filter conditions.

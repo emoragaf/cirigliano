@@ -7,8 +7,19 @@
             'name' => 'monto',
             'value' => 'Yii::app()->numberFormatter->format("###,###,###,###",$data->monto);',
         ),
+        array(
+            'class'=>'bootstrap.widgets.TbButtonColumn',
+            'template'=>'{delete}',
+            'buttons'=>array(
+                    'delete' => array
+                    (
+                        'url'=>'Yii::app()->createUrl("facturacion/DeleteAdicional", array("id"=>$data->id))',
+                    ),
+                ),
+        ),
     ),
 )); ?>
+<?php if (Yii::app()->user->checkAccess('Facturacion.AddAdicional')): ?>
 <div class="row">
         <h3>Nuevo Adicional</h3>
         <?php 
@@ -30,3 +41,4 @@
 
         <?php $this->endWidget(); ?>
 </div>
+<?php endif ?>

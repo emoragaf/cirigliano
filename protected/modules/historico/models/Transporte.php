@@ -23,6 +23,15 @@
  */
 class Transporte extends MyActiveRecord
 {
+	public $punto_direccion;
+	public $punto_region_id;
+	public $punto_comuna_id;
+	public $punto_distribuidor_id;
+	public $punto_canal_id;
+	public $fecha_creacion_inicio;
+    public $fecha_creacion_final;
+    public $fecha_visita_inicio;
+    public $fecha_visita_final;
 	/**
 	 * @return string the associated database table name
 	 */
@@ -71,13 +80,17 @@ class Transporte extends MyActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'id_usuario' => 'Id Usuario',
-			'id_punto' => 'Id Punto',
+			'id_usuario' => 'Usuario',
+			'id_punto' => 'Punto',
 			'fecha_ingreso' => 'Fecha Ingreso',
 			'fecha_ejecucion' => 'Fecha Ejecucion',
-			'id_estado_transporte' => 'Id Estado Transporte',
-			'id_autorizado' => 'Id Autorizado',
+			'id_estado_transporte' => 'Estado',
+			'id_autorizado' => 'Autorizado',
 			'observaciones' => 'Observaciones',
+			'punto_comuna_id'=> 'Comuna',
+			'punto_direccion' => 'Dirección',
+			'punto_canal_id' =>'Canal',
+			'punto_distribuidor_id' => 'Distribuidor',
 		);
 	}
 
@@ -108,6 +121,31 @@ class Transporte extends MyActiveRecord
 		$criteria->compare('id_autorizado',$this->id_autorizado);
 		$criteria->compare('observaciones',$this->observaciones,true);
 
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+		));
+	}
+	public function searchRelations($params = array())
+	{
+		// @todo Please modify the following code to remove attributes that should not be searched.
+
+		$criteria=new CDbCriteria;
+
+		if(!empty($params)){
+		}
+
+
+		$criteria->with = array('idPunto'=>array('alias'=>'idPunto','select'=>'*'));
+		$criteria->together= true;
+		if((isset($this->fecha_creacion_inicio) && trim($this->fecha_creacion_inicio) != "") && (isset($this->fecha_creacion_final) && trim($this->fecha_creacion_final) != ""))
+                        $criteria->addBetweenCondition('t.fecha_ingreso', ''.date('Y-m-d',strtotime($this->fecha_creacion_inicio)).'', ''.date('Y-m-d',strtotime($this->fecha_creacion_final)).'');
+        if((isset($this->fecha_visita_inicio) && trim($this->fecha_visita_inicio) != "") && (isset($this->fecha_visita_final) && trim($this->fecha_visita_final) != ""))
+                        $criteria->addBetweenCondition('t.fecha_ejecucion', ''.date('Y-m-d',strtotime($this->fecha_creacion_inicio)).'', ''.date('Y-m-d',strtotime($this->fecha_visita_final)).'');
+		$criteria->compare('"idPunto".direccion',$this->punto_direccion,true);
+		$criteria->compare('"idPunto".id_comuna',$this->punto_comuna_id);
+		$criteria->compare('"idPunto".id_distribuidor',$this->punto_distribuidor_id);
+		$criteria->compare('"idPunto".id_canal',$this->punto_canal_id);
+		$criteria->compare('t.id_estado_transporte',$this->id_estado_transporte);
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));

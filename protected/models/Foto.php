@@ -33,7 +33,7 @@ class Foto extends CActiveRecord
 		return array(
 			array('path, extension', 'required'),
 			array('id', 'numerical', 'integerOnly'=>true),
-			array('nombre, descripcion', 'length', 'max'=>45),
+			array('nombre, descripcion', 'length', 'max'=>255),
 			array('path', 'length', 'max'=>255),
 			array('extension', 'length', 'max'=>30),
 			// The following rule is used by search().

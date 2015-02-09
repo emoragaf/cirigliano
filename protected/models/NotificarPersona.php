@@ -31,10 +31,10 @@ class NotificarPersona extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('persona_id', 'required'),
-			array('id, punto_id, persona_id, tipo_notificacion, global', 'numerical', 'integerOnly'=>true),
+			array('id, punto_id, persona_id, canal_id, tipo_notificacion, global', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, punto_id, persona_id, tipo_notificacion, global', 'safe', 'on'=>'search'),
+			array('id, punto_id, persona_id, tipo_notificacion, global, id_canal', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -53,6 +53,7 @@ class NotificarPersona extends CActiveRecord
 		return array(
 			'punto' => array(self::BELONGS_TO, 'Punto', 'punto_id'),
 			'persona' => array(self::BELONGS_TO, 'Persona', 'persona_id'),
+			'canal'=>array(self::BELONGS_TO,'Canal','canal_id'),
 		);
 	}
 
@@ -66,6 +67,7 @@ class NotificarPersona extends CActiveRecord
 			'punto_id' => 'Punto',
 			'persona_id' => 'Persona',
 			'tipo_notificacion'=>'Tipo Notificación',
+			'canal_id'=>'Canal',
 		);
 	}
 

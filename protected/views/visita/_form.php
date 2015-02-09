@@ -9,6 +9,7 @@ if($model->tipo_visita_id != 3){
 ?>
     <!--<p class="help-block"><?php echo Yii::t('app','Fields with * are required.'); ?></p>-->
 <?php echo $form->errorSummary($model); ?>
+
 <div class="row">
     <?php if($model->tipo_visita_id != 3){ ?>
         <div class="span3">

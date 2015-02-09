@@ -56,6 +56,7 @@ class Adicional extends CActiveRecord
 		return array(
 			'foto' => array(self::BELONGS_TO, 'Foto', 'foto_id'),
 			'mueblePunto' => array(self::BELONGS_TO, 'MueblePunto', 'mueble_punto_id'),
+			'presupuesto'=>array(self::BELONGS_TO,'Presupuesto','presupuesto_id'),
 		);
 	}
 
@@ -115,7 +116,10 @@ class Adicional extends CActiveRecord
 			$this->descripcion;
 	}
 	public function getMueblePuntoDescripcion(){
-		return $this->mueblePunto->Descripcion;
+		if($this->mueblePunto)
+			return $this->mueblePunto->Descripcion;
+		else
+			return '';
 	}
 	public function getServicioDescripcion(){
 		return $this->descripcion;

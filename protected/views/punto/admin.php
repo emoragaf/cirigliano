@@ -37,6 +37,10 @@ $('.search-form form').submit(function(){
 	'columns'=>array(
 		'direccion',
 		array(
+				'name'=>'codigo',
+				'value'=>'isset($data->codigo) ? $data->codigo : "N/A"',
+			),
+		array(
 				'name'=>'region_id',
 				'value'=>'isset($data->region) ? $data->region->nombre : null',
 				'filter'=>CHtml::listData(Region::model()->findAll(array('order'=>'orden')), 'id', 'nombre'),
@@ -77,7 +81,14 @@ $('.search-form form').submit(function(){
 		array(
 			'class'=>'bootstrap.widgets.TbButtonColumn',
 			'template'=>Yii::app()->user->checkAccess('Punto.update') && Yii::app()->user->checkAccess('Punto.delete') ? '{view}{update}{delete}': '{view}',
-
+			'buttons'=>array(
+				'view'=>array(
+					'options'=>array('target'=>'none'),
+				),
+				'update'=>array(
+					'options'=>array('target'=>'none'),
+				),
+			),
 		),
 	),
 )); ?>

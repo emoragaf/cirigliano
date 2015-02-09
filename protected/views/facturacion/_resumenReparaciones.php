@@ -9,7 +9,7 @@
 	foreach ($presupuestos as $presupuesto) {
 		if($presupuesto->visita->tipo_visita_id == 3){
 			$subtotales['traslados']['total'] += $presupuesto->total;
-			if($presupuesto->visita->estado == 1){
+			if($presupuesto->visita->estado != 4){
 				$subtotales['traslados']['espPresup'] += $presupuesto->total;
 			}
 			if($presupuesto->visita->estado == 4){
@@ -18,7 +18,7 @@
 		}
 		if($presupuesto->visita->tipo_visita_id != 3){
 			$subtotales['reparaciones']['total'] += $presupuesto->total;
-			if($presupuesto->visita->estado == 1){
+			if($presupuesto->visita->estado != 4){
 				$subtotales['reparaciones']['espPresup'] += $presupuesto->total;
 			}
 			if($presupuesto->visita->estado == 4){
@@ -65,6 +65,7 @@
 <br>
 <div class="row">
 	<div class="span12 well">
+		<p><b>Reparación + Traslado: </b><?php echo(Yii::app()->numberFormatter->format('###,###,###,###',$subtotales['traslados']['total']+$subtotales['reparaciones']['total']));?></p>
 		<p><b>Neto: </b><?php echo(Yii::app()->numberFormatter->format('###,###,###,###',$subtotales['traslados']['total']+$subtotales['reparaciones']['total']+$totalAdicionales));?></p>
 		<p><b>IVA: </b><?php echo(Yii::app()->numberFormatter->format('###,###,###,###',0.19*($subtotales['traslados']['total']+$subtotales['reparaciones']['total']+$totalAdicionales)));?></p>
 		<p><b>Total: </b><?php echo(Yii::app()->numberFormatter->format('###,###,###,###',1.19*($subtotales['traslados']['total']+$subtotales['reparaciones']['total']+$totalAdicionales)));?></p>

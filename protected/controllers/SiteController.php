@@ -71,6 +71,11 @@ class SiteController extends Controller
 
 
 	}
+	public function actionPhpInfo(){
+		echo phpinfo();
+	}
+
+
 
 	/**
 	 * This is the default 'index' action that is invoked

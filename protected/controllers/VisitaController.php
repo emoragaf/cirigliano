@@ -175,6 +175,7 @@ class VisitaController extends Controller
 		// $this->performAjaxValidation($model);
 
 		if (isset($_POST['Visita'])) {
+			$flag = false;
 			$model->attributes=$_POST['Visita'];
 			$model->fecha_visita = date('Y-m-d',strtotime($model->fecha_visita));
 			$p=new Presupuesto;
@@ -210,16 +211,16 @@ class VisitaController extends Controller
 								$adicional->mueble_punto_id = $key;
 								$adicional->descripcion = $value['descripcion'];
 								$adicional->tarifa = $value['tarifa'];
-								$adicional->cantidad = 1;	
+								$adicional->cantidad = !empty($value['cantidad'])?$value['cantidad']:1;	
 								$adicional->save();	
-								$p->total += $adicional->tarifa;
+								$p->total += $adicional->tarifa*$adicional->cantidad;
 								$p->save();	
 								$flag = true;
 							}
 						}
 					}
 					$mueblesPunto = $_POST['Mueble'];
-					$flag = false;
+					
 					
 					foreach ($mueblesPunto as $key => $servicios) {
 						if(in_array($key, $ids)){
@@ -230,7 +231,7 @@ class VisitaController extends Controller
 								$mano_obra->mueble_punto_id = $key;
 								$mano_obra->tarifa_mano_obra_id = $tarifaManoObra->id;
 								$mano_obra->save();
-								$p->total += $mano_obra->tarifa_mano_obra_id;
+								$p->total += $tarifaManoObra->tarifa;
 								$p->save();
 							}
 							else{
@@ -272,18 +273,20 @@ class VisitaController extends Controller
 					if ($flag || $model->visita_preventiva == 1) {
 						$model->estado = 1;
 						$model->save();
+
 						$this->redirect(array('Formulario/Create','id'=>$model->id));
 						//$this->redirect(array('visita/view','id'=>$model->visita_id));
+
 					}
 				}
-				if ($model->visita_preventiva == 1) {
+				else{
+					if ($model->visita_preventiva == 1) {
 						$model->estado = 1;
 						$model->save();
 						$this->redirect(array('Formulario/Create','id'=>$model->id));
-						//$this->redirect(array('visita/view','id'=>$model->visita_id));
-				}
-				else
+					}
 					$this->redirect(array('visita/view','id'=>$model->id));
+				}
 			}		
 		}
 
@@ -300,16 +303,28 @@ class VisitaController extends Controller
 		$model->punto_id = $id;
 		$model->fecha_creacion = date('Y-m-d');
 		$model->tipo_visita_id =3;
+		if(isset(Yii::app()->session['TrasladoIV'])){
+			$model->destino_traslado_id = Yii::app()->session['TrasladoIV']['origen'];
+			unset(Yii::app()->session['TrasladoIV']);
+
+		}
 		$muebles= MueblePunto::model()->findAll(array('condition'=>'t.punto_id=:id','params'=>array(':id'=>$id)));
 		$p=new Presupuesto('traslado');
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
-
-		if (isset($_POST['Visita'])) {
+		if (isset($_POST['Visita']) && !isset($_POST['Mueble'])) {
+			$model->addError('muebles_traslado','Debe seleccionar al menos 1 mueble para el traslado.');
+		}
+		if (isset($_POST['Visita']) && isset($_POST['Mueble'])) {
 			$p->attributes=$_POST['Presupuesto'];
+			$p->tarifa_traslado = null;
+			$p->total = 0;
 			$model->attributes=$_POST['Visita'];
 			$model->fecha_visita = date('Y-m-d',strtotime($model->fecha_visita));
+			if (isset($_POST['idavuelta'])) {
+				Yii::app()->session['TrasladoIV'] = array('origen'=>$model->punto_id,'destino'=>$model->destino_traslado_id);
+			}
 			//$model->destino_traslado_id = $_POST['destino'];
 
 			
@@ -319,26 +334,37 @@ class VisitaController extends Controller
 
 			if ($model->save()) {
 				$p->visita_id = $model->id;
-				$tarifa = TarifaTraslado::model()->findByPk($p->tarifa_traslado);
-				switch ($p->tipo_tarifa_traslado) {
-					case '1':
-						$p->total = $tarifa->tarifa_a;
-						break;
-					case '2':
-					    $p->total = $tarifa->tarifa_b;
-						break;
-					case '3':
-					    $p->total = $tarifa->tarifa_c;
-						break;
-					case '4':
-					    $p->total = $tarifa->tarifa_d;
-						break;
+				foreach ($_POST['Presupuesto']['tarifa_traslado'] as $key => $value) {
+				# code...
+					$tarifa = TarifaTraslado::model()->findByPk($value);
+					switch ($p->tipo_tarifa_traslado) {
+						case '1':
+							$p->total += $tarifa->tarifa_a;
+							break;
+						case '2':
+						    $p->total += $tarifa->tarifa_b;
+							break;
+						case '3':
+						    $p->total += $tarifa->tarifa_c;
+							break;
+						case '4':
+						    $p->total += $tarifa->tarifa_d;
+							break;
+					}
+					$p->save();
+					$tm = new TarifaTrasladoMultiple;
+					$tm->id_presupuesto = $p->id;
+					$tm->distancia = $tarifa->distancia;
+					$tm->tarifa_traslado = $value;
+					$tm->tipo_tarifa_traslado = $p->tipo_tarifa_traslado;
+					$tm->save();
 				}
-				$p->save();
 				$model->folio = 'T'.sprintf('%07d',$model->id);
 				$model->save();
-
-				$mueblesPunto = $_POST['Mueble'];
+				if(isset($_POST['Mueble']))
+					$mueblesPunto = $_POST['Mueble'];
+				else
+					$mueblesPunto = null;
 
 				if (isset($_POST['Instalacion'])) {
 					$mueblesPuntoD = $_POST['Instalacion'];
@@ -351,7 +377,10 @@ class VisitaController extends Controller
 				if($mueblesPunto){
 					foreach ($mueblesPunto as $key => $mueble) {
 						$mp = MueblePunto::model()->findByPk($key);
-						$tarifaInstalacion = TarifaInstalacion::model()->find(array('condition'=>'mueble_id ='.$mp->mueble_id));
+						$tarifaInstalacion = TarifaInstalacion::model()->find(array('condition'=>'mueble_id ='.$mp->mueble_id.' AND activo = 1'));
+						if (!$tarifaInstalacion) {
+							$tarifaInstalacion = TarifaInstalacion::model()->find(array('condition'=>'mueble_id ='.$mp->mueble->categoria_precio.' AND activo = 1'));
+						}
 						$traslado = new TrasladoPresupuesto;
 						$traslado->presupuesto_id = $p->id;
 						$traslado->mueble_punto = $key;
@@ -371,8 +400,22 @@ class VisitaController extends Controller
 				}
 				$model->estado = 1;
 				$model->save();
+				if($model->tipo_visita_id==3){
+					foreach ($model->presupuestos as $p) {
+						if($p->trasladopresupuesto){
+							foreach ($p->trasladopresupuesto as $t) {
+								if($t){
+									if($t->mueblePunto){
+										$t->mueblePunto->punto_id = $model->destino_traslado_id;
+										$t->mueblePunto->save();
+									}
+								}
+							}
+						}
+					}
+				}
 
-				$this->redirect(array('View','id'=>$model->id));
+				$this->redirect(array('Formulario/create','id'=>$model->id));
 			}
 		}
 
@@ -412,45 +455,77 @@ class VisitaController extends Controller
 	public function actionAceptarPresupuesto($id)
 	{
 		$model=$this->loadModel($id);
-
-		if($model->estado ==  1 && $model->formulario){
-			//Enviar email
-			$email = Yii::app()->mandrillwrap;
-			$email->mandrillKey = 'dLsiSqgctG1atlNvHqVdVg';
-			$email->text = "Informe Solicitud Reparación ".$model->punto->direccion."\nFecha Ingreso: ".date('d-m-Y',strtotime($model->fecha_visita));
-			$email->html = "<h1>Informe Solicitud Reparación ".$model->punto->direccion."</h1><p>Fecha Ingreso: ".date('d-m-Y',strtotime($model->fecha_visita))."</p>";
-			$email->subject = "Informe Solicitud Reparación";
-			$email->fromName = "emoraga";
-			$email->fromEmail = "emoraga@hbl.cl";
-			$email->to = array(
-	            array(
-	                'email' => 'o0eversor0o@gmail.com',
-	                'name' => 'Eduardo Moraga',
-	                'type' => 'to'
-	            ),
-	            array(
-	                'email' => 'e.moraga@yahoo.com',
-	                'name' => 'Eduardo Moraga',
-	                'type' => 'to'
-	            ),
-	            array(
-	                'email' => 'e.moraga@live.cl',
-	                'name' => 'Eduardo Moraga',
-	                'type' => 'to'
-	            ),
-	        );
-	        $content = base64_encode(file_get_contents(Yii::getPathOfAlias('webroot')."/uploads/informes/".$model->punto_id."/".$model->id.".pdf"));
-	        $email->tags = array('informe-MovistarMantencion','prueba');
-			$email->attachments = array(array('type'=>'application/pdf','name'=>'Informe Solicitud '.$model->punto->direccion.' '.date('d-m-Y',strtotime($model->fecha_visita)),'content'=>$content));
-			$email->images = array();
-			//$email->sendEmail();
-			
-			$model->estado = 4;
+		if(!$model->formulario){
+			$model->estado = 5;
+			$model->id_autoriza = Yii::app()->user->getId();
+			$model->save();
 		}
 		else{
-			$model->estado = 3;
-		}
+			if($model->tipo_visita_id==3){
+				foreach ($model->presupuestos as $p) {
+					if($p->trasladopresupuesto){
+						foreach ($p->trasladopresupuesto as $t) {
+							if($t){
+								if($t->mueblePunto){
+									$t->mueblePunto->punto_id = $model->destino_traslado_id;
+									$t->mueblePunto->save();
+								}
+							}
+						}
+					}
+				}
+			}
+			if($model->formulario){
+				//Enviar email
+				$model->estado == 1;
+				$html = "<h1>Informe Solicitud ".$model->punto->direccion."</h1>";
+				$html .="<p>Folio: ".$model->folio."</p>";
+				$html .="<p>Fecha Ingreso: ".date('d-m-Y',strtotime($model->fecha_visita))."</p>";
+				$html .=$model->punto->comuna!=null?"<p>Comuna: ".$model->punto->comuna->nombre."</p>":"";
+				$html .=$model->punto->comuna!=null&&$model->punto->comuna->region!=null?"<p>Region: ".$model->punto->comuna->region->nombre."</p>":"";
+				$html .=$model->punto->canal!=null?"<p>Canal: ".$model->punto->canal->nombre."</p>":"";
+				$html .=$model->punto->distribuidor!=null?"<p>Distribuidor: ".$model->punto->distribuidor->nombre."</p>":"";
+				
+				$recipients = array();
+				if($model->tipo_visita_id == 3){
+					if ($model->punto->canal_id!=7) {
+						$notificar = NotificarPersona::model()->findAll(array('condition'=>'(global =1 OR canal_id ='.$model->punto->canal_id.') AND tipo_notificacion = 2'));
+						foreach ($notificar as $n) {
+							$recipients[]= array('email'=>$n->persona->email,'name'=>$n->persona->nombre,'type'=>'to');
+						}
+					}
+					else{
+						$notificar = NotificarPersona::model()->findAll(array('condition'=>'(global =1 OR canal_id ='.$model->destino->canal_id.') AND tipo_notificacion = 2'));
+						foreach ($notificar as $n) {
+							$recipients[]= array('email'=>$n->persona->email,'name'=>$n->persona->nombre,'type'=>'to');
+						}
+					}
+				}
+				else{
+					$notificar = NotificarPersona::model()->findAll(array('condition'=>'(global =1 OR canal_id ='.$model->punto->canal_id.') AND tipo_notificacion = 2'));
+					foreach ($notificar as $n) {
+						$recipients[]= array('email'=>$n->persona->email,'name'=>$n->persona->nombre,'type'=>'to');
+					}
+				}
 
+				$email = Yii::app()->mandrillwrap;
+				$email->mandrillKey = 'dLsiSqgctG1atlNvHqVdVg';
+				$email->text = "Informe Solicitud Reparación ".$model->punto->direccion."\nFecha Ingreso: ".date('d-m-Y',strtotime($model->fecha_visita));
+				$email->html = $html;
+				$email->subject = "Informe Solicitud Reparación ".$model->folio;
+				$email->fromName = "Cirigliano TradeSensor";
+				$email->fromEmail = "noreply@tradesensor.cl";
+				$email->to = $recipients;
+		        $content = base64_encode(file_get_contents(Yii::getPathOfAlias('webroot')."/uploads/informes/".$model->punto_id."/".$model->id.".pdf"));
+		        $email->tags = array('informe-MovistarMantencion','produccion');
+				$email->attachments = array(array('type'=>'application/pdf','name'=>'Informe Solicitud '.$model->punto->direccion.' '.date('d-m-Y',strtotime($model->fecha_visita)),'content'=>$content));
+				$email->images = array();
+				$email->sendEmail();
+				
+				$model->estado = 4;
+				$model->id_autoriza = Yii::app()->user->getId();
+			}	
+		}
 		if ($model->save()) {
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -460,6 +535,7 @@ class VisitaController extends Controller
 	{
 		$model=$this->loadModel($id);
 		$model->estado = 2;
+		$model->id_autoriza = Yii::app()->user->getId();
 		if ($model->save()) {
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -509,9 +585,9 @@ class VisitaController extends Controller
 		$model->unsetAttributes();  // clear any default values
 		if (isset($_GET['Visita'])) {
 			$model->attributes=$_GET['Visita'];
-			if($_GET['Visita']['punto_comuna_id'] == 0)
+			if(isset($_GET['Visita']['punto_comuna_id']) && $_GET['Visita']['punto_comuna_id'] == 0)
 				$model->punto_comuna_id = null;
-			if($_GET['Visita']['punto_distribuidor_id'] == 0)
+			if(isset($_GET['Visita']['punto_distribuidor_id']) && $_GET['Visita']['punto_distribuidor_id'] == 0)
 				$model->punto_distribuidor_id = null;
 		}
 		$this->render('indexTipo',array(

@@ -181,16 +181,20 @@ class MueblePuntoController extends Controller
 	/**
 	 * Manages all models.
 	 */
-	public function actionAdmin()
+	public function actionAdmin($id)
 	{
 		$model=new MueblePunto('search');
 		$model->unsetAttributes();  // clear any default values
+		if ($id) {
+			$model->punto_id=$id;
+		}
 		if (isset($_GET['MueblePunto'])) {
 			$model->attributes=$_GET['MueblePunto'];
 		}
 
 		$this->render('admin',array(
 			'model'=>$model,
+			'punto_id'=>$id
 		));
 	}
 

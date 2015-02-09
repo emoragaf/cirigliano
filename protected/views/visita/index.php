@@ -137,7 +137,6 @@ $fechaVisitaBetween = $this->widget('zii.widgets.jui.CJuiDatePicker', array(
                     )
                     ),true),
                 ),
-				),
 			array(
 				'name'=>'tipo_visita_id',
 				'value'=>'$data->tipoVisita->nombre',
@@ -147,7 +146,7 @@ $fechaVisitaBetween = $this->widget('zii.widgets.jui.CJuiDatePicker', array(
 				'name'=>'estado',
 				'value'=>'$data->nombreEstado',
 				'filter'=>$model->Estados,
-				),
+			),
 			array(
 				'class'=>'bootstrap.widgets.TbButtonColumn',
 			),

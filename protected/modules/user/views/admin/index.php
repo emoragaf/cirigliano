@@ -42,6 +42,10 @@ $('.search-form form').submit(function(){
 			'type'=>'raw',
 			'value'=>'CHtml::link(UHtml::markSearch($data,"email"), "mailto:".$data->email)',
 		),
+		array(
+			'name' => 'status',
+			'value' => 'User::itemAlias("UserStatus",$data->status)',
+		),
 		'create_at',
 		'lastvisit_at',
 		array(

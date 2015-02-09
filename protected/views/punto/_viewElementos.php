@@ -5,10 +5,16 @@
 
 <div class="view">
 <?php if (count($data) > 0): ?>
-	<ul>
+	<table class="table table-bordered table-condensed table-striped">
+		<tr>
+			<th>Elemento</th>
+			<th>Tarifa</th>
+		</tr>
 		<?php foreach ($data as $key => $value): ?>
-			<li><?php echo $value->descripcion.' - '.$value->tarifa; ?></li>
+			<tr>
+				<td><?php echo $value->descripcion; ?></td><td style="text-align:right"><?php echo $value->tarifa; ?></td>
+			</tr>
 		<?php endforeach ?>
-	</ul>
+	</table>
 <?php endif ?>
 </div>

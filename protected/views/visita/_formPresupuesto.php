@@ -107,7 +107,7 @@ function addMueblePunto()
                 </tr>
                 <?php foreach ($mueble->servicioMuebles as $servicio): ?>
                 <tr>
-                    <td>
+                    <td style="height:13px;">
                     <input type="number" id="Mueble<?php echo $mueble->id?>-<?php echo $servicio->id?>" name="Mueble[<?php echo $mueble->id?>][<?php echo $servicio->id?>]" min="0" value="0" style="width:30px;" 
                     onchange="var cant = $('#Mueble<?php echo $mueble->id?>-<?php echo $servicio->id?>').val();
                                if(cant < <?php echo  $servicio->cant_b;?>){
@@ -120,8 +120,8 @@ function addMueblePunto()
                                 $('#Tarifa<?php echo $mueble->id?>-<?php echo $servicio->id?>').html(cant*<?php echo $servicio->tarifa_c;?>);
                                }">
                     </td>
-                    <td><?php echo $servicio->descripcion;?></td>
-                    <td><span id="Tarifa<?php echo $mueble->id?>-<?php echo $servicio->id?>">0</span></td>
+                    <td><small><?php echo $servicio->descripcion;?></small></td>
+                    <td><small><span id="Tarifa<?php echo $mueble->id?>-<?php echo $servicio->id?>">0</span></small></td>
                 </tr>
                 <?php endforeach ?>
             </table>
@@ -132,7 +132,7 @@ function addMueblePunto()
             <table class="table table-bordered table-condensed" id="adicionales<?php echo $mueble->id?>">
                 <tr>
                     <th width="25px;">
-                    <?php echo TbHtml::button(TbHtml::icon(TbHtml::ICON_PLUS).' Agregar', array('color' => TbHtml::BUTTON_COLOR_INFO,'onclick'=>"i++; $('#adicionales".$mueble->id." tr:last').after('<tr><td><input placeholder=\"Descripción\" type=\"text\" value=\"\" name=\"Adicional[".$mueble->id."][adicional' + i + '][descripcion]\" id=\"Adicional_".$mueble->id."_adicional' + i + '_descripcion\"></td><td><input placeholder=\"Tarifa\" type=\"text\" value=\"\" name=\"Adicional[".$mueble->id."][adicional' + i + '][tarifa]\" id=\"Adicional_".$mueble->id."_adicional' + i + '_tarifa\"></td></tr>');
+                    <?php echo TbHtml::button(TbHtml::icon(TbHtml::ICON_PLUS).' Agregar', array('color' => TbHtml::BUTTON_COLOR_INFO,'onclick'=>"i++; $('#adicionales".$mueble->id." tr:last').after('<tr><td><input placeholder=\"Descripción\" type=\"text\" value=\"\" name=\"Adicional[".$mueble->id."][adicional' + i + '][descripcion]\" id=\"Adicional_".$mueble->id."_adicional' + i + '_descripcion\"></td><td><input placeholder=\"Tarifa\" type=\"text\" value=\"\" name=\"Adicional[".$mueble->id."][adicional' + i + '][tarifa]\" id=\"Adicional_".$mueble->id."_adicional' + i + '_tarifa\"></td><td><input placeholder=\"Cantidad\" type=\"text\" value=\"\" name=\"Adicional[".$mueble->id."][adicional' + i + '][cantidad]\" id=\"Adicional_".$mueble->id."_cantidad' + i + '_cantidad\"></td></tr>');
 ")); ?>
                     </th>
                     <th colspan="2"> Adicionales</th>
@@ -144,6 +144,10 @@ function addMueblePunto()
                     </td>
                     <td>
                                 <?php echo TbHtml::textField('Adicional['.$mueble->id.'][adicional0][tarifa]', '', array('placeholder' => 'Tarifa')); ?>
+
+                    </td>
+                    <td>
+                                <?php echo TbHtml::textField('Adicional['.$mueble->id.'][adicional0][cantidad]', '', array('placeholder' => 'Cantidad')); ?>
 
                     </td>
                 </tr>

@@ -9,7 +9,8 @@ foreach(TarifaTraslado::model()->findAll(array('condition'=>'activo=1')) as $tar
 ?>
     <!--<p class="help-block"><?php echo Yii::t('app','Fields with * are required.'); ?></p>-->
 <?php //print_r(json_encode($tarifas)) ?>
-<div class="row">
+<?php echo $form->errorSummary($model); ?>
+<div class="row well">
     <?php if($model->tipo_visita_id != 3){ ?>
         <div class="span3">
             <?php echo $form->dropDownListControlGroup($model, 'tipo_visita_id',
@@ -88,50 +89,75 @@ function addPersonaPunto()
         ?>
     </div>
 </div>
-<div class="row">
-        <div class="span3">
-            <label>Punto Destino</label>
-            <?php 
-                $this->widget('yiiwheels.widgets.select2.WhSelect2', array(
-                    'model' => $model,
-                    'attribute'=>'destino_traslado_id',
-                    'data' => array(''=>'Seleccione') + CHtml::listData(Punto::model()->findAll(array('order'=>'direccion')), 'id', 'Descripcion'),
-                    'pluginOptions' => array(
-                        'placeholder' => 'Destino',
-                        'allowClear' => true,
-                        'width' => '100%'
-                    )
-                    ));
-            ?>
-        </div>
 
-    <div class="span3">
-         <?php echo $form->dropDownListControlGroup($presupuesto, 'tarifa_traslado',
-            CHtml::listData(TarifaTraslado::model()->findAll(array('condition'=>'activo = 1')), 'id', 'Descripcion'), array('empty' => 'Seleccione','onchange'=>"
-            if($('#Presupuesto_tarifa_traslado') && $('#Presupuesto_tarifa_traslado').val()){
-                var tarifas =".json_encode($tarifas).";
-                var ruta = $('#Presupuesto_tarifa_traslado').val();
-                var t = $('#Presupuesto_tipo_tarifa_traslado').val();
-                $('#tarifa_traslado').text('Monto Traslado: '+tarifas[ruta][t]);
-            }",)); ?>
-
+<div class="well">
+    <div class="row">
+            <div class="span3">
+                <label>Punto Destino</label>
+                <?php 
+                    $this->widget('yiiwheels.widgets.select2.WhSelect2', array(
+                        'model' => $model,
+                        'attribute'=>'destino_traslado_id',
+                        'data' => array(''=>'Seleccione') + CHtml::listData(Punto::model()->findAll(array('order'=>'direccion')), 'id', 'Descripcion'),
+                        'pluginOptions' => array(
+                            'placeholder' => 'Destino',
+                            'allowClear' => true,
+                            'width' => '100%'
+                        )
+                        ));
+                ?>
+            </div>
+            <div class="span3">
+                <br>
+                <?php echo TbHtml::checkBox('idavuelta', false, array('label' => 'Traslado Ida y Vuelta')); ?>
+            </div>
     </div>
-     <div class="span3">
-        <?php echo $form->dropDownListControlGroup($presupuesto, 'tipo_tarifa_traslado',
-            array('1'=>'Camioneta, 3,5Mts3','2'=>'Camión ¾, 6,5Mts3','3'=>'Camión, 30Mts3','4'=>'Carro ffvv terreno'), array('onchange'=>"
-            if($('#Presupuesto_tarifa_traslado') && $('#Presupuesto_tarifa_traslado').val()){
-                var tarifas =".json_encode($tarifas).";
-                var ruta = $('#Presupuesto_tarifa_traslado').val();
-                var t = $('#Presupuesto_tipo_tarifa_traslado').val();
-                $('#tarifa_traslado').text('Monto Traslado: '+tarifas[ruta][t]);
-            }",)); ?>
+    <br>
+    <div class="row">
+        <div class="span5">
+             <?php echo $form->dropDownListControlGroup($presupuesto, 'tarifa_traslado',
+                CHtml::listData(TarifaTraslado::model()->findAll(array('condition'=>'activo = 1')), 'id', 'Descripcion'), array('empty' => 'Seleccione','class'=>'span12','multiple'=>true,'onchange'=>"
+                if($('#Presupuesto_tarifa_traslado') && $('#Presupuesto_tarifa_traslado').val()){
+                    var tarifas =".json_encode($tarifas).";
+                    console.log($('#Presupuesto_tarifa_traslado').val());
+                    var ruta = $('#Presupuesto_tarifa_traslado').val();
+                    var t = $('#Presupuesto_tipo_tarifa_traslado').val();
+                    $('#header_tarifa_traslado').text('Monto Traslado: ');
+                    list = '';
+                    ruta.forEach(function(data){
+                        list = list+'<li>'+tarifas[data][t]+'</li>';
+                        $('#tarifa_traslado').html(list);
+                    });
+                }",)); ?>
+
+        </div>
+         <div class="span3">
+            <?php echo $form->dropDownListControlGroup($presupuesto, 'tipo_tarifa_traslado',
+                array('1'=>'Camioneta, 3,5Mts3','2'=>'Camión ¾, 6,5Mts3','3'=>'Camión, 30Mts3','4'=>'Carro ffvv terreno'), array('onchange'=>"
+                if($('#Presupuesto_tarifa_traslado') && $('#Presupuesto_tarifa_traslado').val()){
+                    var tarifas =".json_encode($tarifas).";
+                    console.log($('#Presupuesto_tarifa_traslado').val());
+                    var ruta = $('#Presupuesto_tarifa_traslado').val();
+                    var t = $('#Presupuesto_tipo_tarifa_traslado').val();
+                    $('#header_tarifa_traslado').text('Monto Traslado: ');
+                    list = '';
+                    ruta.forEach(function(data){
+                        list = list+'<li>'+tarifas[data][t]+'</li>';
+                        $('#tarifa_traslado').html(list);
+                        console.log(list);
+                    });
+                }",)); ?>
+        </div>
     </div>
 </div>
 <div class="row">
     <?php echo $form->textAreaControlGroup($presupuesto,'nota',array('rows'=>6,'span'=>8)); ?>
 </div>
 <div class="row">
-    <h3 id="tarifa_traslado"></h3>
+    <h3 id="header_tarifa_traslado"></h3>
+    <ul id="tarifa_traslado">
+        
+    </ul>
 </div>
         
        

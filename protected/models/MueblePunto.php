@@ -43,7 +43,7 @@ class MueblePunto extends CActiveRecord
 	}
 
 	public function getDescripcion(){
-		return $this->mueble->descripcion.' Cód.'.$this->codigo;
+		return $this->mueble->descripcion;
 	}
 
 	/**
@@ -57,11 +57,11 @@ class MueblePunto extends CActiveRecord
 			'adicionals' => array(self::HAS_MANY, 'Adicional', 'mueble_punto_id'),
 			'mueble' => array(self::BELONGS_TO, 'Mueble', 'mueble_id'),
 			'punto' => array(self::BELONGS_TO, 'Punto', 'punto_id'),
-			'servicioMuebles' => array(self::HAS_MANY, 'ServicioMueble', array('mueble_id'=>'mueble_id')),
+			'servicios' => array(self::HAS_MANY, 'ServicioMueble', array('mueble_id'=>'mueble_id')),
 		);
 	}
 	public function getNombreMueble(){
-		return isset($this->mueble) ? $this->mueble->descripcion.' '.$this->codigo : null;
+		return isset($this->mueble) ? $this->mueble->descripcion : null;
 	}
 
 	/**
@@ -75,6 +75,19 @@ class MueblePunto extends CActiveRecord
 			'punto_id' => 'Punto',
 			'codigo' => 'Codigo',
 		);
+	}
+
+	public function getservicioMuebles(){
+		$servicio = ServicioMueble::model()->findAll(array('condition'=>'mueble_id ='.$this->mueble_id));
+		if($servicio)
+			return $servicio;
+		else{
+			$servicio = ServicioMueble::model()->findAll(array('condition'=>'mueble_id ='.$this->mueble->categoria_precio));
+		}
+		if($servicio)
+			return $servicio;
+		else
+			return null;
 	}
 
 	/**

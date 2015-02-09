@@ -14,22 +14,31 @@ $medios = array('1'=>'Camioneta, 3,5Mts3','2'=>'Camión ¾, 6,5Mts3','3'=>'Cami�
                 <th>Total</th>
             </tr>
             <?php foreach ($presupuestos as $presupuesto): ?>
-                <?php $citems = count($presupuesto->trasladopresupuesto)+1; ?>
+                <?php $citems =1; ?>
                 <?php foreach ($presupuesto->trasladopresupuesto as $traslado){
                     if ($traslado->tarifa_desinstalacion != null && $traslado->tarifa_desinstalacion != 0)
                         $citems++;
+                    if ($traslado->tarifa_instalacion != null && $traslado->tarifa_instalacion != 0)
+                        $citems++;
                 }?>
-                <?php $neto += $presupuesto->TTraslado;?>
+                <?php foreach ($presupuesto->tarifasTraslado as $tm): ?>
+                        <?php  $citems++; ?>
+                        <?php $neto += $tm->TTraslado;?>
+                <?php endforeach ?>
                 <?php if ($presupuesto->visita->tipo_visita_id == 3): ?>
                     <tr>
                         <td rowspan="<?php echo $citems ?>" style="vertical-align:middle"><?php echo $presupuesto->visita->folio; ?></td>
                         <td rowspan="<?php echo $citems ?>" style="vertical-align:middle"><?php echo $presupuesto->visita->punto->Descripcion; ?></td>
                         <td rowspan="<?php echo $citems ?>" style="vertical-align:middle"><?php echo $presupuesto->visita->destino->Descripcion; ?></td>
                         <td rowspan="<?php echo $citems ?>" style="vertical-align:middle"><?php echo date('d-m-Y',strtotime($presupuesto->visita->fecha_visita)); ?></td>
-                        <td><?php echo $presupuesto->tarifaTraslado->Descripcion; ?></td>
-                        <td><?php echo $medios[$presupuesto->tipo_tarifa_traslado]; ?></td>
-                        <td><?php echo Yii::app()->numberFormatter->format('###,###,###,###',$presupuesto->TTraslado); ?></td>   
                     </tr>
+                        <?php foreach ($presupuesto->tarifasTraslado as $tm): ?>
+                            <tr>
+                                <td><?php echo $tm->tarifaTraslado->Descripcion; ?></td>
+                                <td><?php echo $medios[$tm->tipo_tarifa_traslado]; ?></td>
+                                <td><?php echo Yii::app()->numberFormatter->format('###,###,###,###',$tm->TTraslado); ?></td>   
+                            </tr>
+                        <?php endforeach ?>
                     <?php foreach ($presupuesto->trasladopresupuesto as $traslado): ?>
                             <?php if ($traslado->tarifa_instalacion != null && $traslado->tarifa_instalacion != 0): ?>
                                 <tr>

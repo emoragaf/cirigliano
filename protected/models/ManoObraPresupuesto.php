@@ -52,6 +52,7 @@ class ManoObraPresupuesto extends CActiveRecord
 		return array(
 			'mueblepunto'=>array(self::BELONGS_TO,'MueblePunto','mueble_punto_id'),
 			'tarifa'=>array(self::BELONGS_TO,'TarifaManoObra','tarifa_mano_obra_id'),
+			'presupuesto'=>array(self::BELONGS_TO,'Presupuesto','presupuesto_id'),
 		);
 	}
 

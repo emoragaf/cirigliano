@@ -49,8 +49,15 @@ class InformeController extends Controller
 				  {
 				    return Yii::app()->getRequest()->sendFile($visita->punto->direccion.' '.$visita->fecha_visita.'.'.$tipo, @file_get_contents($path));
 				  }
-				else
-                        throw new CHttpException(404, 'No existe el archivo buscado.');
+				else{
+					Informe::InformePdf($id);
+					Informe::InformePpt($id);
+					if(file_exists($path))
+					  {
+					    return Yii::app()->getRequest()->sendFile($visita->punto->direccion.' '.$visita->fecha_visita.'.'.$tipo, @file_get_contents($path));
+					  }
+                    throw new CHttpException(404, 'No existe el archivo buscado.');
+				}
 			}
 		}
 	}
@@ -59,11 +66,34 @@ class InformeController extends Controller
 	{
 		if($id){
 			$visita = Visita::model()->findByPk($id);
-			if($visita){
+			if($visita && $visita->informe){
 				Informe::InformePdf($id);
 				Informe::InformePpt($id);
 			}
 		}
+	}
+	public function actionGenerarInformesGlobal()
+	{
+		set_time_limit(0);
+		$visitas = Visita::model()->findAll();
+		foreach ($visitas as $visita) {
+			if($visita && $visita->informe){
+				Yii::log($visita->id,'info','application');
+				try {
+					Informe::InformePdf($visita->id);
+				} catch (Exception $e) {
+					echo $e.'<br><br>';
+				}
+				try {
+					Informe::InformePpt($visita->id);
+				} catch (Exception $e) {
+					echo $e.'<br><br>';
+				}
+				
+				
+			}
+		}
+		echo 'Completado!';
 	}
 	
 }

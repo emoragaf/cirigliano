@@ -20,9 +20,10 @@
  */
 class Visita extends CActiveRecord
 {
-	private $estados = array(0=>'Solicitada',1=>'Espera Aprobación Presupuesto',2=>'Presupuesto Rechazado',3=>'En Ejecución',4=>'Terminada',99=>'Cancelada');
+	private $estados = array(0=>'Solicitada',1=>'Espera Aprobación Presupuesto',2=>'Presupuesto Rechazado',3=>'En Ejecución',4=>'Terminada',5=>'Espera Informe',99=>'Cancelada');
 	
-	
+	public $punto_destino;
+	public $punto_codigo;
 	public $punto_direccion;
 	public $punto_region_id;
 	public $punto_comuna_id;
@@ -33,6 +34,7 @@ class Visita extends CActiveRecord
     public $fecha_visita_inicio;
     public $fecha_visita_final;
     public $mueble_punto;
+    public $muebles_traslado;
 
 	/**
 	 * @return string the associated database table name
@@ -55,10 +57,10 @@ class Visita extends CActiveRecord
 			array('id, punto_id, tipo_visita_id, persona_punto_id, destino_traslado_id, estado, visita_preventiva, mimagen', 'numerical', 'integerOnly'=>true),
 			array('fecha_visita', 'length', 'max'=>45),
 			array('folio', 'length', 'max'=>255),
-			array('fecha_creacion', 'safe'),
+			array('fecha_creacion,muebles_traslado', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, fecha_creacion,fecha_creacion_final ,fecha_creacion_inicio ,fecha_visita_final ,fecha_visita_inicio ,punto_direccion, punto_canal_id,punto_distribuidor_id, punto_comuna_id, punto_canal_id, punto_region_id, fecha_visita, punto_id, tipo_visita_id, persona_punto_id, estado', 'safe', 'on'=>'search'),
+			array('id, fecha_creacion,fecha_creacion_final ,fecha_creacion_inicio ,fecha_visita_final ,fecha_visita_inicio ,punto_direccion, punto_canal_id,punto_distribuidor_id, punto_comuna_id,punto_codigo, punto_canal_id, punto_region_id, fecha_visita, punto_id, tipo_visita_id, persona_punto_id, estado', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -110,11 +112,14 @@ class Visita extends CActiveRecord
 			'tipo_visita_id' => 'Tipo Visita',
 			'persona_punto_id' => 'Solicitante',
 			'estado' => 'Estado',
-			'punto_direccion'=>'Dirección',
+			'punto_direccion'=>$this->tipo_visita_id == 3 ? 'Origen':'Dirección',
 			'punto_canal_id'=>'Canal',
 			'punto_distribuidor_id'=>'Distribuidor',
 			'punto_region_id'=>'Region',
 			'punto_comuna_id'=>'Comuna',
+			'punto_destino'=>'Destino',
+			'muebles_traslado'=>'Muebles Traslado',
+			'destino_traslado_id'=>'Destino',
 		);
 	}
 
@@ -161,6 +166,7 @@ class Visita extends CActiveRecord
 		$criteria->compare('fecha_visita',$this->fecha_visita,true);
 		$criteria->compare('persona_punto_id',$this->persona_punto_id);
 		$criteria->compare('estado',$this->estado);
+		$criteria->compare('tipo_visita_id',$this->tipo_visita_id);
 		$criteria->compare('folio',$this->folio,true);
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -180,9 +186,10 @@ class Visita extends CActiveRecord
         if((isset($this->fecha_visita_inicio) && trim($this->fecha_visita_inicio) != "") && (isset($this->fecha_visita_final) && trim($this->fecha_visita_final) != ""))
                         $criteria->addBetweenCondition('t.fecha_visita', ''.date('Y-m-d',strtotime($this->fecha_creacion_inicio)).'', ''.date('Y-m-d',strtotime($this->fecha_visita_final)).'');
 		$criteria->compare('punto.direccion',$this->punto_direccion,true);
-		$criteria->compare('punto.region_id',$this->punto_id,true);
-		$criteria->compare('punto.comuna_id',$this->punto_id,true);
-		$criteria->compare('punto.distribuidor_id',$this->punto_id,true);
+		$criteria->compare('punto.codigo',$this->punto_codigo,true);
+		$criteria->compare('punto.region_id',$this->punto_region_id,true);
+		$criteria->compare('punto.comuna_id',$this->punto_comuna_id,true);
+		$criteria->compare('punto.distribuidor_id',$this->punto_distribuidor_id,true);
 		$criteria->compare('punto.canal_id',$this->punto_canal_id,true);
 		$criteria->compare('t.folio',$this->folio,true);
 		$criteria->compare('t.persona_punto_id',$this->persona_punto_id);
@@ -217,13 +224,16 @@ class Visita extends CActiveRecord
         if((isset($this->fecha_visita_inicio) && trim($this->fecha_visita_inicio) != "") && (isset($this->fecha_visita_final) && trim($this->fecha_visita_final) != ""))
                         $criteria->addBetweenCondition('t.fecha_visita', ''.date('Y-m-d',strtotime($this->fecha_creacion_inicio)).'', ''.date('Y-m-d',strtotime($this->fecha_visita_final)).'');
 		$criteria->compare('punto.direccion',$this->punto_direccion,true);
-		$criteria->compare('punto.region_id',$this->punto_region_id,true);
-		$criteria->compare('punto.comuna_id',$this->punto_comuna_id,true);
-		$criteria->compare('punto.distribuidor_id',$this->punto_distribuidor_id,true);
-		$criteria->compare('punto.canal_id',$this->punto_canal_id,true);
+		$criteria->compare('punto.codigo',$this->punto_codigo,true);
+		$criteria->compare('punto.direccion',$this->punto_destino,true);
+		$criteria->compare('punto.region_id',$this->punto_region_id);
+		$criteria->compare('punto.comuna_id',$this->punto_comuna_id);
+		$criteria->compare('punto.distribuidor_id',$this->punto_distribuidor_id);
+		$criteria->compare('punto.canal_id',$this->punto_canal_id);
 		$criteria->compare('t.folio',$this->folio,true);
 		$criteria->compare('t.persona_punto_id',$this->persona_punto_id);
 		$criteria->compare('t.estado',$this->estado);
+		$criteria->order = 't.id DESC';
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
@@ -242,9 +252,10 @@ class Visita extends CActiveRecord
         if((isset($this->fecha_visita_inicio) && trim($this->fecha_visita_inicio) != "") && (isset($this->fecha_visita_final) && trim($this->fecha_visita_final) != ""))
                         $criteria->addBetweenCondition('t.fecha_visita', ''.date('Y-m-d',strtotime($this->fecha_creacion_inicio)).'', ''.date('Y-m-d',strtotime($this->fecha_visita_final)).'');
 		$criteria->compare('punto.direccion',$this->punto_direccion,true);
-		$criteria->compare('punto.region_id',$this->punto_id,true);
-		$criteria->compare('punto.comuna_id',$this->punto_id,true);
-		$criteria->compare('punto.distribuidor_id',$this->punto_id,true);
+		$criteria->compare('punto.codigo',$this->punto_codigo,true);
+		$criteria->compare('punto.region_id',$this->punto_region_id,true);
+		$criteria->compare('punto.comuna_id',$this->punto_comuna_id,true);
+		$criteria->compare('punto.distribuidor_id',$this->punto_distribuidor_id,true);
 		$criteria->compare('punto.canal_id',$this->punto_canal_id,true);
 		$criteria->compare('t.folio',$this->folio,true);
 		$criteria->compare('t.persona_punto_id',$this->persona_punto_id);

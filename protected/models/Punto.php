@@ -37,12 +37,13 @@ class Punto extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('region_id, canal_id', 'numerical', 'integerOnly'=>true),
+			array('region_id, canal_id, distribuidor_id, comuna_id', 'numerical', 'integerOnly'=>true),
 			array('direccion', 'length', 'max'=>45),
+			array('codigo', 'length', 'max'=>255),
 			array('lat, lon', 'length', 'max'=>10),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, direccion, lat, lon, region_id, canal_id, comuna_id, distribuidor_id', 'safe', 'on'=>'search'),
+			array('id, direccion, lat, lon, region_id, canal_id, comuna_id, distribuidor_id, destino_traslado_id, codigo', 'safe', 'on'=>'search'),
 		);
 	}
 	public function getDescripcion(){
@@ -50,6 +51,18 @@ class Punto extends CActiveRecord
 			return $this->distribuidor->nombre.' '.$this->direccion;
 		else
 			return $this->direccion;
+	}
+	public function getDescripcionComuna(){
+		$desc = $this->direccion;
+
+		if($this->distribuidor)
+			$desc = $this->distribuidor->nombre.' '.$desc;
+		if($this->comuna)
+			$desc .= ', '.$this->comuna->nombre;
+		if($this->region)
+			$desc .=$this->region->id==13?', RM':', '.$this->region->nombre;
+		
+		return $desc;
 	}
 	/**
 	 * @return array relational rules.
@@ -83,9 +96,18 @@ class Punto extends CActiveRecord
 			'region_id' => 'Region',
 			'comuna_id' => 'Comuna',
 			'canal_id' => 'Canal',
-			'distribuidor_id'=>'Distribuidor'
+			'distribuidor_id'=>'Distribuidor',
+			'codigo' =>'Cód. Franquiciado',
 
 		);
+	}
+
+	public function getDireccion(){
+		if ($this->descripcion) {
+			return $this->direccion.' '.$this->descripcion;
+		}
+		else
+			return $this->direccion;
 	}
 
 	/**
@@ -108,6 +130,7 @@ class Punto extends CActiveRecord
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('direccion',$this->direccion,true);
+		$criteria->compare('codigo',$this->codigo,true);
 		$criteria->compare('lat',$this->lat,true);
 		$criteria->compare('lon',$this->lon,true);
 		$criteria->compare('region_id',$this->region_id);

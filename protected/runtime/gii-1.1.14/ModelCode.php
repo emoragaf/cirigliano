@@ -1,9 +1,9 @@
 <?php
 return array (
   'template' => 'default',
-  'connectionId' => 'db',
+  'connectionId' => 'db_wh',
   'tablePrefix' => '',
-  'modelPath' => 'application.models',
+  'modelPath' => 'application.modules.reporte.models',
   'baseClass' => 'CActiveRecord',
   'buildRelations' => '1',
   'commentsAsLabels' => '0',

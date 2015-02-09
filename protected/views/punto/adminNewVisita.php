@@ -47,14 +47,21 @@ foreach (CHtml::listData(Comuna::model()->findAll(array('order'=>'nombre')), 'id
 		        'newVisita' => array
 		        (
 		            'label'=>'Nueva Visita',
-		            'options'=>array('class'=>'btn'),
+		            'options'=>array('class'=>'btn','target'=>'none'),
 		            'icon'=>'icon-plus',
 		            'url'=>'Yii::app()->createUrl("Visita/crear", array("id"=>$data->id))',
 		        ),
 		    ),
             'visible'=>Yii::app()->user->checkAccess('Visita.crear'),
 		),
-		'direccion',
+		array(
+			'name'=>'direccion',
+			'value'=>'$data->Direccion',
+			),
+		array(
+			'name'=>'codigo',
+			'value'=>'isset($data->codigo)?$data->codigo:"N/A"',
+			),
 		array(
 				'name'=>'region_id',
 				'value'=>'isset($data->region) ? $data->region->nombre : null',
@@ -98,9 +105,14 @@ foreach (CHtml::listData(Comuna::model()->findAll(array('order'=>'nombre')), 'id
 			'template'=>Yii::app()->user->checkAccess('Punto.update') && Yii::app()->user->checkAccess('Punto.delete') ? '{view}{update}{delete}': '{view}',
 			'buttons'=>array
 		    (
-		        'view' => array
-		        (
-		        ),
+                'view' => array
+                (
+                    'options'=>array('target'=>'_blank')
+                ),
+                'update' => array
+                (
+                    'options'=>array('target'=>'_blank')
+                ),
 		    ),
 		),
 	),

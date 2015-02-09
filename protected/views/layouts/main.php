@@ -36,7 +36,7 @@
 	            'items' => array(
 	            	array('label' => 'Nueva Visita', 'url' =>array('/Punto/Index'), 'visible'=>Yii::app()->user->checkAccess('Visita.crear')),
 	            	array('label'=>'Visitas', 'url' =>array('/Visita'),'items'=>array(
-	                	array('label' => 'Incidencias', 'url' =>array('/Visita/indexTipo/1')),
+	                	array('label' => 'Reparaciones', 'url' =>array('/Visita/indexTipo/1')),
 	                	array('label' => 'Traslados', 'url' =>array('/Visita/indexTipo/3')),
 	                	array('label' => 'Excelencia', 'url' =>array('/Visita/indexTipo/4')),
 	                	array('label' => 'Meson Terminal', 'url' =>array('/Visita/indexTipo/5')),
@@ -44,8 +44,15 @@
 	                	), 'visible'=>Yii::app()->user->checkAccess('Visita.indexTipo')),
 	                array('label' => 'Puntos', 'url' =>array('/Punto/admin'), 'visible'=>Yii::app()->user->checkAccess('Punto.admin')),
 	                array('label' => 'Rutas', 'url' =>array('/Ruta/index'), 'visible'=>Yii::app()->user->checkAccess('Ruta.Index')),
-					array('label' => 'Histórico Reparaciones', 'url' =>array('/historico/default/index'), 'visible'=>Yii::app()->user->checkAccess('Historico.Index')),
+					array('label'=>'Histórico','items'=>array(
+						array('label' => 'Histórico Reparaciones', 'url' =>array('/historico/reparacion/index'), 'visible'=>Yii::app()->user->checkAccess('Historico.Index')),
+						array('label' => 'Histórico Traslados', 'url' =>array('/historico/traslado/index'), 'visible'=>Yii::app()->user->checkAccess('Historico.Index')),						
+						), 'visible'=>Yii::app()->user->checkAccess('Historico.Index')),
 					array('label' => 'Facturación', 'url' =>array('/facturacion/index'), 'visible'=>Yii::app()->user->checkAccess('Facturacion.Index')),
+					array('label'=>'Reportes','items'=>array(
+						array('label' => 'Reportes Generales', 'url' =>array('/reporte/default/index'), 'visible'=>Yii::app()->user->checkAccess('Reporte.Index')),
+						array('label' => 'Reporte Punto', 'url' =>array('/reporte/default/punto'), 'visible'=>Yii::app()->user->checkAccess('Reporte.Index')),						
+						), 'visible'=>Yii::app()->user->checkAccess('Reporte.Index')),
 	                array('label'=>'Administracion','items'=>array(
 	                	array('label' => 'Usuarios', 'url' =>array('/user/admin')),
 	                	array('label' => 'Roles', 'url' =>array('/auth')),

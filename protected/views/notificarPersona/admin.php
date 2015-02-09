@@ -29,6 +29,10 @@ $this->menu=array(
 			'value'=>'$data->tipoNotificacion',
 		),
 		array(
+			'name'=>'canal_id',
+			'value'=>'$data->canal!=null?$data->canal->nombre : "Todos"',
+		),
+		array(
 			'class'=>'bootstrap.widgets.TbButtonColumn',
 			'template'=>'{delete}',
 		),

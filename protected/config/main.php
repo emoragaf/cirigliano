@@ -45,11 +45,14 @@ return array(
         'bootstrap.helpers.TbHtml',
         'bootstrap.helpers.TbArray',
         'bootstrap.behaviors.TbWidget',
-        'bootstrap.widgets.*'
+        'bootstrap.widgets.*',
+        'application.helpers.*',
+
 	),
 
 	'modules'=>array(
         'historico',
+        'reporte',
 		'auth'=>array(
 		  'strictMode' => true, // when enabled authorization items cannot be assigned children of the same type.
 		  'userClass' => 'User', // the name of the user model class.
@@ -104,6 +107,13 @@ return array(
 
 	// application components
 	'components'=>array(
+		'image'=>array(
+          'class'=>'application.extensions.image.CImageComponent',
+            // GD or ImageMagick
+            'driver'=>'GD',
+            // ImageMagick setup path
+            'params'=>array('directory'=>'/opt/local/bin'),
+        ),
 		'mandrillwrap' => array(
 	         'class' => 'ext.mandrillwrap.mandrillwrap',
 	         //'options' => array(/.. additional curl options ../)
@@ -158,6 +168,15 @@ return array(
 			'charset' => 'utf8',
 			'tablePrefix' => 'tbl_',
 		),
+		'db_wh'=>array(
+			'connectionString' => 'mysql:host=localhost;dbname=ciri_wh',
+			'emulatePrepare' => true,
+			'username' => 'cirigliano',
+			'password' => 'ciriglianodev',
+			'charset' => 'utf8',
+			'tablePrefix' => 'tbl_',
+			'class' => 'CDbConnection'
+		),
 		'db2'=>array(
         	'connectionString' => 'pgsql:host=localhost;port=5432;dbname=ciri_trade2',
 			'username' => 'ciri_trade2',
@@ -174,16 +193,17 @@ return array(
 			'routes'=>array(
 				array(
 					'class'=>'CFileLogRoute',
-					'levels'=>'error, warning',
+					'levels'=>'error, warning, trace, info',
 				),
 				// uncomment the following to show log messages on web pages
-				/*
-				array(
+				/*array(
 					'class'=>'CWebLogRoute',
-				),
-				*/
+				),*/
 			),
 		),
+		'request'=>array(
+            'enableCsrfValidation'=>false,
+        ),
 	),
 
 	// application-level parameters that can be accessed

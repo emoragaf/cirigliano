@@ -35,14 +35,20 @@ class TrasladoPresupuesto extends CActiveRecord
 		);
 	}
 	public function getTarifa(){
-		return $this->tarifa_instalacion;
+		if($this->tarifa_instalacion && !$this->tarifa_desinstalacion)
+			return $this->tarifa_instalacion;
+		if(!$this->tarifa_instalacion && $this->tarifa_desinstalacion)
+			return $this->tarifa_desinstalacion;
+		if($this->tarifa_instalacion && $this->tarifa_desinstalacion)
+			return $this->tarifa_instalacion+$this->tarifa_desinstalacion;
+		else
+			return 0;
 	}
 	public function getcant_servicio(){
 		return 1;
 	}
 	public function getMueblePuntoDescripcion(){
-		if($this->tarifa_instalacion || $this->tarifa_desinstalacion)
-			return $this->mueblePunto->Descripcion;
+		return $this->mueblePunto->Descripcion;
 	}
 	public function getServicioDescripcion(){
 		if($this->tarifa_instalacion && $this->tarifa_desinstalacion)
@@ -51,6 +57,16 @@ class TrasladoPresupuesto extends CActiveRecord
 			return 'Instalación '.$this->mueblePunto->Descripcion;
 		if(!$this->tarifa_instalacion && $this->tarifa_desinstalacion)
 			return 'Desinstalación '.$this->mueblePunto->Descripcion;
+	}
+	public function getDescripcion(){
+		if($this->tarifa_instalacion && $this->tarifa_desinstalacion)
+			return 'Instalación/Desinstalación '.$this->mueblePunto->Descripcion;
+		if($this->tarifa_instalacion && !$this->tarifa_desinstalacion)
+			return 'Instalación '.$this->mueblePunto->Descripcion;
+		if(!$this->tarifa_instalacion && $this->tarifa_desinstalacion)
+			return 'Desinstalación '.$this->mueblePunto->Descripcion;
+		else
+			return $this->mueblePunto->Descripcion;;
 	}
 
 	/**

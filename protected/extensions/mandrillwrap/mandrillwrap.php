@@ -49,7 +49,7 @@ class mandrillwrap extends CApplicationComponent {
         'attachments' => $this->attachments,
         'images' => $this->images,
     	);
-	    $async = false;
+	    $async = true;
 	    $ip_pool = 'Main Pool';
 	    $result = $mandrill->messages->send($message, $async, $ip_pool);
 	    return $result;
