@@ -20,6 +20,14 @@ class DefaultController extends Controller
 	{
 		$this->render('excel');
 	}
+	public function actionreporteExcelDist()
+	{
+		$this->render('reporteExcelDist');
+	}
+	public function actionexcelDist()
+	{
+		$this->render('excelDist');
+	}
 	public function actionexcel2()
 	{
 		$this->render('excel12');

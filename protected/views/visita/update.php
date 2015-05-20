@@ -25,8 +25,10 @@ $this->menu=array(
     'enableAjaxValidation'=>false,
 )); ?>
 <?php $this->renderPartial('/visita/_form', array('model'=>$model,'form'=>$form,'id'=>$id)); ?>
-<div id="mueblepunto">
-	<?php //$this->renderPartial('/visita/_formPresupuesto', array('muebles'=>$muebles,'id'=>$id)); ?>
-</div>
+<div>
+        <?php echo TbHtml::submitButton('Aceptar',array(
+            'color'=>TbHtml::BUTTON_COLOR_PRIMARY,
+        )); ?>
+    </div>
 </div>
 <?php $this->endWidget(); ?>

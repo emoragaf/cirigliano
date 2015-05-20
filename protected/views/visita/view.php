@@ -4,6 +4,7 @@ $this->breadcrumbs=array(
 	$model->id,
 );
 
+
 $this->menu=array(
 	array('label'=>Yii::t('app','model.Presupuesto.create'),'url'=>array('Presupuesto/create','id'=>$model->id),'visible'=>(Yii::app()->user->checkAccess('Presupuesto.create') && $model->estado == 0 && $model->tipo_visita_id != 3)? true : false),
 	array('label'=>Yii::t('app','model.Presupuesto.update'),'url'=>array('Presupuesto/update','id'=>$model->id),'visible'=>(Yii::app()->user->checkAccess('Presupuesto.update') &&$model->estado == 2 && $model->tipo_visita_id != 3)? true : false),
@@ -21,7 +22,11 @@ $this->menu=array(
 	array('label'=>Yii::t('app','model.Visita.descargaPpt'),'url'=>array('Informe/Download','id'=>$model->id,'tipo'=>'pptx'),'visible'=>Yii::app()->user->checkAccess('Informe.Download') && (Yii::app()->user->checkAccess('admin') && $model->estado != 0 && isset($model->informe)) || (!Yii::app()->user->checkAccess('admin') && Yii::app()->user->checkAccess('movistar_user') && $model->estado==4 && isset($model->presupuestos)) ? true : false)
 );
 ?>
-
+<style>
+	img{
+		margin: 6px;
+	}
+</style>
 <h1><?php echo Yii::t('app','model.Visita.view');?></h1>
 
 
@@ -53,6 +58,7 @@ $this->menu=array(
 	<td><b>Fecha Creación: <?php echo date("d-m-Y",strtotime($model->fecha_creacion)) ?></b></td>
 	<td><b>Fecha Visita: <?php echo $model->fecha_visita !== null ? date("d-m-Y",strtotime($model->fecha_visita)) : 'No asignado' ?></b></td>
 	<td><b>Solicitante: <?php echo $model->personaPunto->Nombre?></b></td>
+	<td><b>Id Check: <?php echo $model->codigo?$model->codigo:'N/A'?></b></td>
 </tr>
 </table>
 
@@ -71,6 +77,10 @@ $this->menu=array(
 			array(
 				'name'=>'punto_canal_id',
 				'value'=>isset($model->punto->canal) ? $model->punto->canal->nombre: null,
+				),
+			array(
+				'name'=>'punto_subcanal_id',
+				'value'=>isset($model->punto->subcanal) ? $model->punto->subcanal->nombre: null,
 				),
 			array(
 				'name'=>'punto_distribuidor_id',
@@ -207,7 +217,7 @@ $this->menu=array(
 <?php endforeach ?>
 <?php endif ?>
 
-<?php if ( (Yii::app()->user->checkAccess('admin') && $model->estado != 0 && isset($model->informe)) || (!Yii::app()->user->checkAccess('admin') && Yii::app()->user->checkAccess('movistar_user') && $model->estado==4 && isset($model->presupuestos)) ): ?>
+<?php if ( (Yii::app()->user->checkAccess('admin') && $model->estado != 0 && isset($model->informe)) || (!Yii::app()->user->checkAccess('admin') && (Yii::app()->user->checkAccess('movistar_user') || Yii::app()->user->checkAccess('movistar_lectura')) && $model->estado==4 && isset($model->presupuestos)) ): ?>
 <h4>Notas</h4>
 <div class="row well">
 	<?php echo $model->informe->notas; ?>

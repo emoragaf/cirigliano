@@ -107,6 +107,18 @@ class TarifaTrasladoMultiple extends CActiveRecord
 				case '4':
 					return $this->tarifaTraslado->tarifa_d;
 					break;
+				case '5':
+					return $this->tarifaTraslado->tarifa_a2!=null?$this->tarifaTraslado->tarifa_a2:$this->tarifaTraslado->tarifa_a;
+					break;
+				case '6':
+				    return $this->tarifaTraslado->tarifa_b2!=null?$this->tarifaTraslado->tarifa_b2:$this->tarifaTraslado->tarifa_b;
+					break;
+				case '7':
+				    return $this->tarifaTraslado->tarifa_c2!=null?$this->tarifaTraslado->tarifa_c2:$this->tarifaTraslado->tarifa_c;
+					break;
+				case '8':
+				    return $this->tarifaTraslado->tarifa_d2!=null?$this->tarifaTraslado->tarifa_d2:$this->tarifaTraslado->tarifa_d;
+					break;
 				default:
 					return null;
 					break;

@@ -35,7 +35,15 @@ $('.search-form form').submit(function(){
 	'afterAjaxUpdate'=>"function(id,data){jQuery('#Punto_comuna_id').select2({'width':'100%'}); jQuery('#Punto_distribuidor_id').select2({'width':'100%'});}",
 	'filter'=>$model,
 	'columns'=>array(
-		'direccion',
+		array(
+			'name'=>'direccion',
+			'value'=>'$data->Direccion',
+			),
+		array(
+                'name'=>'descripcion',
+                'value'=>'$data->descripcion',
+                //'filter'=>false,
+                ),
 		array(
 				'name'=>'codigo',
 				'value'=>'isset($data->codigo) ? $data->codigo : "N/A"',
@@ -63,6 +71,11 @@ $('.search-form form').submit(function(){
 				'name'=>'canal_id',
 				'value'=>'isset($data->canal) ? $data->canal->nombre : null',
 				'filter'=>CHtml::listData(Canal::model()->findAll(), 'id', 'nombre'),
+				),
+		array(
+				'name'=>'subcanal_id',
+				'value'=>'isset($data->subcanal) ? $data->subcanal->nombre : null',
+				'filter'=>CHtml::listData(Subcanal::model()->findAll(), 'id', 'nombre'),
 				),
 		array(
 				'name'=>'distribuidor_id',

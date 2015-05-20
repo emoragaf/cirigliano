@@ -59,6 +59,11 @@ foreach (CHtml::listData(Comuna::model()->findAll(array('order'=>'nombre')), 'id
 			'value'=>'$data->Direccion',
 			),
 		array(
+                'name'=>'descripcion',
+                'value'=>'$data->descripcion',
+                //'filter'=>false,
+                ),
+		array(
 			'name'=>'codigo',
 			'value'=>'isset($data->codigo)?$data->codigo:"N/A"',
 			),
@@ -85,6 +90,11 @@ foreach (CHtml::listData(Comuna::model()->findAll(array('order'=>'nombre')), 'id
 				'name'=>'canal_id',
 				'value'=>'isset($data->canal) ? $data->canal->nombre : null',
 				'filter'=>CHtml::listData(Canal::model()->findAll(array('order'=>'nombre')), 'id', 'nombre'),
+				),
+		array(
+				'name'=>'subcanal_id',
+				'value'=>'isset($data->subcanal) ? $data->subcanal->nombre : null',
+				'filter'=>CHtml::listData(Subcanal::model()->findAll(array('order'=>'nombre')), 'id', 'nombre'),
 				),
 		array(
 				'name'=>'distribuidor_id',

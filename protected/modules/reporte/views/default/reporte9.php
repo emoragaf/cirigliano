@@ -12,15 +12,15 @@ mysqli_set_charset ( $connection , "utf8" );
 
 $sql = "SELECT
 					canal.nombre as Canal,
-					substring(fecha_visita,1,7) as Mes,
+					IF(day(fecha_creacion)>=25,DATE_FORMAT(DATE_ADD(fecha_creacion, INTERVAL 1 MONTH),'%Y-%m'),DATE_FORMAT(fecha_creacion, '%Y-%m')) as Periodo,
 					SUM(wh_visita.cantidad_item*wh_visita.monto_item) as Monto 
 				FROM wh_visita
 				LEFT JOIN canal ON wh_visita.canal = canal.id
 				";
 $sql .= " WHERE wh_visita.id > 0 \n";
 $sql .= $filtros;
-$sql .=" group by wh_visita.canal,Mes
-				ORDER BY Mes,Canal
+$sql .=" group by wh_visita.canal,Periodo
+				ORDER BY Periodo,Canal
 				";
 
 $titulo = "Montos por Canal y Mes";
@@ -37,8 +37,8 @@ $data = array();
 $leyendas = array();
 $meses = array();
 while($row = mysqli_fetch_assoc($result)){
-	$matriz[utf8_encode($row["Canal"])][$row["Mes"]] = $row["Monto"];
-	$meses[$row["Mes"]] = $row["Mes"];
+	$matriz[utf8_encode($row["Canal"])][$row["Periodo"]] = $row["Monto"];
+	$meses[$row["Periodo"]] = $row["Periodo"];
 }
 if (count($matriz)>0) {
 		

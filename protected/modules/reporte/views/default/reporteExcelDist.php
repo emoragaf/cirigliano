@@ -1,42 +1,5 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Untitled Document</title>
-</head>
-<style>
-    input {
-        max-width: 100%;
-    } 
-</style>
-<body>
-  <?php 
+<?php
 setlocale(LC_ALL, 'es_ES');
-
-
-// New way
-	$db_host = "localhost";
-	$db_usuario = "cirigliano";
-	$db_clave = "ciriglianodev";
-	$db_base_de_datos = "cirigliano";
-	//mysql_connect($db_host, $db_usuario, $db_clave); 
-	//mysql_select_db($db_base_de_datos);
-	$connection = mysqli_connect($db_host, $db_usuario, $db_clave, $db_base_de_datos);
-	mysqli_set_charset ( $connection , "utf8" );
-
-function exportar_excel($query){
-	$db_host = "localhost";
-	$db_usuario = "cirigliano";
-	$db_clave = "ciriglianodev";
-	$db_base_de_datos = "cirigliano";
-	//mysql_connect($db_host, $db_usuario, $db_clave); 
-	//mysql_select_db($db_base_de_datos);
-	$connection = mysqli_connect($db_host, $db_usuario, $db_clave, $db_base_de_datos); 
-	$md5 = md5($query);
-	$sql = "INSERT INTO wh_visita_query VALUES ('".trim($md5)."','".str_replace("'","''",$query)."');";
-	mysqli_query($connection, $sql) or mysqli_error($connection);
-	?><a href="excel?id=<?php echo $md5; ?>" target="_blank">Exportar a Excel</a><br /><?php 
-}
 function exportar_excelDist($query){
 	$db_host = "localhost";
 	$db_usuario = "cirigliano";
@@ -48,9 +11,9 @@ function exportar_excelDist($query){
 	$md5 = md5($query);
 	$sql = "INSERT INTO wh_visita_query VALUES ('".trim($md5)."','".str_replace("'","''",$query)."');";
 	mysqli_query($connection, $sql) or mysqli_error($connection);
-	?><a href="excelDist?id=<?php echo $md5; ?>" target="_blank">Exportar a Excel</a><br /><?php 
+	?><a href="excelDist?id=<?php echo $md5; ?>" class="btn btn-success" target="_blank">Exportar a Excel</a><br /><?php 
 }
-function tabla_sql($Query){
+function tabla_sql7($query){
 	$db_host = "localhost";
 	$db_usuario = "cirigliano";
 	$db_clave = "ciriglianodev";
@@ -64,65 +27,7 @@ function tabla_sql($Query){
    
     $Table.= "<br><table class='table' border='1'>"; //Open HTML Table
    
-    $Result = mysqli_query($connection, $Query); //mysql_query($Query); //Execute the query
-    if(mysqli_error($connection))
-    {
-        $Table.= "<tr><td>MySQL ERROR: " . mysqli_error($connection) . "</td></tr>";
-    }
-    else
-    {
-        //Header Row with Field Names
-        $NumFields = mysqli_num_fields($Result);
-        $Table.= "<tr>";
-        for ($i=0; $i < $NumFields; $i++)
-        {    
-        	$property = mysqli_fetch_field($Result);
-            $Table.= "<th>" . str_replace("_"," ", $property->name). "</th>";
-        }
-        $Table.= "</tr>";
-   
-        //Loop thru results
-        $RowCt = 0; //Row Counter
-        while($Row = mysqli_fetch_assoc($Result))
-        {
-            //Alternate colors for rows
-            //if($RowCt++ % 2 == 0) $Style = "background-color: #EFEFEF;";
-            //else $Style = "background-color: #FFFFFF;";
-           
-            $Table.= "<tr>";
-            //Loop thru each field
-            foreach($Row as $field => $value)
-            {
-				$value = $value;
-				if(is_numeric($value)){
-					$Table.= '<td style="text-align:right;">'.$value.'</td>';
-				}
-				else
-                	$Table.= "<td>$value</td>";
-            }
-            $Table.= "</tr>";
-        }
-        //$Table.= "<tr><td colspan='$NumFields'><strong>La consulta entreg&oacute; " . mysql_num_rows($Result) . " filas.</strong> </td></tr>";
-    }
-    $Table.= "</table>";
-   
-    return $Table;
-}
-function tabla_sql7($Query){
-	$db_host = "localhost";
-	$db_usuario = "cirigliano";
-	$db_clave = "ciriglianodev";
-	$db_base_de_datos = "cirigliano";
-	//mysql_connect($db_host, $db_usuario, $db_clave); 
-	//mysql_select_db($db_base_de_datos);
-	$connection = mysqli_connect($db_host, $db_usuario, $db_clave, $db_base_de_datos); 
-	mysqli_set_charset ( $connection , "utf8" );
-
-    $Table = "";  //initialize table variable
-   
-    $Table.= "<br><table class='table' border='1'>"; //Open HTML Table
-   
-    $Result = mysqli_query($connection, $Query); //mysql_query($Query); //Execute the query
+    $Result = mysqli_query($connection, $query); //mysql_query($Query); //Execute the query
     if(mysqli_error($connection))
     {
         $Table.= "<tr><td>MySQL ERROR: " . mysqli_error($connection) . "</td></tr>";
@@ -196,95 +101,6 @@ function tabla_sql7($Query){
    
     return $Table;
 }
-function tabla_sql3($Query){
-	$db_host = "localhost";
-	$db_usuario = "cirigliano";
-	$db_clave = "ciriglianodev";
-	$db_base_de_datos = "cirigliano";
-	//mysql_connect($db_host, $db_usuario, $db_clave); 
-	//mysql_select_db($db_base_de_datos);
-	$connection = mysqli_connect($db_host, $db_usuario, $db_clave, $db_base_de_datos); 
-	mysqli_set_charset ( $connection , "utf8" );
-
-    $Table = "";  //initialize table variable
-   
-    $Table.= "<br><table class='table' border='1'>"; //Open HTML Table
-   
-    $Result = mysqli_query($connection, $Query); //mysql_query($Query); //Execute the query
-    if(mysqli_error($connection))
-    {
-        $Table.= "<tr><td>MySQL ERROR: " . mysqli_error($connection) . "</td></tr>";
-    }
-    else
-    {
-        //Header Row with Field Names
-        $NumFields = mysqli_num_fields($Result);
-        $Table.= "<tr>";
-        for ($i=0; $i < $NumFields; $i++)
-        {  
-
-        	$property = mysqli_fetch_field($Result);
-        	if($property->name != 'TipoVisita')
-            	$Table.= "<th>" . str_replace("_"," ", $property->name). "</th>";
-        }
-        $Table.= "</tr>";
-   
-        //Loop thru results
-        $RowCt = 0; //Row Counter
-        while($Row = mysqli_fetch_assoc($Result))
-        {
-            //Alternate colors for rows
-            //if($RowCt++ % 2 == 0) $Style = "background-color: #EFEFEF;";
-            //else $Style = "background-color: #FFFFFF;";
-           
-            $Table.= "<tr>";
-            //Loop thru each field
-            $i = 0;
-            foreach($Row as $field => $value)
-            {
-            	$i++;
-            	if($i == 1){
-            		//verificar si es registro histórico o nuevo
-            		if (!is_numeric($value)) { //Registro Nuevo
-            			$id = $value;
-						$id = str_replace('T', '', $id);
-						$id = str_replace('R', '', $id);
-						$id = (int)$id;
-						$link = CHtml::link($value,array('/visita/view','id'=>$id));
-						$Table.= "<td>".$link."</td>";
-					}
-					if (is_numeric($value)) { //Registro Nuevo
-						if ($Row['TipoVisita'] != 3) {
-							# code...
-							$id = (int)$value;
-							$link = CHtml::link('R-'.$value,array('/historico/reparacion/view','id'=>$id));
-							$Table.= "<td>".$link."</td>";
-						}
-						else{
-							$id = (int)$value;
-							$link = CHtml::link('T-'.$value,array('/historico/traslado/view','id'=>$id));
-							$Table.= "<td>".$link."</td>";
-						}
-					}
-            	}
-            	
-            	elseif($field != 'TipoVisita'){
-					$value = $value;
-	                if(is_numeric($value)){
-					$Table.= '<td style="text-align:right;">'.$value.'</td>';
-				}
-				else
-                	$Table.= "<td>$value</td>";
-            	}
-            }
-            $Table.= "</tr>";
-        }
-        //$Table.= "<tr><td colspan='$NumFields'><strong>La consulta entreg&oacute; " . mysql_num_rows($Result) . " filas.</strong> </td></tr>";
-    }
-    $Table.= "</table>";
-   
-    return $Table;
-}
 function combo($campo,$maestro,$id="id",$nombre="nombre",$orden="",$size=1){
 	$db_host = "localhost";
 $db_usuario = "cirigliano";
@@ -322,9 +138,6 @@ mysqli_set_charset ( $connection , "utf8" );
   </select>
 	<?php
 }
-?>
-<?php 
-
 function filtro_sql($campo_sql,$campo_get){
 	$temp = "";
 	if(isset($_GET[$campo_get]) && !empty($_GET[$campo_get])){
@@ -374,19 +187,56 @@ $filtros .= filtro_sql("mueble","mueble");
 $filtros .= filtro_texto_sql("folio","folio");
 $filtros .= filtro_texto_sql("direccion_punto","direccion_punto");
 $filtros .= filtro_sql("visita_preventiva","visita_preventiva");
+$sql = "SELECT
+					wh_visita.folio as Folio,
+					wh_visita.tipo_visita as TipoVisita,
+					wh_visita.direccion_punto as Direccion, 
+					comuna.nombre as Comuna,
+					canal.nombre as Canal,
+					distribuidor.nombre as Distribuidor,
+					wh_visita.fecha_creacion as Fecha_Creacion,
+					wh_visita.fecha_visita as Fecha_Visita,
+					sum(wh_visita.cantidad_item*wh_visita.monto_item) as Monto 
+				FROM wh_visita
+				LEFT JOIN	comuna ON wh_visita.comuna = comuna.id
+				LEFT JOIN	distribuidor ON wh_visita.distribuidor = distribuidor.id
+				LEFT JOIN	canal ON wh_visita.canal = canal.id
+				";
+$sql .= " WHERE wh_visita.id > 0 \n";
+$sql .= $filtros;
+//$sql .= " AND wh_visita.tipo_visita != 3 \n";
+$sql .="  group by folio, tipo_visita  ";
+$sql .=" order by distribuidor, fecha_creacion DESC";
 ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Visitas Por Distribuidor</title>
+</head>
+<style>
+    input {
+        max-width: 100%;
+    } 
+</style>
+<body>
 <div class="container-fluid">
-
 <div class="row">
 	<div class="span12">
-			<br />
+		<h1>Lista agrupada por Distribuidor</h1>
+		<div class="well">
 			<?php
-			if(isset($_GET['reporte']) && !empty($_GET['reporte'])){
-				include("reporte".$_GET['reporte'].".php");
-			}
-			else{
-				echo "<h2>Seleccione Reporte y Filtros para visualizar.</h2>";
-			}
+			exportar_excelDist($sql);
+			?>
+			<div style=" height:300px; overflow:auto;">
+			<?php echo tabla_sql7($sql); ?>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="span12">
+			<?php
 			if(false){// debug
 			?>
 			<h3>debug</h3>
@@ -405,23 +255,6 @@ $filtros .= filtro_sql("visita_preventiva","visita_preventiva");
 <h3>Filtros </h3>
 <form id="form1" name="form1" method="get" action="">
 	<div class="span4">
-		<label for="reporte"><b>Reporte</b></label>
-		<select name="reporte" id="reporte">
-  			<option value="">Seleccionar</option>
-  			
-  			<option value="3" <?php echo isset($_GET['reporte'])&&$_GET['reporte']==3?'selected="selected"':'' ?>>Elementos Reparados</option>
-  			<option value="22" <?php echo isset($_GET['reporte'])&&$_GET['reporte']==22?'selected="selected"':'' ?>>Visitas por Canal</option>
-  			<option value="6" <?php echo isset($_GET['reporte'])&&$_GET['reporte']==6?'selected="selected"':'' ?>>Cantidad Elementos Reparados</option>
-  			<option value="23" <?php echo isset($_GET['reporte'])&&$_GET['reporte']==23?'selected="selected"':'' ?>>Cantidad Visitas por Mes</option>
-  			<option value="24" <?php echo isset($_GET['reporte'])&&$_GET['reporte']==24?'selected="selected"':'' ?>>Montos por Canal y Mes</option>
-  			<option value="25" <?php echo isset($_GET['reporte'])&&$_GET['reporte']==25?'selected="selected"':'' ?>>Montos por Canal y Región</option>
-  			<option value="26" <?php echo isset($_GET['reporte'])&&$_GET['reporte']==26?'selected="selected"':'' ?>>Montos por Elemento (TOP 10)</option>
-  			 <option value="18" <?php echo isset($_GET['reporte'])&&$_GET['reporte']==18?'selected="selected"':'' ?>>Por Tipo Visita (Cantidad) </option>
-  			<option value="19" <?php echo isset($_GET['reporte'])&&$_GET['reporte']==19?'selected="selected"':'' ?>>Por Region </option>
-  			<option value="20" <?php echo isset($_GET['reporte'])&&$_GET['reporte']==20?'selected="selected"':'' ?>>Por Tipo Visita ($) </option>
-  			<option value="21" <?php echo isset($_GET['reporte'])&&$_GET['reporte']==21?'selected="selected"':'' ?>>Montos por Mes </option>
-
-  		</select>
 
   		<label for="folio">Folio</label>
   		<input type="text" name="folio" id="folio"  />

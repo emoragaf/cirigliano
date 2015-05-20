@@ -304,9 +304,14 @@ class VisitaController extends Controller
 		$model->fecha_creacion = date('Y-m-d');
 		$model->tipo_visita_id =3;
 		if(isset(Yii::app()->session['TrasladoIV'])){
-			$model->destino_traslado_id = Yii::app()->session['TrasladoIV']['origen'];
 			unset(Yii::app()->session['TrasladoIV']);
+			$model->destino_traslado_id = Yii::app()->session['TrasladoIV']['origen'];
 
+		}
+		$tarifaIV = false;
+		if(isset(Yii::app()->session['TarifaIV'])){
+			unset(Yii::app()->session['TarifaIV']);
+			$tarifaIV = true;
 		}
 		$muebles= MueblePunto::model()->findAll(array('condition'=>'t.punto_id=:id','params'=>array(':id'=>$id)));
 		$p=new Presupuesto('traslado');
@@ -322,7 +327,7 @@ class VisitaController extends Controller
 			$p->total = 0;
 			$model->attributes=$_POST['Visita'];
 			$model->fecha_visita = date('Y-m-d',strtotime($model->fecha_visita));
-			if (isset($_POST['idavuelta'])) {
+			if (isset($_POST['idavuelta']) && !isset(Yii::app()->session['TrasladoIV'])) {
 				Yii::app()->session['TrasladoIV'] = array('origen'=>$model->punto_id,'destino'=>$model->destino_traslado_id);
 			}
 			//$model->destino_traslado_id = $_POST['destino'];
@@ -332,6 +337,9 @@ class VisitaController extends Controller
 			$p->estado = 0;
 			$p->fecha_creacion = date('c');
 
+			if (isset($_POST['idavuelta'])){
+				$p->tipo_tarifa_traslado += 4;
+			}
 			if ($model->save()) {
 				$p->visita_id = $model->id;
 				foreach ($_POST['Presupuesto']['tarifa_traslado'] as $key => $value) {
@@ -350,12 +358,28 @@ class VisitaController extends Controller
 						case '4':
 						    $p->total += $tarifa->tarifa_d;
 							break;
+						case '5':
+							$p->total += $tarifa->tarifa_a2!=null?$tarifa->tarifa_a2:$tarifa->tarifa_a;
+							break;
+						case '6':
+						    $p->total += $tarifa->tarifa_b2!=null?$tarifa->tarifa_b2:$tarifa->tarifa_b;
+							break;
+						case '7':
+						    $p->total += $tarifa->tarifa_c2!=null?$tarifa->tarifa_c2:$tarifa->tarifa_c;
+							break;
+						case '8':
+						    $p->total += $tarifa->tarifa_d2!=null?$tarifa->tarifa_d2:$tarifa->tarifa_d;
+							break;
 					}
+
+						
+				
 					$p->save();
 					$tm = new TarifaTrasladoMultiple;
 					$tm->id_presupuesto = $p->id;
 					$tm->distancia = $tarifa->distancia;
 					$tm->tarifa_traslado = $value;
+					
 					$tm->tipo_tarifa_traslado = $p->tipo_tarifa_traslado;
 					$tm->save();
 				}
@@ -424,6 +448,7 @@ class VisitaController extends Controller
 			'muebles'=>$muebles,
 			'id'=>$id,
 			'presupuesto'=>$p,
+			'tarifaIV'=>$tarifaIV,
 		));
 	}
 
@@ -476,7 +501,13 @@ class VisitaController extends Controller
 				}
 			}
 			if($model->formulario){
+				//Guardar Datos en tabla para reportes.
+				$model->saveWH(); 
+
 				//Enviar email
+				
+				$root = Yii::getPathOfAlias('webroot').'/../files/cirigliano';
+
 				$model->estado == 1;
 				$html = "<h1>Informe Solicitud ".$model->punto->direccion."</h1>";
 				$html .="<p>Folio: ".$model->folio."</p>";
@@ -516,7 +547,13 @@ class VisitaController extends Controller
 				$email->fromName = "Cirigliano TradeSensor";
 				$email->fromEmail = "noreply@tradesensor.cl";
 				$email->to = $recipients;
-		        $content = base64_encode(file_get_contents(Yii::getPathOfAlias('webroot')."/uploads/informes/".$model->punto_id."/".$model->id.".pdf"));
+				if(file_exists($root."/uploads/informes/".$model->punto_id."/".$model->id.".pdf")){
+		        	$content = base64_encode(file_get_contents($root."/uploads/informes/".$model->punto_id."/".$model->id.".pdf"));
+				}
+				else{
+					Informe::InformePdf($model->id);
+					$content = base64_encode(file_get_contents($root."/uploads/informes/".$model->punto_id."/".$model->id.".pdf"));
+				}
 		        $email->tags = array('informe-MovistarMantencion','produccion');
 				$email->attachments = array(array('type'=>'application/pdf','name'=>'Informe Solicitud '.$model->punto->direccion.' '.date('d-m-Y',strtotime($model->fecha_visita)),'content'=>$content));
 				$email->images = array();
@@ -550,11 +587,13 @@ class VisitaController extends Controller
 	{
 		if (Yii::app()->request->isPostRequest) {
 			// we only allow deletion via POST request
-			$this->loadModel($id)->delete();
+			$model = $this->loadModel($id);
+			$tipo = $model->tipo_visita_id;
+			$model->delete();
 
 			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 			if (!isset($_GET['ajax'])) {
-				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('indexTipo','id'=>$tipo));
 			}
 		} else {
 			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');

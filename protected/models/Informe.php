@@ -217,25 +217,47 @@ class Informe
 			$textRun->getFont()->setBold(false)
 			                   ->setSize(16)
 			                   ->setColor( new PhpOffice\PhpPowerpoint\Style\Color( '000000' ) );
+
+			$shape = $currentSlide->createRichTextShape()
+			      ->setHeight(300)
+			      ->setWidth(600)
+			      ->setOffsetX(120)
+			      ->setOffsetY(140);
+			$shape->getActiveParagraph()->getAlignment()->setHorizontal( PhpOffice\PhpPowerpoint\Style\Alignment::HORIZONTAL_LEFT );
+			$visita->codigo?$textRun = $shape->createTextRun('Id Check: '.$visita->codigo):$textRun = $shape->createTextRun('Id Check: N/A');
+			$textRun->getFont()->setBold(false)
+			                   ->setSize(16)
+			                   ->setColor( new PhpOffice\PhpPowerpoint\Style\Color( '000000' ) );
 			
 	        if ($visita->tipo_visita_id == 3) {
 	        	$shape = $currentSlide->createRichTextShape()
 			      ->setHeight(300)
 			      ->setWidth(600)
 			      ->setOffsetX(120)
-			      ->setOffsetY(140);
+			      ->setOffsetY(120);
 				$shape->getActiveParagraph()->getAlignment()->setHorizontal( PhpOffice\PhpPowerpoint\Style\Alignment::HORIZONTAL_LEFT );
-				$textRun = $shape->createTextRun($visita->punto->comuna!=null?'Origen: '.$visita->punto->Descripcion.' '.$visita->punto->comuna->nombre:'Origen: '.$visita->punto->Descripcion);
+				$textRun = $shape->createTextRun($visita->punto->comuna!=null?'Origen: '.$visita->punto->DireccionDescripcion.' '.$visita->punto->comuna->nombre:'Origen: '.$visita->punto->DireccionDescripcion);
 				$textRun->getFont()->setBold(false)
 				                   ->setSize(14)
 				                   ->setColor( new PhpOffice\PhpPowerpoint\Style\Color( '000000' ) );
+				$shape = $currentSlide->createRichTextShape()
+			      ->setHeight(300)
+			      ->setWidth(600)
+			      ->setOffsetX(120)
+			      ->setOffsetY(140);
+				$shape->getActiveParagraph()->getAlignment()->setHorizontal( PhpOffice\PhpPowerpoint\Style\Alignment::HORIZONTAL_LEFT );
+				$visita->codigo?$textRun = $shape->createTextRun('Id Check: '.$visita->codigo):$textRun = $shape->createTextRun('Id Check: N/A');
+				$textRun->getFont()->setBold(false)
+				                   ->setSize(16)
+				                   ->setColor( new PhpOffice\PhpPowerpoint\Style\Color( '000000' ) );
+
 				$shape = $currentSlide->createRichTextShape()
 				      ->setHeight(300)
 				      ->setWidth(600)
 				      ->setOffsetX(120)
 				      ->setOffsetY(160);
 				$shape->getActiveParagraph()->getAlignment()->setHorizontal( PhpOffice\PhpPowerpoint\Style\Alignment::HORIZONTAL_LEFT );
-				$textRun = $shape->createTextRun($visita->destino->comuna!=null?'Destino: '.$visita->destino->Descripcion.' '.$visita->destino->comuna->nombre:'Destino: '.$visita->destino->Descripcion);
+				$textRun = $shape->createTextRun($visita->destino->comuna!=null?'Destino: '.$visita->destino->DireccionDescripcion.' '.$visita->destino->comuna->nombre:'Destino: '.$visita->destino->DireccionDescripcion);
 				$textRun->getFont()->setBold(false)
 				                   ->setSize(14)
 				                   ->setColor( new PhpOffice\PhpPowerpoint\Style\Color( '000000' ) );
@@ -245,7 +267,7 @@ class Informe
 				      ->setHeight(300)
 				      ->setWidth(600)
 				      ->setOffsetX(120)
-				      ->setOffsetY(140);
+				      ->setOffsetY(180);
 				$shape->getActiveParagraph()->getAlignment()->setHorizontal( PhpOffice\PhpPowerpoint\Style\Alignment::HORIZONTAL_LEFT );
 				$textRun = $shape->createTextRun($visita->punto->comuna!=null?'Punto: '.$visita->punto->direccion.' '.$visita->punto->comuna->nombre:'Punto: '.$visita->punto->direccion);
 				$textRun->getFont()->setBold(false)
@@ -258,7 +280,7 @@ class Informe
 			      ->setHeight(300)
 			      ->setWidth(600)
 			      ->setOffsetX(120)
-			      ->setOffsetY(180);
+			      ->setOffsetY(200);
 			$shape->getActiveParagraph()->getAlignment()->setHorizontal( PhpOffice\PhpPowerpoint\Style\Alignment::HORIZONTAL_LEFT );
 			$textRun = $shape->createTextRun('Canal: '.$visita->punto->canal->nombre);
 			$textRun->getFont()->setBold(false)
@@ -269,7 +291,7 @@ class Informe
 			      ->setHeight(300)
 			      ->setWidth(600)
 			      ->setOffsetX(120)
-			      ->setOffsetY(200);
+			      ->setOffsetY(220);
 			$shape->getActiveParagraph()->getAlignment()->setHorizontal( PhpOffice\PhpPowerpoint\Style\Alignment::HORIZONTAL_LEFT );
 			$textRun = $shape->createTextRun($visita->punto->distribuidor!=null?'Distribuidor: '.$visita->punto->distribuidor->nombre:'Distribuidor: No Asignado');
 			$textRun->getFont()->setBold(false)
@@ -280,7 +302,7 @@ class Informe
 			      ->setHeight(300)
 			      ->setWidth(600)
 			      ->setOffsetX(120)
-			      ->setOffsetY(220);
+			      ->setOffsetY(240);
 			$shape->getActiveParagraph()->getAlignment()->setHorizontal( PhpOffice\PhpPowerpoint\Style\Alignment::HORIZONTAL_LEFT );
 			$textRun = $shape->createTextRun('Fecha Ingreso: '.date('d-m-Y',strtotime($visita->fecha_creacion)));
 			$textRun->getFont()->setBold(false)
@@ -291,7 +313,7 @@ class Informe
 			      ->setHeight(300)
 			      ->setWidth(600)
 			      ->setOffsetX(120)
-			      ->setOffsetY(240);
+			      ->setOffsetY(260);
 			$shape->getActiveParagraph()->getAlignment()->setHorizontal( PhpOffice\PhpPowerpoint\Style\Alignment::HORIZONTAL_LEFT );
 			$textRun = $shape->createTextRun('Fecha Ejecución: '.date('d-m-Y',strtotime($visita->fecha_visita)));
 			$textRun->getFont()->setBold(false)
@@ -302,7 +324,7 @@ class Informe
 			      ->setHeight(300)
 			      ->setWidth(600)
 			      ->setOffsetX(120)
-			      ->setOffsetY(260);
+			      ->setOffsetY(280);
 			$shape->getActiveParagraph()->getAlignment()->setHorizontal( PhpOffice\PhpPowerpoint\Style\Alignment::HORIZONTAL_LEFT );
 			$textRun = $shape->createTextRun('Solicitante: '.$visita->personaPunto->Nombre);
 			$textRun->getFont()->setBold(false)
@@ -313,7 +335,7 @@ class Informe
 			      ->setHeight(300)
 			      ->setWidth(600)
 			      ->setOffsetX(120)
-			      ->setOffsetY(300);
+			      ->setOffsetY(320);
 			$shape->getActiveParagraph()->getAlignment()->setHorizontal( PhpOffice\PhpPowerpoint\Style\Alignment::HORIZONTAL_LEFT );
 			$textRun = $shape->createTextRun('Notas:');
 			$textRun->getFont()->setBold(true)
@@ -324,7 +346,7 @@ class Informe
 			      ->setHeight(300)
 			      ->setWidth(600)
 			      ->setOffsetX(120)
-			      ->setOffsetY(320);
+			      ->setOffsetY(340);
 			$shape->getActiveParagraph()->getAlignment()->setHorizontal( PhpOffice\PhpPowerpoint\Style\Alignment::HORIZONTAL_LEFT );
 			$textRun = $shape->createTextRun($visita->formulario->notas);
 			$textRun->getFont()->setBold(false)
@@ -390,6 +412,32 @@ class Informe
 				$cell->setWidth(180);
 				$cell->getBorders()->getBottom()->setLineWidth(2)
 				                                ->setLineStyle(PhpOffice\PhpPowerpoint\Style\Border::LINE_SINGLE);
+			$datosMueblePunto = array();
+
+			foreach ($p[0]->mueblespresupuesto as $accion) {
+				if(isset($datosMueblePunto[$accion->mueble_punto_id]))
+					$datosMueblePunto[$accion->mueble_punto_id]['accion'][]=$accion;
+				else
+					$datosMueblePunto[$accion->mueble_punto_id]=array('accion'=>array($accion),'manobra'=>array(),'traslado'=>array(),'adicional'=>array());
+			}
+			foreach ($p[0]->manosobra as $a) {
+				if(isset($datosMueblePunto[$a->mueble_punto_id]))
+					$datosMueblePunto[$a->mueble_punto_id]['manobra'][]=$a;
+				else
+					$datosMueblePunto[$a->mueble_punto_id]=array('accion'=>array(),'manobra'=>array($a),'traslado'=>array(),'adicional'=>array());
+			}
+			foreach ($p[0]->adicionales as $adicional) {
+				if(isset($datosMueblePunto[$adicional->mueble_punto_id]))
+					$datosMueblePunto[$adicional->mueble_punto_id]['adicional'][]=$adicional;
+				else
+					$datosMueblePunto[$adicional->mueble_punto_id]=array('accion'=>array(),'manobra'=>array(),'traslado'=>array(),'adicional'=>array($adicional));
+			}
+			foreach ($p[0]->trasladopresupuesto as $traslado) {
+				if(isset($datosMueblePunto[$traslado->mueble_punto]))
+					$datosMueblePunto[$traslado->mueble_punto]['manobra'][]=$traslado;
+				else
+					$datosMueblePunto[$traslado->mueble_punto]=array('accion'=>array(),'manobra'=>array(),'traslado'=>array($traslado),'adicional'=>array());
+			}
 
             if ($visita->tipo_visita_id == 3) {
             	foreach ($p[0]->tarifasTraslado as $tm) {
@@ -443,63 +491,125 @@ class Informe
 				$cell->getBorders()->getBottom()->setLineWidth(2)
 				                                ->setLineStyle(PhpOffice\PhpPowerpoint\Style\Border::LINE_SINGLE);
             }
-			foreach ($mps as $accion) {
-				$row = $shape->createRow();
-				$row->getFill()->setFillType(PhpOffice\PhpPowerpoint\Style\Fill::FILL_SOLID)
-				               ->setStartColor(new PhpOffice\PhpPowerpoint\Style\Color('FFFFFFFF'));
-				$cell = $row->nextCell();
-				$cell->createTextRun(strip_tags($accion->Descripcion))->getFont()->setSize(10);
-				$cell->getBorders()->getBottom()->setLineWidth(2)
-				                                ->setLineStyle(PhpOffice\PhpPowerpoint\Style\Border::LINE_SINGLE);
-				$cell = $row->nextCell();
-	            $cell->getActiveParagraph()->getAlignment()->setHorizontal( PhpOffice\PhpPowerpoint\Style\Alignment::HORIZONTAL_RIGHT );		
-				$cell->createTextRun($accion->cant_servicio)->getFont()->setSize(10);
-				$cell->getBorders()->getBottom()->setLineWidth(2)
-				                                ->setLineStyle(PhpOffice\PhpPowerpoint\Style\Border::LINE_SINGLE);
-                $cell = $row->nextCell();
-                $cell->getActiveParagraph()->getAlignment()->setHorizontal( PhpOffice\PhpPowerpoint\Style\Alignment::HORIZONTAL_RIGHT );
-				$cell->createTextRun($accion->Tarifa)->getFont()->setSize(10);
-				$cell->getBorders()->getBottom()->setLineWidth(2)
-				                                ->setLineStyle(PhpOffice\PhpPowerpoint\Style\Border::LINE_SINGLE);
-			}
-			foreach ($p[0]->manosobra as $a) {
-				$row = $shape->createRow();
-				$row->getFill()->setFillType(PhpOffice\PhpPowerpoint\Style\Fill::FILL_SOLID)
-				               ->setStartColor(new PhpOffice\PhpPowerpoint\Style\Color('FFFFFFFF'));
-				$cell = $row->nextCell();
-				$cell->createTextRun(strip_tags($a->Descripcion))->getFont()->setSize(10);
-				$cell->getBorders()->getBottom()->setLineWidth(2)
-				                                ->setLineStyle(PhpOffice\PhpPowerpoint\Style\Border::LINE_SINGLE);
-				$cell = $row->nextCell();
-	            $cell->getActiveParagraph()->getAlignment()->setHorizontal( PhpOffice\PhpPowerpoint\Style\Alignment::HORIZONTAL_RIGHT );		
-				$cell->createTextRun('1')->getFont()->setSize(10);
-				$cell->getBorders()->getBottom()->setLineWidth(2)
-				                                ->setLineStyle(PhpOffice\PhpPowerpoint\Style\Border::LINE_SINGLE);
-                $cell = $row->nextCell();
-                $cell->getActiveParagraph()->getAlignment()->setHorizontal( PhpOffice\PhpPowerpoint\Style\Alignment::HORIZONTAL_RIGHT );
-				$cell->createTextRun($a->Tarifa)->getFont()->setSize(10);
-				$cell->getBorders()->getBottom()->setLineWidth(2)
-				                                ->setLineStyle(PhpOffice\PhpPowerpoint\Style\Border::LINE_SINGLE);
-			}
-			foreach ($p[0]->adicionales as $ad) {
-				$row = $shape->createRow();
-				$row->getFill()->setFillType(PhpOffice\PhpPowerpoint\Style\Fill::FILL_SOLID)
-				               ->setStartColor(new PhpOffice\PhpPowerpoint\Style\Color('FFFFFFFF'));
-				$cell = $row->nextCell();
-				$cell->createTextRun($ad->Descripcion)->getFont()->setSize(10);
-				$cell->getBorders()->getBottom()->setLineWidth(2)
-				                                ->setLineStyle(PhpOffice\PhpPowerpoint\Style\Border::LINE_SINGLE);
-				$cell = $row->nextCell();
-	            $cell->getActiveParagraph()->getAlignment()->setHorizontal( PhpOffice\PhpPowerpoint\Style\Alignment::HORIZONTAL_RIGHT );
-				$cell->createTextRun($ad->cantidad)->getFont()->setSize(10);
-				$cell->getBorders()->getBottom()->setLineWidth(2)
-				                                ->setLineStyle(PhpOffice\PhpPowerpoint\Style\Border::LINE_SINGLE);
-                $cell = $row->nextCell();
-                $cell->getActiveParagraph()->getAlignment()->setHorizontal( PhpOffice\PhpPowerpoint\Style\Alignment::HORIZONTAL_RIGHT );
-				$cell->createTextRun($ad->tarifa)->getFont()->setSize(10);
-				$cell->getBorders()->getBottom()->setLineWidth(2)
-				                                ->setLineStyle(PhpOffice\PhpPowerpoint\Style\Border::LINE_SINGLE);
-			}
+            foreach ($datosMueblePunto as $keyMueble => $datos){
+            	foreach ($datos['accion'] as $accion) {
+					$row = $shape->createRow();
+					$row->getFill()->setFillType(PhpOffice\PhpPowerpoint\Style\Fill::FILL_SOLID)
+					               ->setStartColor(new PhpOffice\PhpPowerpoint\Style\Color('FFFFFFFF'));
+					$cell = $row->nextCell();
+					$cell->createTextRun(strip_tags($accion->Descripcion))->getFont()->setSize(10);
+					$cell->getBorders()->getBottom()->setLineWidth(2)
+					                                ->setLineStyle(PhpOffice\PhpPowerpoint\Style\Border::LINE_SINGLE);
+					$cell = $row->nextCell();
+		            $cell->getActiveParagraph()->getAlignment()->setHorizontal( PhpOffice\PhpPowerpoint\Style\Alignment::HORIZONTAL_RIGHT );		
+					$cell->createTextRun($accion->cant_servicio)->getFont()->setSize(10);
+					$cell->getBorders()->getBottom()->setLineWidth(2)
+					                                ->setLineStyle(PhpOffice\PhpPowerpoint\Style\Border::LINE_SINGLE);
+	                $cell = $row->nextCell();
+	                $cell->getActiveParagraph()->getAlignment()->setHorizontal( PhpOffice\PhpPowerpoint\Style\Alignment::HORIZONTAL_RIGHT );
+					$cell->createTextRun($accion->Tarifa)->getFont()->setSize(10);
+					$cell->getBorders()->getBottom()->setLineWidth(2)
+					                                ->setLineStyle(PhpOffice\PhpPowerpoint\Style\Border::LINE_SINGLE);
+				}
+				foreach ($datos['manobra'] as $a) {
+					$row = $shape->createRow();
+					$row->getFill()->setFillType(PhpOffice\PhpPowerpoint\Style\Fill::FILL_SOLID)
+					               ->setStartColor(new PhpOffice\PhpPowerpoint\Style\Color('FFFFFFFF'));
+					$cell = $row->nextCell();
+					$cell->createTextRun(strip_tags($a->Descripcion))->getFont()->setSize(10);
+					$cell->getBorders()->getBottom()->setLineWidth(2)
+					                                ->setLineStyle(PhpOffice\PhpPowerpoint\Style\Border::LINE_SINGLE);
+					$cell = $row->nextCell();
+		            $cell->getActiveParagraph()->getAlignment()->setHorizontal( PhpOffice\PhpPowerpoint\Style\Alignment::HORIZONTAL_RIGHT );		
+					$cell->createTextRun('1')->getFont()->setSize(10);
+					$cell->getBorders()->getBottom()->setLineWidth(2)
+					                                ->setLineStyle(PhpOffice\PhpPowerpoint\Style\Border::LINE_SINGLE);
+	                $cell = $row->nextCell();
+	                $cell->getActiveParagraph()->getAlignment()->setHorizontal( PhpOffice\PhpPowerpoint\Style\Alignment::HORIZONTAL_RIGHT );
+					$cell->createTextRun($a->Tarifa)->getFont()->setSize(10);
+					$cell->getBorders()->getBottom()->setLineWidth(2)
+					                                ->setLineStyle(PhpOffice\PhpPowerpoint\Style\Border::LINE_SINGLE);
+				}
+				foreach ($datos['adicional'] as $ad) {
+					$row = $shape->createRow();
+					$row->getFill()->setFillType(PhpOffice\PhpPowerpoint\Style\Fill::FILL_SOLID)
+					               ->setStartColor(new PhpOffice\PhpPowerpoint\Style\Color('FFFFFFFF'));
+					$cell = $row->nextCell();
+					$cell->createTextRun($ad->Descripcion)->getFont()->setSize(10);
+					$cell->getBorders()->getBottom()->setLineWidth(2)
+					                                ->setLineStyle(PhpOffice\PhpPowerpoint\Style\Border::LINE_SINGLE);
+					$cell = $row->nextCell();
+		            $cell->getActiveParagraph()->getAlignment()->setHorizontal( PhpOffice\PhpPowerpoint\Style\Alignment::HORIZONTAL_RIGHT );
+					$cell->createTextRun($ad->cantidad)->getFont()->setSize(10);
+					$cell->getBorders()->getBottom()->setLineWidth(2)
+					                                ->setLineStyle(PhpOffice\PhpPowerpoint\Style\Border::LINE_SINGLE);
+	                $cell = $row->nextCell();
+	                $cell->getActiveParagraph()->getAlignment()->setHorizontal( PhpOffice\PhpPowerpoint\Style\Alignment::HORIZONTAL_RIGHT );
+					$cell->createTextRun($ad->tarifa)->getFont()->setSize(10);
+					$cell->getBorders()->getBottom()->setLineWidth(2)
+					                                ->setLineStyle(PhpOffice\PhpPowerpoint\Style\Border::LINE_SINGLE);
+				}
+				foreach ($datos['traslado'] as $t){
+					if ($t->tarifa_instalacion != null){
+						$row = $shape->createRow();
+						$row->getFill()->setFillType(PhpOffice\PhpPowerpoint\Style\Fill::FILL_SOLID)
+						               ->setStartColor(new PhpOffice\PhpPowerpoint\Style\Color('FFFFFFFF'));
+						$cell = $row->nextCell();
+						$cell->createTextRun("Instalación ".$t->mueblePunto->mueble->descripcion)->getFont()->setSize(10);
+						$cell->getBorders()->getBottom()->setLineWidth(2)
+						                                ->setLineStyle(PhpOffice\PhpPowerpoint\Style\Border::LINE_SINGLE);
+						$cell = $row->nextCell();
+			            $cell->getActiveParagraph()->getAlignment()->setHorizontal( PhpOffice\PhpPowerpoint\Style\Alignment::HORIZONTAL_RIGHT );
+						$cell->createTextRun("1")->getFont()->setSize(10);
+						$cell->getBorders()->getBottom()->setLineWidth(2)
+						                                ->setLineStyle(PhpOffice\PhpPowerpoint\Style\Border::LINE_SINGLE);
+		                $cell = $row->nextCell();
+		                $cell->getActiveParagraph()->getAlignment()->setHorizontal( PhpOffice\PhpPowerpoint\Style\Alignment::HORIZONTAL_RIGHT );
+						$cell->createTextRun($t->tarifa_instalacion)->getFont()->setSize(10);
+						$cell->getBorders()->getBottom()->setLineWidth(2)
+						                                ->setLineStyle(PhpOffice\PhpPowerpoint\Style\Border::LINE_SINGLE);
+					}
+					if ($t->tarifa_desinstalacion != null){
+						$row = $shape->createRow();
+						$row->getFill()->setFillType(PhpOffice\PhpPowerpoint\Style\Fill::FILL_SOLID)
+						               ->setStartColor(new PhpOffice\PhpPowerpoint\Style\Color('FFFFFFFF'));
+						$cell = $row->nextCell();
+						$cell->createTextRun("Desinstalación ".$t->mueblePunto->mueble->descripcion)->getFont()->setSize(10);
+						$cell->getBorders()->getBottom()->setLineWidth(2)
+						                                ->setLineStyle(PhpOffice\PhpPowerpoint\Style\Border::LINE_SINGLE);
+						$cell = $row->nextCell();
+			            $cell->getActiveParagraph()->getAlignment()->setHorizontal( PhpOffice\PhpPowerpoint\Style\Alignment::HORIZONTAL_RIGHT );
+						$cell->createTextRun("1")->getFont()->setSize(10);
+						$cell->getBorders()->getBottom()->setLineWidth(2)
+						                                ->setLineStyle(PhpOffice\PhpPowerpoint\Style\Border::LINE_SINGLE);
+		                $cell = $row->nextCell();
+		                $cell->getActiveParagraph()->getAlignment()->setHorizontal( PhpOffice\PhpPowerpoint\Style\Alignment::HORIZONTAL_RIGHT );
+						$cell->createTextRun($t->tarifa_desinstalacion)->getFont()->setSize(10);
+						$cell->getBorders()->getBottom()->setLineWidth(2)
+						                                ->setLineStyle(PhpOffice\PhpPowerpoint\Style\Border::LINE_SINGLE);
+					}
+					if ($t->tarifa_desinstalacion == null && $t->tarifa_instalacion == null){
+						$row = $shape->createRow();
+						$row->getFill()->setFillType(PhpOffice\PhpPowerpoint\Style\Fill::FILL_SOLID)
+						               ->setStartColor(new PhpOffice\PhpPowerpoint\Style\Color('FFFFFFFF'));
+						$cell = $row->nextCell();
+						$cell->createTextRun($t->mueblePunto->mueble->descripcion)->getFont()->setSize(10);
+						$cell->getBorders()->getBottom()->setLineWidth(2)
+						                                ->setLineStyle(PhpOffice\PhpPowerpoint\Style\Border::LINE_SINGLE);
+						$cell = $row->nextCell();
+			            $cell->getActiveParagraph()->getAlignment()->setHorizontal( PhpOffice\PhpPowerpoint\Style\Alignment::HORIZONTAL_RIGHT );
+						$cell->createTextRun("1")->getFont()->setSize(10);
+						$cell->getBorders()->getBottom()->setLineWidth(2)
+						                                ->setLineStyle(PhpOffice\PhpPowerpoint\Style\Border::LINE_SINGLE);
+		                $cell = $row->nextCell();
+		                $cell->getActiveParagraph()->getAlignment()->setHorizontal( PhpOffice\PhpPowerpoint\Style\Alignment::HORIZONTAL_RIGHT );
+						$cell->createTextRun("0")->getFont()->setSize(10);
+						$cell->getBorders()->getBottom()->setLineWidth(2)
+						                                ->setLineStyle(PhpOffice\PhpPowerpoint\Style\Border::LINE_SINGLE);
+					}
+				}
+            }
+			
 
 			$row = $shape->createRow();
 			$cell = $row->nextCell();
@@ -1650,42 +1760,71 @@ class Informe
 			$pdf->SetFont("dejavusans", "", 12);
 			$pdf->SetY(5*$pdf->getPageHeight()/54);
 			$pdf->MultiCell(0,100,'Folio: '.$visita->folio,0,"L",false);
+
 			$pdf->SetFont("dejavusans", "", 12);
+			$pdf->SetY(6*$pdf->getPageHeight()/54);
+			$pdf->MultiCell(0,100,$visita->codigo?'Id Check: '.$visita->codigo:'Id Check: N/A',0,"L",false);
 
 			if ($visita->tipo_visita_id == 3) {
-				$pdf->SetY(6*$pdf->getPageHeight()/54);
-				$pdf->MultiCell(0,100,$visita->punto->comuna!=null?'Origen: '.$visita->punto->Descripcion.' '.$visita->punto->comuna->nombre:'Origen: '.$visita->punto->Descripcion,0,"L",false);
-				$pdf->SetFont("dejavusans", "", 12);
 				$pdf->SetY(7*$pdf->getPageHeight()/54);
-				$pdf->MultiCell(0,100,$visita->destino->comuna!=null?'Destino: '.$visita->destino->Descripcion.' '.$visita->destino->comuna->nombre:'Destino: '.$visita->destino->Descripcion,0,"L",false);
+				$pdf->MultiCell(0,100,$visita->punto->comuna!=null?'Origen: '.$visita->punto->DireccionDescripcion.' '.$visita->punto->comuna->nombre:'Origen: '.$visita->punto->DireccionDescripcion,0,"L",false);
+				$pdf->SetFont("dejavusans", "", 12);
+				$pdf->SetY(8*$pdf->getPageHeight()/54);
+				$pdf->MultiCell(0,100,$visita->destino->comuna!=null?'Destino: '.$visita->destino->DireccionDescripcion.' '.$visita->destino->comuna->nombre:'Destino: '.$visita->destino->DireccionDescripcion,0,"L",false);
 				$pdf->SetFont("dejavusans", "", 12);
 			}
 			else{
-				$pdf->SetY(6*$pdf->getPageHeight()/54);
+				$pdf->SetY(7*$pdf->getPageHeight()/54);
 				$pdf->MultiCell(0,100,$visita->punto->comuna!=null?'Punto: '.$visita->punto->direccion.' '.$visita->punto->comuna->nombre:'Punto: '.$visita->punto->direccion,0,"L",false);
 				$pdf->SetFont("dejavusans", "", 12);
 			}
 			
 
-			$pdf->SetY(8*$pdf->getPageHeight()/54);
+			$pdf->SetY(9*$pdf->getPageHeight()/54);
 			$pdf->MultiCell(0,100,'Canal: '.$visita->punto->canal->nombre,0,"L",false);
 			$pdf->SetFont("dejavusans", "", 12);
-			$pdf->SetY(9*$pdf->getPageHeight()/54);
+			$pdf->SetY(10*$pdf->getPageHeight()/54);
 			$pdf->MultiCell(0,100,$visita->punto->distribuidor!=null?'Distribuidor: '.$visita->punto->distribuidor->nombre:'Distribuidor: No Asignado',0,"L",false);
 			$pdf->SetFont("dejavusans", "", 12);
-			$pdf->SetY(10*$pdf->getPageHeight()/54);
+			$pdf->SetY(11*$pdf->getPageHeight()/54);
 			$pdf->MultiCell(0,100,'Fecha Ingreso: '.date('d-m-Y',strtotime($visita->fecha_creacion)),0,"L",false);
 			$pdf->SetFont("dejavusans", "", 12);
-			$pdf->SetY(11*$pdf->getPageHeight()/54);
+			$pdf->SetY(12*$pdf->getPageHeight()/54);
 			$pdf->MultiCell(0,100,'Fecha Ejecución: '.date('d-m-Y',strtotime($visita->fecha_visita)),0,"L",false);
 			$pdf->SetFont("dejavusans", "", 12);
-			$pdf->SetY(12*$pdf->getPageHeight()/54);
+			$pdf->SetY(13*$pdf->getPageHeight()/54);
 			$pdf->MultiCell(0,100,'Solicitante: '.$visita->personaPunto->Nombre,0,"L",false);
 
 			$pdf->SetFont("dejavusans", "", 16);
-			$pdf->SetY(6.5*$pdf->getPageHeight()/27);
+			$pdf->SetY(7.5*$pdf->getPageHeight()/27);
 			$pdf->MultiCell(0,100,'Presupuesto',0,"L",false);
+			
+			$datosMueblePunto = array();
 
+			foreach ($p[0]->mueblespresupuesto as $accion) {
+				if(isset($datosMueblePunto[$accion->mueble_punto_id]))
+					$datosMueblePunto[$accion->mueble_punto_id]['accion'][]=$accion;
+				else
+					$datosMueblePunto[$accion->mueble_punto_id]=array('accion'=>array($accion),'manobra'=>array(),'traslado'=>array(),'adicional'=>array());
+			}
+			foreach ($p[0]->manosobra as $a) {
+				if(isset($datosMueblePunto[$a->mueble_punto_id]))
+					$datosMueblePunto[$a->mueble_punto_id]['manobra'][]=$a;
+				else
+					$datosMueblePunto[$a->mueble_punto_id]=array('accion'=>array(),'manobra'=>array($a),'traslado'=>array(),'adicional'=>array());
+			}
+			foreach ($p[0]->adicionales as $adicional) {
+				if(isset($datosMueblePunto[$adicional->mueble_punto_id]))
+					$datosMueblePunto[$adicional->mueble_punto_id]['adicional'][]=$adicional;
+				else
+					$datosMueblePunto[$adicional->mueble_punto_id]=array('accion'=>array(),'manobra'=>array(),'traslado'=>array(),'adicional'=>array($adicional));
+			}
+			foreach ($p[0]->trasladopresupuesto as $traslado) {
+				if(isset($datosMueblePunto[$traslado->mueble_punto]))
+					$datosMueblePunto[$traslado->mueble_punto]['manobra'][]=$traslado;
+				else
+					$datosMueblePunto[$traslado->mueble_punto]=array('accion'=>array(),'manobra'=>array(),'traslado'=>array($traslado),'adicional'=>array());
+			}
 
 			$tbl = '
 				<table cellspacing="0" cellpadding="1" border="1" style="font-size:12;">
@@ -1706,26 +1845,51 @@ class Informe
 			        <td style="width:15%;text-align:right">'.$p[0]->tarifa_visita_preventiva.'</td>
 			    </tr>';
 				}
-			foreach ($mps as $accion) {
+			foreach ($datosMueblePunto as $keyMueble => $datos) {
+				foreach ($datos['accion'] as $accion) {
 				$tbl .='<tr>
 			        <td style="width:75%;">'.$accion->Descripcion.'</td>
 			        <td style="width:10%;text-align:right">'.$accion->cant_servicio.'</td>
 			        <td style="width:15%;text-align:right">'.$accion->Tarifa.'</td>
 			    </tr>';
-			}
-			foreach ($p[0]->manosobra as $a) {
-				$tbl .='<tr>
-			        <td style="width:75%;">'.$a->Descripcion.'</td>
-			        <td style="width:10%;text-align:right">1</td>
-			        <td style="width:15%;text-align:right">'.$a->Tarifa.'</td>
-			    </tr>';
-			}
-			foreach ($p[0]->adicionales as $ad) {
-				$tbl .='<tr>
-			        <td style="width:75%;">'.$ad->Descripcion.'</td>
-			        <td style="width:10%;text-align:right">'.$ad->cantidad.'</td>
-			        <td style="width:15%;text-align:right">'.$ad->tarifa.'</td>
-			    </tr>';
+				}
+				foreach ($datos['adicional'] as $ad) {
+					$tbl .='<tr>
+				        <td style="width:75%;">'.$ad->Descripcion.'</td>
+				        <td style="width:10%;text-align:right">'.$ad->cantidad.'</td>
+				        <td style="width:15%;text-align:right">'.$ad->tarifa.'</td>
+				    </tr>';
+				}
+				foreach ($datos['manobra'] as $a) {
+					$tbl .='<tr>
+				        <td style="width:75%;">'.$a->Descripcion.'</td>
+				        <td style="width:10%;text-align:right">1</td>
+				        <td style="width:15%;text-align:right">'.$a->Tarifa.'</td>
+				    </tr>';
+				}
+				foreach ($datos['traslado'] as $t){
+					if ($t->tarifa_instalacion != null){
+					$tbl .="<tr>
+						<td>Instalación ".$t->mueblePunto->mueble->descripcion."</td>
+						<td>1</td>
+						<td>".$t->tarifa_instalacion."</td>
+					</tr>";
+					}
+					if ($t->tarifa_desinstalacion != null){
+					$tbl .="<tr>
+						<td>Desinstalación ".$t->mueblePunto->mueble->descripcion."</td>
+						<td>1</td>
+						<td>".$t->tarifa_desinstalacion."</td>
+					</tr>";
+					}
+					if ($t->tarifa_desinstalacion == null && $t->tarifa_instalacion == null){
+					$tbl .="<tr>
+						<td>".$t->mueblePunto->mueble->descripcion."</td>
+						<td>1</td>
+						<td>0</td>
+					</tr>";
+					}
+				}
 			}
 			$tbl .= '<tr>
 				       <td colspan="2" align="right"> Total:</td>
@@ -1733,7 +1897,7 @@ class Informe
 				    </tr>
 
 				</table>';
-			$pdf->SetY(7.5*$pdf->getPageHeight()/27);
+			$pdf->SetY(8.5*$pdf->getPageHeight()/27);
 			$pdf->writeHTML($tbl, true, false, false, false, '');
 
 			$y = $pdf->GetY();
@@ -2236,20 +2400,21 @@ class Informe
 					}
 				}
 			}
+			$root = Yii::getPathOfAlias('webroot').'/../files/cirigliano';
 
-			if(!is_dir(Yii::getPathOfAlias('webroot').'/uploads/')) {
-			   		mkdir(Yii::getPathOfAlias('webroot').'/uploads/');
-		   			chmod(Yii::getPathOfAlias('webroot').'/uploads/', 0775); 
+			if(!is_dir($root.'/uploads/')) {
+			   		mkdir($root.'/uploads/');
+		   			chmod($root.'/uploads/', 0775); 
 	   		}
-   			if(!is_dir(Yii::getPathOfAlias('webroot').'/uploads/informes/')) {
-   				mkdir(Yii::getPathOfAlias('webroot').'/uploads/informes/');
-   				chmod(Yii::getPathOfAlias('webroot').'/uploads/informes/', 0775);
+   			if(!is_dir($root.'/uploads/informes/')) {
+   				mkdir($root.'/uploads/informes/');
+   				chmod($root.'/uploads/informes/', 0775);
    			}
-				if(!is_dir(Yii::getPathOfAlias('webroot').'/uploads/informes/'.$visita->punto_id.'/')) {
-   				mkdir(Yii::getPathOfAlias('webroot').'/uploads/informes/'.$visita->punto_id.'/');
-   				chmod(Yii::getPathOfAlias('webroot').'/uploads/informes/'.$visita->punto_id.'/', 0775);
+				if(!is_dir($root.'/uploads/informes/'.$visita->punto_id.'/')) {
+   				mkdir($root.'/uploads/informes/'.$visita->punto_id.'/');
+   				chmod($root.'/uploads/informes/'.$visita->punto_id.'/', 0775);
    			} 
-			$pdf->Output(Yii::getPathOfAlias('webroot')."/uploads/informes/".$visita->punto_id."/".$visita->id.".pdf", "F");
+			$pdf->Output($root."/uploads/informes/".$visita->punto_id."/".$visita->id.".pdf", "F");
 		}
 		else return false;
 	}
@@ -2257,24 +2422,24 @@ class Informe
 	static function write($phpPowerPoint, $filename, $writers,$visita)
 	{
 		$v = $visita;
-		
+		$root = Yii::getPathOfAlias('webroot').'/../files/cirigliano';
 		// Write documents
 		foreach ($writers as $writer => $extension) {
 			if (!is_null($extension)) {
 				$xmlWriter = PhpOffice\PhpPowerpoint\IOFactory::createWriter($phpPowerPoint, $writer);
-				if(!is_dir(Yii::getPathOfAlias('webroot').'/uploads/')) {
-			   		mkdir(Yii::getPathOfAlias('webroot').'/uploads/');
-		   			chmod(Yii::getPathOfAlias('webroot').'/uploads/', 0775); 
+				if(!is_dir($root.'/uploads/')) {
+			   		mkdir($root.'/uploads/');
+		   			chmod($root.'/uploads/', 0775); 
 		   		}
-	   			if(!is_dir(Yii::getPathOfAlias('webroot').'/uploads/informes/')) {
-	   				mkdir(Yii::getPathOfAlias('webroot').'/uploads/informes/');
-	   				chmod(Yii::getPathOfAlias('webroot').'/uploads/informes/', 0775);
+	   			if(!is_dir($root.'/uploads/informes/')) {
+	   				mkdir($root.'/uploads/informes/');
+	   				chmod($root.'/uploads/informes/', 0775);
 	   			}
-					if(!is_dir(Yii::getPathOfAlias('webroot').'/uploads/informes/'.$visita->punto_id.'/')) {
-	   				mkdir(Yii::getPathOfAlias('webroot').'/uploads/informes/'.$visita->punto_id.'/');
-	   				chmod(Yii::getPathOfAlias('webroot').'/uploads/informes/'.$visita->punto_id.'/', 0775);
+					if(!is_dir($root.'/uploads/informes/'.$visita->punto_id.'/')) {
+	   				mkdir($root.'/uploads/informes/'.$visita->punto_id.'/');
+	   				chmod($root.'/uploads/informes/'.$visita->punto_id.'/', 0775);
 	   			} 
-				$xmlWriter->save(Yii::getPathOfAlias('webroot')."/uploads/informes/".$visita->punto_id."/{$filename}.{$extension}");
+				$xmlWriter->save($root."/uploads/informes/".$visita->punto_id."/{$filename}.{$extension}");
 			}
 		}
 	}

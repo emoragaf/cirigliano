@@ -7,6 +7,7 @@ $sql = "SELECT
 					canal.nombre as Canal,
 					distribuidor.nombre as Distribuidor,
 					wh_visita.fecha_creacion as Fecha_Creacion,
+					wh_visita.fecha_visita as Fecha_Visita,
 					sum(wh_visita.cantidad_item*wh_visita.monto_item) as Monto 
 				FROM wh_visita
 				LEFT JOIN	comuna ON wh_visita.comuna = comuna.id
@@ -17,7 +18,7 @@ $sql .= " WHERE wh_visita.id > 0 \n";
 //$sql .= " AND wh_visita.tipo_visita != 3 \n";
 $sql .= $filtros;
 $sql .="  group by folio, tipo_visita  ";
-$sql .=" order by fecha_creacion DESC";
+$sql .=" order by distribuidor, fecha_creacion DESC";
 exportar_excel($sql);
 echo "<h4>Lista por Visita</h4>";
 echo '<div style=" height:300px; overflow:auto;">';

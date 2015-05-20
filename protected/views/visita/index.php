@@ -95,6 +95,10 @@ $fechaVisitaBetween = $this->widget('zii.widgets.jui.CJuiDatePicker', array(
 		'filter'=>$model,
 		'columns'=>array(
             'folio',
+            array(
+                'name'=>'codigo',
+                'value'=>'$data->codigo?$data->codigo:"N/A"'
+                ),
 			array(
 				'name'=>'punto_direccion',
 				'value'=>'$data->punto->direccion'

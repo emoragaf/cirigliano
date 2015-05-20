@@ -88,6 +88,10 @@ function addPersonaPunto()
         ));
         ?>
     </div>
+    <div class="span3">
+        <label>Id Check</label>
+        <?php echo $form->textField($model, 'codigo'); ?>
+    </div>
 </div>
         
        

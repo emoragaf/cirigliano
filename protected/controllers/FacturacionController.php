@@ -401,7 +401,7 @@ class FacturacionController extends Controller
 			if ($presupuesto->tarifa_visita_preventiva != null && $presupuesto->tarifa_visita_preventiva != 0) {
 	    		$reparaciones
 					->setCellValueByColumnAndRow(0, $row, $presupuesto->visita->folio)
-					->setCellValueByColumnAndRow(1, $row, $presupuesto->visita->punto->Descripcion)
+					->setCellValueByColumnAndRow(1, $row, $presupuesto->visita->punto->DireccionDescripcion)
 					->setCellValueByColumnAndRow(2, $row, date('d-m-Y',strtotime($presupuesto->visita->fecha_visita)))
 					->setCellValueByColumnAndRow(4, $row, 'Visita Preventiva')
 					->setCellValueByColumnAndRow(5, $row, 1)
@@ -414,7 +414,7 @@ class FacturacionController extends Controller
 				foreach ($value['accion'] as $accion) {
 					$reparaciones
 					->setCellValueByColumnAndRow(0, $row, $presupuesto->visita->folio)
-					->setCellValueByColumnAndRow(1, $row, $presupuesto->visita->punto->Descripcion)
+					->setCellValueByColumnAndRow(1, $row, $presupuesto->visita->punto->DireccionDescripcion)
 					->setCellValueByColumnAndRow(2, $row, date('d-m-Y',strtotime($presupuesto->visita->fecha_visita)))
 					->setCellValueByColumnAndRow(3, $row, $accion->mueblepunto->Descripcion)
 					->setCellValueByColumnAndRow(4, $row, strip_tags($accion->servicio->descripcion))
@@ -427,7 +427,7 @@ class FacturacionController extends Controller
 				foreach ($value['adicional'] as $adicional) {
 					$reparaciones
 					->setCellValueByColumnAndRow(0, $row, $presupuesto->visita->folio)
-					->setCellValueByColumnAndRow(1, $row, $presupuesto->visita->punto->Descripcion)
+					->setCellValueByColumnAndRow(1, $row, $presupuesto->visita->punto->DireccionDescripcion)
 					->setCellValueByColumnAndRow(2, $row, date('d-m-Y',strtotime($presupuesto->visita->fecha_visita)))
 					->setCellValueByColumnAndRow(3, $row, $adicional->mueblePunto->Descripcion)
 					->setCellValueByColumnAndRow(4, $row, strip_tags($adicional->Descripcion))
@@ -440,7 +440,7 @@ class FacturacionController extends Controller
 				foreach ($value['manobra'] as $m) {
 					$reparaciones
 					->setCellValueByColumnAndRow(0, $row, $presupuesto->visita->folio)
-					->setCellValueByColumnAndRow(1, $row, $presupuesto->visita->punto->Descripcion)
+					->setCellValueByColumnAndRow(1, $row, $presupuesto->visita->punto->DireccionDescripcion)
 					->setCellValueByColumnAndRow(2, $row, date('d-m-Y',strtotime($presupuesto->visita->fecha_visita)))
 					->setCellValueByColumnAndRow(3, $row, $m->mueblepunto->Descripcion)
 					->setCellValueByColumnAndRow(4, $row, strip_tags($m->Descripcion))
@@ -503,8 +503,8 @@ class FacturacionController extends Controller
 					# code...
 					$traslados
 						->setCellValueByColumnAndRow(0, $row, $presupuesto->visita->folio)
-						->setCellValueByColumnAndRow(1, $row, $presupuesto->visita->punto->Descripcion)
-						->setCellValueByColumnAndRow(2, $row, $presupuesto->visita->destino->Descripcion)
+						->setCellValueByColumnAndRow(1, $row, $presupuesto->visita->punto->DireccionDescripcion)
+						->setCellValueByColumnAndRow(2, $row, $presupuesto->visita->destino->DireccionDescripcion)
 						->setCellValueByColumnAndRow(3, $row, date('d-m-Y',strtotime($presupuesto->visita->fecha_visita)))
 						->setCellValueByColumnAndRow(4, $row, $tm->tarifaTraslado->Descripcion)
 						->setCellValueByColumnAndRow(5, $row, $medios[$tm->tipo_tarifa_traslado])
@@ -516,8 +516,8 @@ class FacturacionController extends Controller
 					if ($traslado->tarifa_instalacion != null && $traslado->tarifa_instalacion != 0){
 						$traslados
 							->setCellValueByColumnAndRow(0, $row, $presupuesto->visita->folio)
-							->setCellValueByColumnAndRow(1, $row, $presupuesto->visita->punto->Descripcion)
-							->setCellValueByColumnAndRow(2, $row, $presupuesto->visita->destino->Descripcion)
+							->setCellValueByColumnAndRow(1, $row, $presupuesto->visita->punto->DireccionDescripcion)
+							->setCellValueByColumnAndRow(2, $row, $presupuesto->visita->destino->DireccionDescripcion)
 							->setCellValueByColumnAndRow(3, $row, date('d-m-Y',strtotime($presupuesto->visita->fecha_visita)))
 							->setCellValueByColumnAndRow(4, $row, 'Instalación '.$traslado->mueblePunto->Descripcion)
 							->setCellValueByColumnAndRow(6, $row, $traslado->tarifa_instalacion);
@@ -528,8 +528,8 @@ class FacturacionController extends Controller
 					if ($traslado->tarifa_desinstalacion != null && $traslado->tarifa_desinstalacion != 0){
 						$traslados
 							->setCellValueByColumnAndRow(0, $row, $presupuesto->visita->folio)
-							->setCellValueByColumnAndRow(1, $row, $presupuesto->visita->punto->Descripcion)
-							->setCellValueByColumnAndRow(2, $row, $presupuesto->visita->destino->Descripcion)
+							->setCellValueByColumnAndRow(1, $row, $presupuesto->visita->punto->DireccionDescripcion)
+							->setCellValueByColumnAndRow(2, $row, $presupuesto->visita->destino->DireccionDescripcion)
 							->setCellValueByColumnAndRow(3, $row, date('d-m-Y',strtotime($presupuesto->visita->fecha_visita)))
 							->setCellValueByColumnAndRow(4, $row, 'Desinstalación '.$traslado->mueblePunto->Descripcion)
 							->setCellValueByColumnAndRow(6, $row, $traslado->tarifa_desinstalacion);

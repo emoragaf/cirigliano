@@ -37,16 +37,15 @@ class Punto extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('region_id, canal_id, distribuidor_id, comuna_id', 'numerical', 'integerOnly'=>true),
-			array('direccion', 'length', 'max'=>45),
-			array('codigo', 'length', 'max'=>255),
+			array('region_id, canal_id, subcanal_id,distribuidor_id, comuna_id', 'numerical', 'integerOnly'=>true),
+			array('direccion,codigo, descripcion', 'length', 'max'=>255),
 			array('lat, lon', 'length', 'max'=>10),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, direccion, lat, lon, region_id, canal_id, comuna_id, distribuidor_id, destino_traslado_id, codigo', 'safe', 'on'=>'search'),
+			array('id, direccion, lat, lon, region_id, canal_id, comuna_id, distribuidor_id, destino_traslado_id, codigo, descripcion', 'safe', 'on'=>'search'),
 		);
 	}
-	public function getDescripcion(){
+	public function getDireccionDescripcion(){
 		if($this->distribuidor)
 			return $this->distribuidor->nombre.' '.$this->direccion;
 		else
@@ -76,6 +75,7 @@ class Punto extends CActiveRecord
 			'notificarPersonas' => array(self::HAS_MANY, 'NotificarPersona', 'punto_id'),
 			'personaPuntos' => array(self::HAS_MANY, 'PersonaPunto', 'punto_id'),
 			'canal' => array(self::BELONGS_TO, 'Canal', 'canal_id'),
+			'subcanal' => array(self::BELONGS_TO, 'Subcanal', 'subcanal_id'),
 			'distribuidor' => array(self::BELONGS_TO, 'Distribuidor', 'distribuidor_id'),
 			'region' => array(self::BELONGS_TO, 'Region', 'region_id'),
 			'comuna' => array(self::BELONGS_TO, 'Comuna', 'comuna_id'),
@@ -96,8 +96,10 @@ class Punto extends CActiveRecord
 			'region_id' => 'Region',
 			'comuna_id' => 'Comuna',
 			'canal_id' => 'Canal',
+			'subcanal_id' => 'Subcanal',
 			'distribuidor_id'=>'Distribuidor',
 			'codigo' =>'Cód. Franquiciado',
+			'descripcion'=>'Descripción',
 
 		);
 	}
@@ -127,7 +129,7 @@ class Punto extends CActiveRecord
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
 		$criteria=new CDbCriteria;
-
+		$criteria->addCondition('visible = 1');
 		$criteria->compare('id',$this->id);
 		$criteria->compare('direccion',$this->direccion,true);
 		$criteria->compare('codigo',$this->codigo,true);
@@ -136,6 +138,7 @@ class Punto extends CActiveRecord
 		$criteria->compare('region_id',$this->region_id);
 		$criteria->compare('comuna_id',$this->comuna_id);
 		$criteria->compare('canal_id',$this->canal_id);
+		$criteria->compare('subcanal_id',$this->subcanal_id);
 		$criteria->compare('distribuidor_id',$this->distribuidor_id);
 
 		return new CActiveDataProvider($this, array(

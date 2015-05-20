@@ -19,7 +19,7 @@
 
     <?php echo $form->errorSummary($model); ?>
 
-            <?php echo $form->textFieldControlGroup($model,'direccion',array('span'=>5,'maxlength'=>45)); ?>
+            <?php echo $form->textFieldControlGroup($model,'direccion',array('span'=>5,'maxlength'=>150)); ?>
 
             <?php echo $form->dropDownListControlGroup($model, 'region_id',
                 CHtml::listData(Region::model()->findAll(array('order'=>'orden')), 'id', 'nombre'), array('empty' => 'Seleccione')); ?>
@@ -30,8 +30,14 @@
             <?php echo $form->dropDownListControlGroup($model, 'canal_id',
                 CHtml::listData(Canal::model()->findAll(), 'id', 'nombre'), array('empty' => 'Seleccione')); ?>
             
+            <?php echo $form->dropDownListControlGroup($model, 'subcanal_id',
+                CHtml::listData(Subcanal::model()->findAll(), 'id', 'nombre'), array('empty' => 'Seleccione')); ?>
+            
             <?php echo $form->dropDownListControlGroup($model, 'distribuidor_id',
                 CHtml::listData(Distribuidor::model()->findAll(), 'id', 'nombre'), array('empty' => 'Seleccione')); ?>
+            
+            <?php echo $form->textFieldControlGroup($model,'codigo',array('span'=>5,'maxlength'=>45)); ?>
+            <?php echo $form->textFieldControlGroup($model,'descripcion',array('span'=>5,'maxlength'=>150)); ?>
 
         <div class="form-actions">
         <?php echo TbHtml::submitButton($model->isNewRecord ? 'Crear' : 'Guardar',array(

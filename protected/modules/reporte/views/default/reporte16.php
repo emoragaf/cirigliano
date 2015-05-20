@@ -10,15 +10,15 @@ mysqli_set_charset ( $connection , "utf8" );
 
 $sql = "SELECT
 					tipo_visita.nombre as Tipo_Visita,
-					substring(fecha_visita,1,7) as Mes,
+					IF(day(fecha_creacion)>=25,DATE_FORMAT(DATE_ADD(fecha_creacion, INTERVAL 1 MONTH),'%Y-%m'),DATE_FORMAT(fecha_creacion, '%Y-%m')) as Periodo,
 					SUM(wh_visita.cantidad_item*wh_visita.monto_item) as Monto 
 				FROM wh_visita
 				LEFT JOIN tipo_visita ON wh_visita.tipo_visita = tipo_visita.id
 				";
 $sql .= " WHERE wh_visita.id > 0 \n";
 $sql .= $filtros;
-$sql .=" group by wh_visita.tipo_visita,Mes
-				ORDER BY Mes,wh_visita.tipo_visita
+$sql .=" group by wh_visita.tipo_visita,Periodo
+				ORDER BY Periodo,wh_visita.tipo_visita
 				";
 
 $titulo = "Montos por Tipo Visita y Mes";
@@ -35,8 +35,8 @@ $data = array();
 $leyendas = array();
 $meses = array();
 while($row = mysqli_fetch_assoc($result)){
-	$matriz[utf8_encode($row["Tipo_Visita"])][$row["Mes"]] = $row["Monto"];
-	$meses[$row["Mes"]] = $row["Mes"];
+	$matriz[utf8_encode($row["Tipo_Visita"])][$row["Periodo"]] = $row["Monto"];
+	$meses[$row["Periodo"]] = $row["Periodo"];
 }
 
 require_once ('jpgraph/jpgraph.php');

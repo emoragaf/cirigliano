@@ -1,1 +1,5 @@
 assets/*
+.phpintel/*
+protected/runtime/*
+uploads/visitas/*
+uploads/informes/*

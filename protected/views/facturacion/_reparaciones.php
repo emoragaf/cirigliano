@@ -40,7 +40,7 @@ $neto2 =0; ?>
                 <?php if ($presupuesto->tarifa_visita_preventiva != null && $presupuesto->tarifa_visita_preventiva != 0): ?>
                     <tr>
                         <td><?php echo $presupuesto->visita->folio ?></td>
-                        <td><?php echo $presupuesto->visita->punto->Descripcion ?></td>
+                        <td><?php echo $presupuesto->visita->punto->DireccionDescripcion ?></td>
                         <td><?php echo date('d-m-Y',strtotime($presupuesto->visita->fecha_visita)); ?></td>
                         <td>Visita Preventiva</td>
                         <td>Visita Preventiva</td>
@@ -54,7 +54,7 @@ $neto2 =0; ?>
                     <?php foreach ($value['accion'] as $accion): ?>
                         <tr>
                             <td><?php echo $accion->presupuesto->visita->folio ?></td>
-                            <td><?php echo $accion->presupuesto->visita->punto->Descripcion ?></td>
+                            <td><?php echo $accion->presupuesto->visita->punto->DireccionDescripcion ?></td>
                             <td><?php echo date('d-m-Y',strtotime($accion->presupuesto->visita->fecha_visita)); ?></td>
                             <td><?php echo $accion->mueblepunto->Descripcion; ?></td>
                             <td><?php echo $accion->servicio->descripcion; ?></td>
@@ -67,7 +67,7 @@ $neto2 =0; ?>
                     <?php foreach ($value['adicional'] as $adicional): ?>
                         <tr>
                             <td><?php echo $adicional->presupuesto->visita->folio ?></td>
-                            <td><?php echo $adicional->presupuesto->visita->punto->Descripcion ?></td>
+                            <td><?php echo $adicional->presupuesto->visita->punto->DireccionDescripcion ?></td>
                             <td><?php echo date('d-m-Y',strtotime($adicional->presupuesto->visita->fecha_visita)); ?></td>
                             <td><?php echo $adicional->mueblePunto->Descripcion; ?></td>
                             <td><?php echo $adicional->Descripcion; ?></td>
@@ -80,7 +80,7 @@ $neto2 =0; ?>
                     <?php foreach ($value['manobra'] as $m): ?>
                          <tr>
                             <td><?php echo $m->presupuesto->visita->folio ?></td>
-                            <td><?php echo $m->presupuesto->visita->punto->Descripcion ?></td>
+                            <td><?php echo $m->presupuesto->visita->punto->DireccionDescripcion ?></td>
                             <td><?php echo date('d-m-Y',strtotime($m->presupuesto->visita->fecha_visita)); ?></td>
                             <td><?php echo $m->mueblepunto->Descripcion; ?></td>
                             <td><?php echo $m->Descripcion; ?></td>

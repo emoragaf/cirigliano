@@ -9,13 +9,13 @@ $connection = mysqli_connect($db_host, $db_usuario, $db_clave, $db_base_de_datos
 mysqli_set_charset ( $connection , "utf8" );
  
 $sql = "SELECT 
-					substring(fecha_visita,1,7) as Mes,
+					IF(day(fecha_creacion)>=25,DATE_FORMAT(DATE_ADD(fecha_creacion, INTERVAL 1 MONTH),'%Y-%m'),DATE_FORMAT(fecha_creacion, '%Y-%m')) as Periodo,
 					count(DISTINCT wh_visita.id) as Reparaciones 
 				FROM wh_visita
 				";
 $sql .= " WHERE wh_visita.id > 0 \n";
 $sql .= $filtros;
-$sql .=" group by Mes \n order by year(fecha_visita) ASC, month(fecha_visita) ASC";
+$sql .=" group by Periodo \n order by year(fecha_visita) ASC, month(fecha_visita) ASC";
 
 
 $titulo = "Cantidad Visitas por Mes";
@@ -31,7 +31,7 @@ $num = mysqli_num_rows($result);
 $data = array();
 $leyendas = array();
 while($row = mysqli_fetch_assoc($result)){
-	$leyendas[] = utf8_encode($row["Mes"]);
+	$leyendas[] = utf8_encode($row["Periodo"]);
 	$data[] = $row["Reparaciones"];
 }
 if (count($data)>0) {

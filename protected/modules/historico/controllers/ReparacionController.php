@@ -43,7 +43,48 @@ class ReparacionController extends Controller
 		}
 		echo 'Completado';
 	}
+	public function actionPoblarSubcanales()
+	{
+		$subcanales = Subcanal::model()->findAll();
 
+		foreach ($subcanales as $c) {
+			$id = $c->id;
+			$nombre = $c->descripcion;
+			
+			$connection=Yii::app()->db;  
+			$command=$connection->createCommand('insert into subcanal (id, nombre) VALUES (:id,:nombre)');
+			$command->bindParam(":id",$id,PDO::PARAM_INT);
+			$command->bindParam(":nombre",$nombre,PDO::PARAM_STR);
+			// replace the placeholder ":email" with the actual email value
+			$command->execute();
+
+		}
+		echo 'Completado';
+	}
+
+	public function actionPoblarSubcanalPuntos()
+	{
+		$puntos = Punto::model()->findAll();
+
+		foreach ($puntos as $c) {
+			$id = $c->id;
+			$direccion = $c->direccion;
+			$distribuidor = $c->id_distribuidor;
+			$canal = $c->id_canal;
+			$subcanal = $c->id_subcanal;
+			
+			$connection=Yii::app()->db;  
+			$command=$connection->createCommand('update punto set subcanal_id=:subcanal where direccion=:direccion and distribuidor_id=:distribuidor');
+			$command->bindParam(":subcanal",$subcanal,PDO::PARAM_INT);
+			$command->bindParam(":direccion",$direccion,PDO::PARAM_STR);
+			$command->bindParam(":distribuidor",$distribuidor,PDO::PARAM_INT);
+
+			// replace the placeholder ":email" with the actual email value
+			$command->execute();
+
+		}
+		echo 'Completado';
+	}
 	public function actionPoblarMuebles()
 	{
 		$muebles = Mueble::model()->findAll();

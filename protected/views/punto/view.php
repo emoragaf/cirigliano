@@ -121,6 +121,10 @@ $fechaVisitaBetween = $this->widget('zii.widgets.jui.CJuiDatePicker', array(
 			'name'=>'canal_id',
 			'value'=>isset($model->canal) ? $model->canal->nombre : null,
 			),
+        array(
+            'name'=>'subcanal_id',
+            'value'=>isset($model->subcanal) ? $model->subcanal->nombre : null,
+            ),
 	),
 )); ?>
 
@@ -138,6 +142,10 @@ $fechaVisitaBetween = $this->widget('zii.widgets.jui.CJuiDatePicker', array(
 	'filter'=>$visitas,
 	'columns'=>array(
         'folio',
+            array(
+                'name'=>'codigo',
+                'value'=>'$data->codigo?$data->codigo:"N/A"',
+            ),
 			array(
 				'name'=>'fecha_creacion',
 				'filter'=>$fechaCreacionBetween,

@@ -25,10 +25,12 @@ class Visita extends CActiveRecord
 	public $punto_destino;
 	public $punto_codigo;
 	public $punto_direccion;
+	public $punto_descripcion;
 	public $punto_region_id;
 	public $punto_comuna_id;
 	public $punto_distribuidor_id;
 	public $punto_canal_id;
+	public $punto_subcanal_id;
 	public $fecha_creacion_inicio;
     public $fecha_creacion_final;
     public $fecha_visita_inicio;
@@ -54,13 +56,13 @@ class Visita extends CActiveRecord
 		return array(
 			array('destino_traslado_id', 'required','on'=>'traslado'),
 			array('punto_id, tipo_visita_id, persona_punto_id', 'required'),
-			array('id, punto_id, tipo_visita_id, persona_punto_id, destino_traslado_id, estado, visita_preventiva, mimagen', 'numerical', 'integerOnly'=>true),
+			array('id, punto_id, tipo_visita_id, persona_punto_id, destino_traslado_id, estado, visita_preventiva, codigo,mimagen', 'numerical', 'integerOnly'=>true),
 			array('fecha_visita', 'length', 'max'=>45),
 			array('folio', 'length', 'max'=>255),
 			array('fecha_creacion,muebles_traslado', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, fecha_creacion,fecha_creacion_final ,fecha_creacion_inicio ,fecha_visita_final ,fecha_visita_inicio ,punto_direccion, punto_canal_id,punto_distribuidor_id, punto_comuna_id,punto_codigo, punto_canal_id, punto_region_id, fecha_visita, punto_id, tipo_visita_id, persona_punto_id, estado', 'safe', 'on'=>'search'),
+			array('id, fecha_creacion,fecha_creacion_final ,fecha_creacion_inicio ,fecha_visita_final ,fecha_visita_inicio ,punto_direccion, punto_canal_id,punto_distribuidor_id, punto_comuna_id,punto_codigo, punto_subcanal_id, punto_region_id, fecha_visita, punto_id, tipo_visita_id, persona_punto_id, estado', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -114,13 +116,229 @@ class Visita extends CActiveRecord
 			'estado' => 'Estado',
 			'punto_direccion'=>$this->tipo_visita_id == 3 ? 'Origen':'Dirección',
 			'punto_canal_id'=>'Canal',
+			'punto_subcanal_id'=>'Subcanal',
 			'punto_distribuidor_id'=>'Distribuidor',
 			'punto_region_id'=>'Region',
 			'punto_comuna_id'=>'Comuna',
 			'punto_destino'=>'Destino',
 			'muebles_traslado'=>'Muebles Traslado',
 			'destino_traslado_id'=>'Destino',
+			'punto_codigo'=>'Código Punto',
+			'codigo'=>'Id Check',
 		);
+	}
+	public function saveWH(){
+		$presupuestos = $this->presupuestos;
+
+		foreach ($presupuestos as $presupuesto) {
+			if($this->visita_preventiva){
+				$whvisita = new WhVisita;
+
+					$whvisita->folio = $this->folio;
+					$whvisita->tipo_visita = $this->tipo_visita_id;
+					$whvisita->direccion_punto = $this->punto->direccion;
+					$whvisita->region = $this->punto->region_id;
+					$whvisita->region = $this->punto->comuna_id;
+					$whvisita->fecha_creacion = $this->fecha_creacion;
+					$whvisita->fecha_visita = $this->fecha_visita;
+					$whvisita->visita_preventiva = $this->visita_preventiva;
+					$whvisita->canal = $this->punto->canal_id;
+					$whvisita->distribuidor = $this->punto->distribuidor_id;
+					$whvisita->notas = $this->formulario->notas;
+					$whvisita->persona_punto = $this->persona_punto_id;
+					$whvisita->user_autoriza = $this->id_autoriza;
+					$whvisita->punto_id = $this->punto_id;
+					$whvisita->vista_id = $this->id;
+
+					$whvisita->descripcion_item = 'Visita Preventiva';
+					$whvisita->monto_item = $presupuesto->tarifa_visita_preventiva;
+					$whvisita->mueble = null;
+					$whvisita->codigo_mueble = null;
+					$whvisita->mueble_punto_id = null;
+					$whvisita->cantidad_item = 1;
+
+					$whvisita->save();
+			}
+			if($presupuesto->adicionales)
+				foreach ($presupuesto->adicionales as $adicional) {
+					$whvisita = new WhVisita;
+
+					$whvisita->folio = $this->folio;
+					$whvisita->tipo_visita = $this->tipo_visita_id;
+					$whvisita->direccion_punto = $this->punto->direccion;
+					$whvisita->region = $this->punto->region_id;
+					$whvisita->region = $this->punto->comuna_id;
+					$whvisita->fecha_creacion = $this->fecha_creacion;
+					$whvisita->fecha_visita = $this->fecha_visita;
+					$whvisita->visita_preventiva = $this->visita_preventiva;
+					$whvisita->canal = $this->punto->canal_id;
+					$whvisita->distribuidor = $this->punto->distribuidor_id;
+					$whvisita->notas = $this->formulario->notas;
+					$whvisita->persona_punto = $this->persona_punto_id;
+					$whvisita->user_autoriza = $this->id_autoriza;
+					$whvisita->punto_id = $this->punto_id;
+					$whvisita->vista_id = $this->id;
+
+					$whvisita->descripcion_item = $adicional->descripcion;
+					$whvisita->monto_item = $adicional->tarifa;
+					$whvisita->mueble = $adicional->mueblePunto && $adicional->mueblePunto->mueble? $adicional->mueblePunto->mueble->id:null;
+					$whvisita->codigo_mueble = $adicional->mueblePunto? $adicional->mueblePunto->codigo:null;
+					$whvisita->mueble_punto_id = $adicional->mueble_punto_id;
+					$whvisita->cantidad_item = $adicional->cantidad;
+
+					$whvisita->save();
+				}
+			if($presupuesto->mueblespresupuesto)
+				foreach ($presupuesto->mueblespresupuesto as $mp) {
+					$whvisita = new WhVisita;
+
+					$whvisita->folio = $this->folio;
+					$whvisita->tipo_visita = $this->tipo_visita_id;
+					$whvisita->direccion_punto = $this->punto->direccion;
+					$whvisita->region = $this->punto->region_id;
+					$whvisita->region = $this->punto->comuna_id;
+					$whvisita->fecha_creacion = $this->fecha_creacion;
+					$whvisita->fecha_visita = $this->fecha_visita;
+					$whvisita->visita_preventiva = $this->visita_preventiva;
+					$whvisita->canal = $this->punto->canal_id;
+					$whvisita->distribuidor = $this->punto->distribuidor_id;
+					$whvisita->notas = $this->formulario->notas;
+					$whvisita->persona_punto = $this->persona_punto_id;
+					$whvisita->user_autoriza = $this->id_autoriza;
+					$whvisita->punto_id = $this->punto_id;
+					$whvisita->vista_id = $this->id;
+
+					$whvisita->descripcion_item = $mp->servicio->descripcion;
+					$whvisita->monto_item = $mp->tarifa_servicio;
+					$whvisita->mueble = $mp->mueblepunto->mueble->id;
+					$whvisita->codigo_mueble = $mp->mueblepunto->codigo;
+					$whvisita->mueble_punto_id = $mp->mueble_punto_id;
+					$whvisita->cantidad_item = $mp->cant_servicio;
+
+					$whvisita->save();
+				}
+			if($presupuesto->trasladopresupuesto)
+				foreach ($presupuesto->trasladopresupuesto as $tp) {
+					if($tp->tarifa_instalacion){
+						$whvisita = new WhVisita;
+
+						$whvisita->folio = $this->folio;
+						$whvisita->tipo_visita = $this->tipo_visita_id;
+						$whvisita->direccion_punto = $this->punto->direccion;
+						$whvisita->region = $this->punto->region_id;
+						$whvisita->region = $this->punto->comuna_id;
+						$whvisita->fecha_creacion = $this->fecha_creacion;
+						$whvisita->fecha_visita = $this->fecha_visita;
+						$whvisita->visita_preventiva = $this->visita_preventiva;
+						$whvisita->canal = $this->punto->canal_id;
+						$whvisita->distribuidor = $this->punto->distribuidor_id;
+						$whvisita->notas = $this->formulario->notas;
+						$whvisita->persona_punto = $this->persona_punto_id;
+						$whvisita->user_autoriza = $this->id_autoriza;
+						$whvisita->punto_id = $this->punto_id;
+						$whvisita->vista_id = $this->id;
+
+						$whvisita->descripcion_item = 'Instalación '.$tp->mueblePunto->mueble->descripcion;
+						$whvisita->monto_item = $tp->tarifa_instalacion;
+						$whvisita->mueble = $tp->mueblePunto && $tp->mueblePunto->mueble? $tp->mueblePunto->mueble->id:null;
+						$whvisita->codigo_mueble = $tp->mueblePunto? $tp->mueblePunto->codigo:null;
+						$whvisita->mueble_punto_id = $tp->mueble_punto;
+						$whvisita->cantidad_item = 1;
+
+						$whvisita->save();
+					}
+					if($tp->tarifa_desinstalacion){
+						$whvisita = new WhVisita;
+
+						$whvisita->folio = $this->folio;
+						$whvisita->tipo_visita = $this->tipo_visita_id;
+						$whvisita->direccion_punto = $this->punto->direccion;
+						$whvisita->region = $this->punto->region_id;
+						$whvisita->region = $this->punto->comuna_id;
+						$whvisita->fecha_creacion = $this->fecha_creacion;
+						$whvisita->fecha_visita = $this->fecha_visita;
+						$whvisita->visita_preventiva = $this->visita_preventiva;
+						$whvisita->canal = $this->punto->canal_id;
+						$whvisita->distribuidor = $this->punto->distribuidor_id;
+						$whvisita->notas = $this->formulario->notas;
+						$whvisita->persona_punto = $this->persona_punto_id;
+						$whvisita->user_autoriza = $this->id_autoriza;
+						$whvisita->punto_id = $this->punto_id;
+						$whvisita->vista_id = $this->id;
+
+						$whvisita->descripcion_item = 'Desinstalación '.$tp->mueblePunto->mueble->descripcion;
+						$whvisita->monto_item = $tp->tarifa_desinstalacion;
+						$whvisita->mueble = $tp->mueblePunto && $tp->mueblePunto->mueble? $tp->mueblePunto->mueble->id:null;
+						$whvisita->codigo_mueble = $tp->mueblePunto? $tp->mueblePunto->codigo:null;
+						$whvisita->mueble_punto_id = $tp->mueble_punto;
+						$whvisita->cantidad_item = 1;
+
+						$whvisita->save();
+
+					}
+				}
+			if($presupuesto->tarifasTraslado)
+				foreach ($presupuesto->tarifasTraslado as $tt) {
+					
+					//echo </td>
+					$whvisita = new WhVisita;
+
+					$whvisita->folio = $this->folio;
+					$whvisita->tipo_visita = $this->tipo_visita_id;
+					$whvisita->direccion_punto = $this->punto->direccion;
+					$whvisita->region = $this->punto->region_id;
+					$whvisita->region = $this->punto->comuna_id;
+					$whvisita->fecha_creacion = $this->fecha_creacion;
+					$whvisita->fecha_visita = $this->fecha_visita;
+					$whvisita->visita_preventiva = $this->visita_preventiva;
+					$whvisita->canal = $this->punto->canal_id;
+					$whvisita->distribuidor = $this->punto->distribuidor_id;
+					$whvisita->notas = $this->formulario->notas;
+					$whvisita->persona_punto = $this->persona_punto_id;
+					$whvisita->user_autoriza = $this->id_autoriza;
+					$whvisita->punto_id = $this->punto_id;
+					$whvisita->vista_id = $this->id;
+
+					$whvisita->descripcion_item = 'Tarifa Traslado '.$tt->tarifaTraslado->desde.' '.$tt->tarifaTraslado->hasta;
+					$whvisita->destino_traslado = $this->destino_traslado_id;
+					$whvisita->monto_item = $tt->TTraslado;
+					$whvisita->mueble = null;
+					$whvisita->codigo_mueble = null;
+					$whvisita->mueble_punto_id = null;
+					$whvisita->cantidad_item = 1;
+
+					$whvisita->save();
+				}
+			if($presupuesto->manosobra)
+				foreach ($presupuesto->manosobra as $mo) {
+					$whvisita = new WhVisita;
+
+					$whvisita->folio = $this->folio;
+					$whvisita->tipo_visita = $this->tipo_visita_id;
+					$whvisita->direccion_punto = $this->punto->direccion;
+					$whvisita->region = $this->punto->region_id;
+					$whvisita->region = $this->punto->comuna_id;
+					$whvisita->fecha_creacion = $this->fecha_creacion;
+					$whvisita->fecha_visita = $this->fecha_visita;
+					$whvisita->visita_preventiva = $this->visita_preventiva;
+					$whvisita->canal = $this->punto->canal_id;
+					$whvisita->distribuidor = $this->punto->distribuidor_id;
+					$whvisita->notas = $this->formulario->notas;
+					$whvisita->persona_punto = $this->persona_punto_id;
+					$whvisita->user_autoriza = $this->id_autoriza;
+					$whvisita->punto_id = $this->punto_id;
+					$whvisita->vista_id = $this->id;
+
+					$whvisita->descripcion_item = $mo->Descripcion;
+					$whvisita->monto_item = $mo->Tarifa;
+					$whvisita->mueble = $mo->mueblepunto && $mo->mueblepunto->mueble ? $mo->mueblepunto->mueble->id:null;
+					$whvisita->codigo_mueble = $mo->mueblepunto? $mo->mueblepunto->codigo: null;
+					$whvisita->mueble_punto_id = $mo->mueble_punto_id;
+					$whvisita->cantidad_item = 1;
+
+					$whvisita->save();
+				}
+		}
 	}
 
 	/**
@@ -178,7 +396,7 @@ class Visita extends CActiveRecord
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
 		$criteria=new CDbCriteria;
-		$criteria->with = array('punto'=>array('select'=>'punto.direccion,punto.region_id,punto.comuna_id,punto.distribuidor_id,punto.canal_id'));
+		$criteria->with = array('punto'=>array('select'=>'punto.direccion,punto.region_id,punto.comuna_id,punto.distribuidor_id,punto.canal_id,punto.subcanal_id'));
 		$criteria->together= true;
 		$criteria->condition = 't.estado < 3';
 		if((isset($this->fecha_creacion_inicio) && trim($this->fecha_creacion_inicio) != "") && (isset($this->fecha_creacion_final) && trim($this->fecha_creacion_final) != ""))
@@ -186,11 +404,13 @@ class Visita extends CActiveRecord
         if((isset($this->fecha_visita_inicio) && trim($this->fecha_visita_inicio) != "") && (isset($this->fecha_visita_final) && trim($this->fecha_visita_final) != ""))
                         $criteria->addBetweenCondition('t.fecha_visita', ''.date('Y-m-d',strtotime($this->fecha_creacion_inicio)).'', ''.date('Y-m-d',strtotime($this->fecha_visita_final)).'');
 		$criteria->compare('punto.direccion',$this->punto_direccion,true);
+		$criteria->compare('punto.descripcion',$this->punto_descripcion,true);
 		$criteria->compare('punto.codigo',$this->punto_codigo,true);
 		$criteria->compare('punto.region_id',$this->punto_region_id,true);
 		$criteria->compare('punto.comuna_id',$this->punto_comuna_id,true);
 		$criteria->compare('punto.distribuidor_id',$this->punto_distribuidor_id,true);
 		$criteria->compare('punto.canal_id',$this->punto_canal_id,true);
+		$criteria->compare('punto.subcanal_id',$this->punto_subcanal_id);
 		$criteria->compare('t.folio',$this->folio,true);
 		$criteria->compare('t.persona_punto_id',$this->persona_punto_id);
 		$criteria->compare('t.estado',$this->estado);
@@ -217,7 +437,7 @@ class Visita extends CActiveRecord
 		}
 
 
-		$criteria->with = array('punto'=>array('select'=>'punto.direccion,punto.region_id,punto.comuna_id,punto.distribuidor_id,punto.canal_id'));
+		$criteria->with = array('punto'=>array('select'=>'punto.direccion,punto.region_id,punto.comuna_id,punto.distribuidor_id,punto.canal_id,punto.subcanal_id'));
 		$criteria->together= true;
 		if((isset($this->fecha_creacion_inicio) && trim($this->fecha_creacion_inicio) != "") && (isset($this->fecha_creacion_final) && trim($this->fecha_creacion_final) != ""))
                         $criteria->addBetweenCondition('t.fecha_creacion', ''.date('Y-m-d',strtotime($this->fecha_creacion_inicio)).'', ''.date('Y-m-d',strtotime($this->fecha_creacion_final)).'');
@@ -226,10 +446,13 @@ class Visita extends CActiveRecord
 		$criteria->compare('punto.direccion',$this->punto_direccion,true);
 		$criteria->compare('punto.codigo',$this->punto_codigo,true);
 		$criteria->compare('punto.direccion',$this->punto_destino,true);
+		$criteria->compare('punto.descripcion',$this->punto_descripcion,true);
+
 		$criteria->compare('punto.region_id',$this->punto_region_id);
 		$criteria->compare('punto.comuna_id',$this->punto_comuna_id);
 		$criteria->compare('punto.distribuidor_id',$this->punto_distribuidor_id);
 		$criteria->compare('punto.canal_id',$this->punto_canal_id);
+		$criteria->compare('punto.subcanal_id',$this->punto_subcanal_id);
 		$criteria->compare('t.folio',$this->folio,true);
 		$criteria->compare('t.persona_punto_id',$this->persona_punto_id);
 		$criteria->compare('t.estado',$this->estado);
@@ -244,7 +467,7 @@ class Visita extends CActiveRecord
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
 		$criteria=new CDbCriteria;
-		$criteria->with = array('punto'=>array('select'=>'punto.direccion,punto.region_id,punto.comuna_id,punto.distribuidor_id,punto.canal_id'));
+		$criteria->with = array('punto'=>array('select'=>'punto.direccion,punto.region_id,punto.comuna_id,punto.distribuidor_id,punto.canal_id,punto.subcanal_id'));
 		$criteria->together= true;
 		$criteria->condition = 't.estado > 3';
 		if((isset($this->fecha_creacion_inicio) && trim($this->fecha_creacion_inicio) != "") && (isset($this->fecha_creacion_final) && trim($this->fecha_creacion_final) != ""))
@@ -252,11 +475,14 @@ class Visita extends CActiveRecord
         if((isset($this->fecha_visita_inicio) && trim($this->fecha_visita_inicio) != "") && (isset($this->fecha_visita_final) && trim($this->fecha_visita_final) != ""))
                         $criteria->addBetweenCondition('t.fecha_visita', ''.date('Y-m-d',strtotime($this->fecha_creacion_inicio)).'', ''.date('Y-m-d',strtotime($this->fecha_visita_final)).'');
 		$criteria->compare('punto.direccion',$this->punto_direccion,true);
+		$criteria->compare('punto.descripcion',$this->punto_descripcion,true);
+
 		$criteria->compare('punto.codigo',$this->punto_codigo,true);
 		$criteria->compare('punto.region_id',$this->punto_region_id,true);
 		$criteria->compare('punto.comuna_id',$this->punto_comuna_id,true);
 		$criteria->compare('punto.distribuidor_id',$this->punto_distribuidor_id,true);
 		$criteria->compare('punto.canal_id',$this->punto_canal_id,true);
+		$criteria->compare('punto.subcanal_id',$this->punto_subcanal_id);
 		$criteria->compare('t.folio',$this->folio,true);
 		$criteria->compare('t.persona_punto_id',$this->persona_punto_id);
 		$criteria->compare('t.estado',$this->estado);

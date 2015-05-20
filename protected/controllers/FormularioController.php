@@ -58,6 +58,7 @@ class FormularioController extends Controller
 	public function actionCreate($id)
 	{
 		set_time_limit(0);
+		$root = Yii::getPathOfAlias('webroot').'/../files/cirigliano';
 		$visita = Visita::model()->findByPK($id);
 		$campos = CampoFormulario::model()->findAll(array('condition'=>'tipo_visita_id ='.$visita->tipo_visita_id));
 		$presupuesto =$visita->presupuestos[0];
@@ -101,27 +102,27 @@ class FormularioController extends Controller
 				    				if (isset($images) && count($images) > 0) {
 							            // go through each uploaded image
 							            foreach ($images as $image => $pic) {
-							            	if(!is_dir(Yii::getPathOfAlias('webroot').'/uploads/')) {
-										   		mkdir(Yii::getPathOfAlias('webroot').'/uploads/');
-									   			chmod(Yii::getPathOfAlias('webroot').'/uploads/', 0775); 
+							            	if(!is_dir($root.'/uploads/')) {
+										   		mkdir($root.'/uploads/');
+									   			chmod($root.'/uploads/', 0775); 
 									   		}
-								   			if(!is_dir(Yii::getPathOfAlias('webroot').'/uploads/visitas/')) {
-								   				mkdir(Yii::getPathOfAlias('webroot').'/uploads/visitas/');
-								   				chmod(Yii::getPathOfAlias('webroot').'/uploads/visitas/', 0775);
+								   			if(!is_dir($root.'/uploads/visitas/')) {
+								   				mkdir($root.'/uploads/visitas/');
+								   				chmod($root.'/uploads/visitas/', 0775);
 								   			}
-						   					if(!is_dir(Yii::getPathOfAlias('webroot').'/uploads/visitas/'.$visita->id.'/')) {
-								   				mkdir(Yii::getPathOfAlias('webroot').'/uploads/visitas/'.$visita->id.'/');
-								   				chmod(Yii::getPathOfAlias('webroot').'/uploads/visitas/'.$visita->id.'/', 0775);
+						   					if(!is_dir($root.'/uploads/visitas/'.$visita->id.'/')) {
+								   				mkdir($root.'/uploads/visitas/'.$visita->id.'/');
+								   				chmod($root.'/uploads/visitas/'.$visita->id.'/', 0775);
 								   			} 
-						   					if(!is_dir(Yii::getPathOfAlias('webroot').'/uploads/visitas/'.$visita->id.'/'.$mueble->id.'/')) {
-								   				mkdir(Yii::getPathOfAlias('webroot').'/uploads/visitas/'.$visita->id.'/'.$mueble->id.'/');
-								   				chmod(Yii::getPathOfAlias('webroot').'/uploads/visitas/'.$visita->id.'/'.$mueble->id.'/', 0775); 
+						   					if(!is_dir($root.'/uploads/visitas/'.$visita->id.'/'.$mueble->id.'/')) {
+								   				mkdir($root.'/uploads/visitas/'.$visita->id.'/'.$mueble->id.'/');
+								   				chmod($root.'/uploads/visitas/'.$visita->id.'/'.$mueble->id.'/', 0775); 
 								   			}  
 												   
 						                    $formfoto = new FormularioFotos;
 						                    $foto = new Foto;
 						                    $foto->nombre = $pic->name; //it might be $img_add->name for you, filename is just what I chose to call it in my model
-						                    $foto->path = Yii::getPathOfAlias('webroot').'/uploads/visitas/'.$visita->id.'/'.$mueble->id.'/';
+						                    $foto->path = $root.'/uploads/visitas/'.$visita->id.'/'.$mueble->id.'/';
 						                    $foto->extension = $pic->extensionName;
 						                    if($foto->save()){
 						                    	$tipo = TipoFoto::model()->find(array('condition'=>'nombre ="'.str_replace(' ', '', $id).'" AND model ="'.$foo[1].'"'));
@@ -150,23 +151,23 @@ class FormularioController extends Controller
 							if (isset($images)) {
 					            // go through each uploaded image
 					            foreach ($images as $image => $pic) {
-					            	if(!is_dir(Yii::getPathOfAlias('webroot').'/uploads/')) {
-								   		mkdir(Yii::getPathOfAlias('webroot').'/uploads/');
-							   			chmod(Yii::getPathOfAlias('webroot').'/uploads/', 0775); 
+					            	if(!is_dir($root.'/uploads/')) {
+								   		mkdir($root.'/uploads/');
+							   			chmod($root.'/uploads/', 0775); 
 							   		}
-						   			if(!is_dir(Yii::getPathOfAlias('webroot').'/uploads/visitas/')) {
-						   				mkdir(Yii::getPathOfAlias('webroot').'/uploads/visitas/');
-						   				chmod(Yii::getPathOfAlias('webroot').'/uploads/visitas/', 0775);
+						   			if(!is_dir($root.'/uploads/visitas/')) {
+						   				mkdir($root.'/uploads/visitas/');
+						   				chmod($root.'/uploads/visitas/', 0775);
 						   			}	
-				   					if(!is_dir(Yii::getPathOfAlias('webroot').'/uploads/visitas/'.$visita->id.'/')) {
-						   				mkdir(Yii::getPathOfAlias('webroot').'/uploads/visitas/'.$visita->id.'/');
-						   				chmod(Yii::getPathOfAlias('webroot').'/uploads/visitas/'.$visita->id.'/', 0775);
+				   					if(!is_dir($root.'/uploads/visitas/'.$visita->id.'/')) {
+						   				mkdir($root.'/uploads/visitas/'.$visita->id.'/');
+						   				chmod($root.'/uploads/visitas/'.$visita->id.'/', 0775);
 						   			} 	
 									   
 				                    $formfoto = new FormularioFotos;
 				                    $foto = new Foto;
 				                    $foto->nombre = $pic->name; //it might be $img_add->name for you, filename is just what I chose to call it in my model
-				                    $foto->path = Yii::getPathOfAlias('webroot').'/uploads/visitas/'.$visita->id.'/';
+				                    $foto->path = $root.'/uploads/visitas/'.$visita->id.'/';
 				                    $foto->extension = $pic->extensionName;
 				                    if($foto->save()){
 				                    	$tipo = TipoFoto::model()->find(array('condition'=>'nombre ="'.str_replace(' ', '', $fieldname).'"'));
@@ -200,24 +201,24 @@ class FormularioController extends Controller
     				if (isset($imagesAntes) && count($imagesAntes) > 0) {
 			            // go through each uploaded image
 			            foreach ($imagesAntes as $image => $pic) {
-			            	if(!is_dir(Yii::getPathOfAlias('webroot').'/uploads/')) {
-						   		mkdir(Yii::getPathOfAlias('webroot').'/uploads/');
-					   			chmod(Yii::getPathOfAlias('webroot').'/uploads/', 0775); 
+			            	if(!is_dir($root.'/uploads/')) {
+						   		mkdir($root.'/uploads/');
+					   			chmod($root.'/uploads/', 0775); 
 					   		}
-				   			if(!is_dir(Yii::getPathOfAlias('webroot').'/uploads/visitas/')) {
-				   				mkdir(Yii::getPathOfAlias('webroot').'/uploads/visitas/');
-				   				chmod(Yii::getPathOfAlias('webroot').'/uploads/visitas/', 0775);
+				   			if(!is_dir($root.'/uploads/visitas/')) {
+				   				mkdir($root.'/uploads/visitas/');
+				   				chmod($root.'/uploads/visitas/', 0775);
 				   			}
-		   					if(!is_dir(Yii::getPathOfAlias('webroot').'/uploads/visitas/'.$visita->id.'/')) {
-				   				mkdir(Yii::getPathOfAlias('webroot').'/uploads/visitas/'.$visita->id.'/');
-				   				chmod(Yii::getPathOfAlias('webroot').'/uploads/visitas/'.$visita->id.'/', 0775);
+		   					if(!is_dir($root.'/uploads/visitas/'.$visita->id.'/')) {
+				   				mkdir($root.'/uploads/visitas/'.$visita->id.'/');
+				   				chmod($root.'/uploads/visitas/'.$visita->id.'/', 0775);
 				   			} 
 		   					
 								   
 		                    $formfoto = new FormularioFotos;
 		                    $foto = new Foto;
 		                    $foto->nombre = $pic->name; //it might be $img_add->name for you, filename is just what I chose to call it in my model
-		                    $foto->path = Yii::getPathOfAlias('webroot').'/uploads/visitas/'.$visita->id.'/';
+		                    $foto->path = $root.'/uploads/visitas/'.$visita->id.'/';
 		                    $foto->extension = $pic->extensionName;
 		                    if($foto->save()){
 		                    	$formfoto->formulario_id = $model->id;
@@ -237,24 +238,24 @@ class FormularioController extends Controller
     				if (isset($imagesDespues) && count($imagesDespues) > 0) {
 			            // go through each uploaded image
 			            foreach ($imagesDespues as $image => $pic) {
-			            	if(!is_dir(Yii::getPathOfAlias('webroot').'/uploads/')) {
-						   		mkdir(Yii::getPathOfAlias('webroot').'/uploads/');
-					   			chmod(Yii::getPathOfAlias('webroot').'/uploads/', 0775); 
+			            	if(!is_dir($root.'/uploads/')) {
+						   		mkdir($root.'/uploads/');
+					   			chmod($root.'/uploads/', 0775); 
 					   		}
-				   			if(!is_dir(Yii::getPathOfAlias('webroot').'/uploads/visitas/')) {
-				   				mkdir(Yii::getPathOfAlias('webroot').'/uploads/visitas/');
-				   				chmod(Yii::getPathOfAlias('webroot').'/uploads/visitas/', 0775);
+				   			if(!is_dir($root.'/uploads/visitas/')) {
+				   				mkdir($root.'/uploads/visitas/');
+				   				chmod($root.'/uploads/visitas/', 0775);
 				   			}
-		   					if(!is_dir(Yii::getPathOfAlias('webroot').'/uploads/visitas/'.$visita->id.'/')) {
-				   				mkdir(Yii::getPathOfAlias('webroot').'/uploads/visitas/'.$visita->id.'/');
-				   				chmod(Yii::getPathOfAlias('webroot').'/uploads/visitas/'.$visita->id.'/', 0775);
+		   					if(!is_dir($root.'/uploads/visitas/'.$visita->id.'/')) {
+				   				mkdir($root.'/uploads/visitas/'.$visita->id.'/');
+				   				chmod($root.'/uploads/visitas/'.$visita->id.'/', 0775);
 				   			} 
 		   					
 								   
 		                    $formfoto = new FormularioFotos;
 		                    $foto = new Foto;
 		                    $foto->nombre = $pic->name; //it might be $img_add->name for you, filename is just what I chose to call it in my model
-		                    $foto->path = Yii::getPathOfAlias('webroot').'/uploads/visitas/'.$visita->id.'/';
+		                    $foto->path = $root.'/uploads/visitas/'.$visita->id.'/';
 		                    $foto->extension = $pic->extensionName;
 		                    if($foto->save()){
 		                    	$formfoto->formulario_id = $model->id;
@@ -334,7 +335,7 @@ class FormularioController extends Controller
 					$email->fromName = "Cirigliano TradeSensor";
 					$email->fromEmail = "noreply@tradesensor.cl";
 					$email->to = $recipients;
-			        //$content = base64_encode(file_get_contents(Yii::getPathOfAlias('webroot')."/uploads/informes/".$visita->punto_id."/".$visita->id.".pdf"));
+			        //$content = base64_encode(file_get_contents($root."/uploads/informes/".$visita->punto_id."/".$visita->id.".pdf"));
 			        $email->tags = array('presupuesto-MovistarMantencion','produccion');
 					//$email->attachments = array(array('type'=>'application/pdf','name'=>'Informe Solicitud '.$visita->punto->direccion.' '.date('d-m-Y',strtotime($visita->fecha_visita)),'content'=>$content));
 					$email->images = array();
@@ -381,7 +382,7 @@ class FormularioController extends Controller
 					$email->fromName = "Cirigliano TradeSensor";
 					$email->fromEmail = "noreply@tradesensor.cl";
 					$email->to = $recipients;
-			        $content = base64_encode(file_get_contents(Yii::getPathOfAlias('webroot')."/uploads/informes/".$visita->punto_id."/".$visita->id.".pdf"));
+			        $content = base64_encode(file_get_contents($root."/uploads/informes/".$visita->punto_id."/".$visita->id.".pdf"));
 			        $email->tags = array('informe-MovistarMantencion','produccion');
 					$email->attachments = array(array('type'=>'application/pdf','name'=>'Informe Solicitud '.$visita->punto->direccion.' '.date('d-m-Y',strtotime($visita->fecha_visita)),'content'=>$content));
 					$email->images = array();
@@ -393,6 +394,7 @@ class FormularioController extends Controller
 					$visita->save();
 				}
 				if(isset(Yii::app()->session['TrasladoIV'])){
+					Yii::app()->session['TarifaIV'] = true;
 					$this->redirect(array('Visita/CreateTraslado','id'=>Yii::app()->session['TrasladoIV']['destino']));
 				}
 				$this->redirect(array('Visita/view','id'=>$visita->id));
@@ -420,6 +422,7 @@ class FormularioController extends Controller
 	public function actionUpdate($id)
 	{
 		set_time_limit(0);
+		$root = Yii::getPathOfAlias('webroot').'/../files/cirigliano';
 		$model=$this->loadModel($id);
 		$visita = Visita::model()->findByPK($model->visita_id);
 		$fotos = $model->fotos;
@@ -461,27 +464,27 @@ class FormularioController extends Controller
 				    				if (isset($images) && count($images) > 0) {
 							            // go through each uploaded image
 							            foreach ($images as $image => $pic) {
-							            	if(!is_dir(Yii::getPathOfAlias('webroot').'/uploads/')) {
-										   		mkdir(Yii::getPathOfAlias('webroot').'/uploads/');
-									   			chmod(Yii::getPathOfAlias('webroot').'/uploads/', 0775); 
+							            	if(!is_dir($root.'/uploads/')) {
+										   		mkdir($root.'/uploads/');
+									   			chmod($root.'/uploads/', 0775); 
 									   		}
-								   			if(!is_dir(Yii::getPathOfAlias('webroot').'/uploads/visitas/')) {
-								   				mkdir(Yii::getPathOfAlias('webroot').'/uploads/visitas/');
-								   				chmod(Yii::getPathOfAlias('webroot').'/uploads/visitas/', 0775);
+								   			if(!is_dir($root.'/uploads/visitas/')) {
+								   				mkdir($root.'/uploads/visitas/');
+								   				chmod($root.'/uploads/visitas/', 0775);
 								   			}
-						   					if(!is_dir(Yii::getPathOfAlias('webroot').'/uploads/visitas/'.$visita->id.'/')) {
-								   				mkdir(Yii::getPathOfAlias('webroot').'/uploads/visitas/'.$visita->id.'/');
-								   				chmod(Yii::getPathOfAlias('webroot').'/uploads/visitas/'.$visita->id.'/', 0775);
+						   					if(!is_dir($root.'/uploads/visitas/'.$visita->id.'/')) {
+								   				mkdir($root.'/uploads/visitas/'.$visita->id.'/');
+								   				chmod($root.'/uploads/visitas/'.$visita->id.'/', 0775);
 								   			} 
-						   					if(!is_dir(Yii::getPathOfAlias('webroot').'/uploads/visitas/'.$visita->id.'/'.$mueble->id.'/')) {
-								   				mkdir(Yii::getPathOfAlias('webroot').'/uploads/visitas/'.$visita->id.'/'.$mueble->id.'/');
-								   				chmod(Yii::getPathOfAlias('webroot').'/uploads/visitas/'.$visita->id.'/'.$mueble->id.'/', 0775); 
+						   					if(!is_dir($root.'/uploads/visitas/'.$visita->id.'/'.$mueble->id.'/')) {
+								   				mkdir($root.'/uploads/visitas/'.$visita->id.'/'.$mueble->id.'/');
+								   				chmod($root.'/uploads/visitas/'.$visita->id.'/'.$mueble->id.'/', 0775); 
 								   			}  
 												   
 						                    $formfoto = new FormularioFotos;
 						                    $foto = new Foto;
 						                    $foto->nombre = $pic->name; //it might be $img_add->name for you, filename is just what I chose to call it in my model
-						                    $foto->path = Yii::getPathOfAlias('webroot').'/uploads/visitas/'.$visita->id.'/'.$mueble->id.'/';
+						                    $foto->path = $root.'/uploads/visitas/'.$visita->id.'/'.$mueble->id.'/';
 						                    $foto->extension = $pic->extensionName;
 						                    if($foto->save()){
 						                    	$tipo = TipoFoto::model()->find(array('condition'=>'nombre ="'.str_replace(' ', '', $id).'" AND model ="'.$foo[1].'"'));
@@ -510,23 +513,23 @@ class FormularioController extends Controller
 							if (isset($images)) {
 					            // go through each uploaded image
 					            foreach ($images as $image => $pic) {
-					            	if(!is_dir(Yii::getPathOfAlias('webroot').'/uploads/')) {
-								   		mkdir(Yii::getPathOfAlias('webroot').'/uploads/');
-							   			chmod(Yii::getPathOfAlias('webroot').'/uploads/', 0775); 
+					            	if(!is_dir($root.'/uploads/')) {
+								   		mkdir($root.'/uploads/');
+							   			chmod($root.'/uploads/', 0775); 
 							   		}
-						   			if(!is_dir(Yii::getPathOfAlias('webroot').'/uploads/visitas/')) {
-						   				mkdir(Yii::getPathOfAlias('webroot').'/uploads/visitas/');
-						   				chmod(Yii::getPathOfAlias('webroot').'/uploads/visitas/', 0775);
+						   			if(!is_dir($root.'/uploads/visitas/')) {
+						   				mkdir($root.'/uploads/visitas/');
+						   				chmod($root.'/uploads/visitas/', 0775);
 						   			}	
-				   					if(!is_dir(Yii::getPathOfAlias('webroot').'/uploads/visitas/'.$visita->id.'/')) {
-						   				mkdir(Yii::getPathOfAlias('webroot').'/uploads/visitas/'.$visita->id.'/');
-						   				chmod(Yii::getPathOfAlias('webroot').'/uploads/visitas/'.$visita->id.'/', 0775);
+				   					if(!is_dir($root.'/uploads/visitas/'.$visita->id.'/')) {
+						   				mkdir($root.'/uploads/visitas/'.$visita->id.'/');
+						   				chmod($root.'/uploads/visitas/'.$visita->id.'/', 0775);
 						   			} 	
 									   
 				                    $formfoto = new FormularioFotos;
 				                    $foto = new Foto;
 				                    $foto->nombre = $pic->name; //it might be $img_add->name for you, filename is just what I chose to call it in my model
-				                    $foto->path = Yii::getPathOfAlias('webroot').'/uploads/visitas/'.$visita->id.'/';
+				                    $foto->path = $root.'/uploads/visitas/'.$visita->id.'/';
 				                    $foto->extension = $pic->extensionName;
 				                    if($foto->save()){
 				                    	$tipo = TipoFoto::model()->find(array('condition'=>'nombre ="'.str_replace(' ', '', $fieldname).'"'));
@@ -560,24 +563,24 @@ class FormularioController extends Controller
     				if (isset($imagesAntes) && count($imagesAntes) > 0) {
 			            // go through each uploaded image
 			            foreach ($imagesAntes as $image => $pic) {
-			            	if(!is_dir(Yii::getPathOfAlias('webroot').'/uploads/')) {
-						   		mkdir(Yii::getPathOfAlias('webroot').'/uploads/');
-					   			chmod(Yii::getPathOfAlias('webroot').'/uploads/', 0775); 
+			            	if(!is_dir($root.'/uploads/')) {
+						   		mkdir($root.'/uploads/');
+					   			chmod($root.'/uploads/', 0775); 
 					   		}
-				   			if(!is_dir(Yii::getPathOfAlias('webroot').'/uploads/visitas/')) {
-				   				mkdir(Yii::getPathOfAlias('webroot').'/uploads/visitas/');
-				   				chmod(Yii::getPathOfAlias('webroot').'/uploads/visitas/', 0775);
+				   			if(!is_dir($root.'/uploads/visitas/')) {
+				   				mkdir($root.'/uploads/visitas/');
+				   				chmod($root.'/uploads/visitas/', 0775);
 				   			}
-		   					if(!is_dir(Yii::getPathOfAlias('webroot').'/uploads/visitas/'.$visita->id.'/')) {
-				   				mkdir(Yii::getPathOfAlias('webroot').'/uploads/visitas/'.$visita->id.'/');
-				   				chmod(Yii::getPathOfAlias('webroot').'/uploads/visitas/'.$visita->id.'/', 0775);
+		   					if(!is_dir($root.'/uploads/visitas/'.$visita->id.'/')) {
+				   				mkdir($root.'/uploads/visitas/'.$visita->id.'/');
+				   				chmod($root.'/uploads/visitas/'.$visita->id.'/', 0775);
 				   			} 
 		   					
 								   
 		                    $formfoto = new FormularioFotos;
 		                    $foto = new Foto;
 		                    $foto->nombre = $pic->name; //it might be $img_add->name for you, filename is just what I chose to call it in my model
-		                    $foto->path = Yii::getPathOfAlias('webroot').'/uploads/visitas/'.$visita->id.'/';
+		                    $foto->path = $root.'/uploads/visitas/'.$visita->id.'/';
 		                    $foto->extension = $pic->extensionName;
 		                    if($foto->save()){
 		                    	$formfoto->formulario_id = $model->id;
@@ -597,24 +600,24 @@ class FormularioController extends Controller
     				if (isset($imagesDespues) && count($imagesDespues) > 0) {
 			            // go through each uploaded image
 			            foreach ($imagesDespues as $image => $pic) {
-			            	if(!is_dir(Yii::getPathOfAlias('webroot').'/uploads/')) {
-						   		mkdir(Yii::getPathOfAlias('webroot').'/uploads/');
-					   			chmod(Yii::getPathOfAlias('webroot').'/uploads/', 0775); 
+			            	if(!is_dir($root.'/uploads/')) {
+						   		mkdir($root.'/uploads/');
+					   			chmod($root.'/uploads/', 0775); 
 					   		}
-				   			if(!is_dir(Yii::getPathOfAlias('webroot').'/uploads/visitas/')) {
-				   				mkdir(Yii::getPathOfAlias('webroot').'/uploads/visitas/');
-				   				chmod(Yii::getPathOfAlias('webroot').'/uploads/visitas/', 0775);
+				   			if(!is_dir($root.'/uploads/visitas/')) {
+				   				mkdir($root.'/uploads/visitas/');
+				   				chmod($root.'/uploads/visitas/', 0775);
 				   			}
-		   					if(!is_dir(Yii::getPathOfAlias('webroot').'/uploads/visitas/'.$visita->id.'/')) {
-				   				mkdir(Yii::getPathOfAlias('webroot').'/uploads/visitas/'.$visita->id.'/');
-				   				chmod(Yii::getPathOfAlias('webroot').'/uploads/visitas/'.$visita->id.'/', 0775);
+		   					if(!is_dir($root.'/uploads/visitas/'.$visita->id.'/')) {
+				   				mkdir($root.'/uploads/visitas/'.$visita->id.'/');
+				   				chmod($root.'/uploads/visitas/'.$visita->id.'/', 0775);
 				   			} 
 		   					
 								   
 		                    $formfoto = new FormularioFotos;
 		                    $foto = new Foto;
 		                    $foto->nombre = $pic->name; //it might be $img_add->name for you, filename is just what I chose to call it in my model
-		                    $foto->path = Yii::getPathOfAlias('webroot').'/uploads/visitas/'.$visita->id.'/';
+		                    $foto->path = $root.'/uploads/visitas/'.$visita->id.'/';
 		                    $foto->extension = $pic->extensionName;
 		                    if($foto->save()){
 		                    	$formfoto->formulario_id = $model->id;

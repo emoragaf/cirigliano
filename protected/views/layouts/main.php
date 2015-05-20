@@ -50,8 +50,9 @@
 						), 'visible'=>Yii::app()->user->checkAccess('Historico.Index')),
 					array('label' => 'Facturación', 'url' =>array('/facturacion/index'), 'visible'=>Yii::app()->user->checkAccess('Facturacion.Index')),
 					array('label'=>'Reportes','items'=>array(
-						array('label' => 'Reportes Generales', 'url' =>array('/reporte/default/index'), 'visible'=>Yii::app()->user->checkAccess('Reporte.Index')),
-						array('label' => 'Reporte Punto', 'url' =>array('/reporte/default/punto'), 'visible'=>Yii::app()->user->checkAccess('Reporte.Index')),						
+						array('label' => 'Reportes Generales', 'url' =>array('/reporte/default/index'), 'visible'=>Yii::app()->user->checkAccess('reporte.default.index')),
+						array('label' => 'Reporte Punto', 'url' =>array('/reporte/default/punto'), 'visible'=>Yii::app()->user->checkAccess('reporte.default.punto')),
+						array('label' => 'Visitas Distribuidores', 'url' =>array('/reporte/default/reporteExcelDist'), 'visible'=>Yii::app()->user->checkAccess('reporte.default.reporteExcelDist')),						
 						), 'visible'=>Yii::app()->user->checkAccess('Reporte.Index')),
 	                array('label'=>'Administracion','items'=>array(
 	                	array('label' => 'Usuarios', 'url' =>array('/user/admin')),

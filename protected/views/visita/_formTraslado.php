@@ -4,7 +4,7 @@
 /* @var $form TbActiveForm */
 $tarifas = array();
 foreach(TarifaTraslado::model()->findAll(array('condition'=>'activo=1')) as $tarifa){
-    $tarifas[$tarifa->id] = array('1'=>$tarifa->tarifa_a,'2'=>$tarifa->tarifa_b,'3'=>$tarifa->tarifa_c,'4'=>$tarifa->tarifa_d);
+    $tarifas[$tarifa->id] = array('1'=>$tarifa->tarifa_a,'2'=>$tarifa->tarifa_b,'3'=>$tarifa->tarifa_c,'4'=>$tarifa->tarifa_d,'5'=>$tarifa->tarifa_a2!=null?$tarifa->tarifa_a2:$tarifa->tarifa_a,'6'=>$tarifa->tarifa_b2!=null?$tarifa->tarifa_b2:$tarifa->tarifa_b,'7'=>$tarifa->tarifa_c2!=null?$tarifa->tarifa_c2:$tarifa->tarifa_c,'8'=>$tarifa->tarifa_d2!=null?$tarifa->tarifa_d2:$tarifa->tarifa_d);
 }
 ?>
     <!--<p class="help-block"><?php echo Yii::t('app','Fields with * are required.'); ?></p>-->
@@ -38,6 +38,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
         'height'=>470,
     ),
 ));?>
+ <?php $tiv = $tarifaIV?'true':'false'; ?>
 <div class="divForForm"></div>
  
 <?php $this->endWidget();?>
@@ -88,6 +89,10 @@ function addPersonaPunto()
         ));
         ?>
     </div>
+    <div class="span3">
+        <label>Código</label>
+        <?php echo $form->textField($model, 'codigo'); ?>
+    </div>
 </div>
 
 <div class="well">
@@ -98,7 +103,7 @@ function addPersonaPunto()
                     $this->widget('yiiwheels.widgets.select2.WhSelect2', array(
                         'model' => $model,
                         'attribute'=>'destino_traslado_id',
-                        'data' => array(''=>'Seleccione') + CHtml::listData(Punto::model()->findAll(array('order'=>'direccion')), 'id', 'Descripcion'),
+                        'data' => array(''=>'Seleccione') + CHtml::listData(Punto::model()->findAll(array('order'=>'direccion')), 'id', 'DireccionDescripcion'),
                         'pluginOptions' => array(
                             'placeholder' => 'Destino',
                             'allowClear' => true,
@@ -109,7 +114,29 @@ function addPersonaPunto()
             </div>
             <div class="span3">
                 <br>
-                <?php echo TbHtml::checkBox('idavuelta', false, array('label' => 'Traslado Ida y Vuelta')); ?>
+                <?php echo TbHtml::checkBox('idavuelta', false, array('label' => 'Traslado Ida y Vuelta','disabled'=>$tarifaIV,'onclick'=>"
+                if($('#Presupuesto_tarifa_traslado') && $('#Presupuesto_tarifa_traslado').val()){
+                    var tarifas =".json_encode($tarifas).";
+                    //console.log($('#Presupuesto_tarifa_traslado').val());
+                    var ruta = $('#Presupuesto_tarifa_traslado').val();
+                    var t = $('#Presupuesto_tipo_tarifa_traslado').val();
+                    if($('#idavuelta').is(':checked') || ".$tiv."){
+                        t =parseInt(t)+4;
+                    }
+                    $('#header_tarifa_traslado').text('Monto Traslado: ');
+                    var list = '';
+                    console.log(ruta);
+                    $.each(ruta,function(index,data){
+                        console.log(tarifas[data][t]);
+                        if(tarifas[data][t] == null){
+                            $('#tarifa_traslado').html(list);
+                        }
+                        if(tarifas[data][t] != null){
+                            list = list + '<li>'+tarifas[data][t]+'</li>';
+                            $('#tarifa_traslado').html(list);
+                        }
+                    });
+                }",)); ?>
             </div>
     </div>
     <br>
@@ -119,14 +146,23 @@ function addPersonaPunto()
                 CHtml::listData(TarifaTraslado::model()->findAll(array('condition'=>'activo = 1')), 'id', 'Descripcion'), array('empty' => 'Seleccione','class'=>'span12','multiple'=>true,'onchange'=>"
                 if($('#Presupuesto_tarifa_traslado') && $('#Presupuesto_tarifa_traslado').val()){
                     var tarifas =".json_encode($tarifas).";
-                    console.log($('#Presupuesto_tarifa_traslado').val());
+                    //console.log($('#Presupuesto_tarifa_traslado').val());
                     var ruta = $('#Presupuesto_tarifa_traslado').val();
                     var t = $('#Presupuesto_tipo_tarifa_traslado').val();
+                    if($('#idavuelta').is(':checked') || ".$tiv."){
+                        t =parseInt(t)+4;
+                    }
                     $('#header_tarifa_traslado').text('Monto Traslado: ');
-                    list = '';
-                    ruta.forEach(function(data){
-                        list = list+'<li>'+tarifas[data][t]+'</li>';
-                        $('#tarifa_traslado').html(list);
+                    var list = '';
+                    $.each(ruta,function(index,data){
+                        if(tarifas[data][t] == null){
+                            $('#tarifa_traslado').html(list);
+                        }
+                        console.log(tarifas[data][t]);
+                        if(tarifas[data][t] != null){
+                            list = list + '<li>'+tarifas[data][t]+'</li>';
+                            $('#tarifa_traslado').html(list);
+                        }
                     });
                 }",)); ?>
 
@@ -136,15 +172,22 @@ function addPersonaPunto()
                 array('1'=>'Camioneta, 3,5Mts3','2'=>'Camión ¾, 6,5Mts3','3'=>'Camión, 30Mts3','4'=>'Carro ffvv terreno'), array('onchange'=>"
                 if($('#Presupuesto_tarifa_traslado') && $('#Presupuesto_tarifa_traslado').val()){
                     var tarifas =".json_encode($tarifas).";
-                    console.log($('#Presupuesto_tarifa_traslado').val());
                     var ruta = $('#Presupuesto_tarifa_traslado').val();
                     var t = $('#Presupuesto_tipo_tarifa_traslado').val();
+                    if($('#idavuelta').is(':checked') || ".$tiv."){
+                        t =parseInt(t)+4;
+                    }
                     $('#header_tarifa_traslado').text('Monto Traslado: ');
-                    list = '';
-                    ruta.forEach(function(data){
-                        list = list+'<li>'+tarifas[data][t]+'</li>';
-                        $('#tarifa_traslado').html(list);
-                        console.log(list);
+                    var list = '';
+                    $.each(ruta,function(index, data){
+                        if(tarifas[data][t] == null){
+                            $('#tarifa_traslado').html(list);
+                        }
+                        console.log(tarifas[data][t]);
+                        if(tarifas[data][t] != null){
+                            list = list + '<li>'+tarifas[data][t]+'</li>';
+                            $('#tarifa_traslado').html(list);
+                        }
                     });
                 }",)); ?>
         </div>

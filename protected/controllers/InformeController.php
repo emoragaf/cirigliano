@@ -41,10 +41,11 @@ class InformeController extends Controller
 	}
 	public function actionDownload($id =null,$tipo = 'pdf')
 	{
+		$root = Yii::getPathOfAlias('webroot').'/../files/cirigliano';
 		if($id){
 			$visita = Visita::model()->findByPk($id);
 			if($visita){
-				$path = Yii::getPathOfAlias('webroot')."/uploads/informes/".$visita->punto_id."/".$visita->id.'.'.$tipo;
+				$path = $root."/uploads/informes/".$visita->punto_id."/".$visita->id.'.'.$tipo;
 				if(file_exists($path))
 				  {
 				    return Yii::app()->getRequest()->sendFile($visita->punto->direccion.' '.$visita->fecha_visita.'.'.$tipo, @file_get_contents($path));

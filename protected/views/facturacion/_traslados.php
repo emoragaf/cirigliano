@@ -28,8 +28,8 @@ $medios = array('1'=>'Camioneta, 3,5Mts3','2'=>'Camión ¾, 6,5Mts3','3'=>'Cami�
                 <?php if ($presupuesto->visita->tipo_visita_id == 3): ?>
                     <tr>
                         <td rowspan="<?php echo $citems ?>" style="vertical-align:middle"><?php echo $presupuesto->visita->folio; ?></td>
-                        <td rowspan="<?php echo $citems ?>" style="vertical-align:middle"><?php echo $presupuesto->visita->punto->Descripcion; ?></td>
-                        <td rowspan="<?php echo $citems ?>" style="vertical-align:middle"><?php echo $presupuesto->visita->destino->Descripcion; ?></td>
+                        <td rowspan="<?php echo $citems ?>" style="vertical-align:middle"><?php echo $presupuesto->visita->punto->DireccionDescripcion; ?></td>
+                        <td rowspan="<?php echo $citems ?>" style="vertical-align:middle"><?php echo $presupuesto->visita->destino->DireccionDescripcion; ?></td>
                         <td rowspan="<?php echo $citems ?>" style="vertical-align:middle"><?php echo date('d-m-Y',strtotime($presupuesto->visita->fecha_visita)); ?></td>
                     </tr>
                         <?php foreach ($presupuesto->tarifasTraslado as $tm): ?>
