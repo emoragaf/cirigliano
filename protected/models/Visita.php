@@ -21,7 +21,7 @@
 class Visita extends CActiveRecord
 {
 	private $estados = array(0=>'Solicitada',1=>'Espera Aprobación Presupuesto',2=>'Presupuesto Rechazado',3=>'En Ejecución',4=>'Terminada',5=>'Espera Informe',99=>'Cancelada');
-	
+
 	public $punto_destino;
 	public $punto_codigo;
 	public $punto_direccion;
@@ -84,9 +84,35 @@ class Visita extends CActiveRecord
 		);
 	}
 
+	public static function convertModelToArray($models) {
+			if (is_array($models))
+					$arrayMode = TRUE;
+			else {
+					$models = array($models);
+					$arrayMode = FALSE;
+			}
+
+			$result = array();
+			foreach ($models as $model) {
+					$attributes = $model->getAttributes();
+					$relations = array();
+					foreach ($model->relations() as $key => $related) {
+							if ($model->hasRelated($key)) {
+									$relations[$key] = self::convertModelToArray($model->$key);
+							}
+					}
+					$all = array_merge($attributes, $relations);
+
+					if ($arrayMode)
+							array_push($result, $all);
+					else
+							$result = $all;
+			}
+			return $result;
+	}
 	public function getnombreEstado()
 	{
-		
+
 		if(array_key_exists($this->estado, $this->estados)){
 			return $this->estados[$this->estado];
 		}
@@ -279,7 +305,7 @@ class Visita extends CActiveRecord
 				}
 			if($presupuesto->tarifasTraslado)
 				foreach ($presupuesto->tarifasTraslado as $tt) {
-					
+
 					//echo </td>
 					$whvisita = new WhVisita;
 

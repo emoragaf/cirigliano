@@ -11,7 +11,7 @@ return array(
 	'name'=>'Movistar Mantenciones',
 	'timeZone' => 'America/Santiago',
 	'language'=>'es', // Este es el lenguaje en el que querés que muestre las cosas
-	'sourceLanguage'=>'en', 
+	'sourceLanguage'=>'en',
 	'defaultController' => 'Punto/Index',
 	// preloading 'log' component
 	'preload'=>array(
@@ -65,31 +65,31 @@ return array(
 		'user'=>array(
             # encrypting method (php hash function)
             'hash' => 'md5',
- 
+
             # send activation email
             'sendActivationMail' => false,
- 
+
             # allow access for non-activated users
             'loginNotActiv' => false,
- 
+
             # activate user on registration (only sendActivationMail = false)
             'activeAfterRegister' => true,
- 
+
             # automatically login from registration
             'autoLogin' => true,
- 
+
             # registration path
             'registrationUrl' => array('/user/registration'),
- 
+
             # recovery password path
             'recoveryUrl' => array('/user/recovery'),
- 
+
             # login form path
             'loginUrl' => array('/user/login'),
- 
+
             # page after login
             'returnUrl' => array('/user/profile'),
- 
+
             # page after logout
             'returnLogoutUrl' => array('/user/login'),
         ),
@@ -149,15 +149,15 @@ return array(
 			),
 		),
 		'bootstrap' => array(
-            'class' => 'bootstrap.components.TbApi',   
+            'class' => 'bootstrap.components.TbApi',
         ),
         'yiiwheels' => array(
-            'class' => 'yiiwheels.YiiWheels',   
+            'class' => 'yiiwheels.YiiWheels',
         ),
 		'bitly' => array(
 	        'class' => 'application.extensions.bitly.VGBitly',
 	        'login' => 'o_41ov1usisp', // login name
-	        'apiKey' => 'R_d1d9a49e9a814f598426f686959e57b2', // apikey 
+	        'apiKey' => 'R_d1d9a49e9a814f598426f686959e57b2', // apikey
 	        'format' => 'json', // default format of the response this can be either xml, json (some callbacks support txt as well)
         ),
 		'db'=>array(
@@ -192,13 +192,14 @@ return array(
 			'class'=>'CLogRouter',
 			'routes'=>array(
 				array(
-					'class'=>'CFileLogRoute',
-					'levels'=>'error, warning, trace, info',
-				),
+            'class'=>'CProfileLogRoute',
+            'levels'=>'profile',
+            'enabled'=>true,
+        ),
 				// uncomment the following to show log messages on web pages
-				/*array(
-					'class'=>'CWebLogRoute',
-				),*/
+				// array(
+				// 	'class'=>'CWebLogRoute',
+				// ),
 			),
 		),
 		'request'=>array(

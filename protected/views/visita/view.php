@@ -9,7 +9,7 @@ $this->menu=array(
 	array('label'=>Yii::t('app','model.Presupuesto.create'),'url'=>array('Presupuesto/create','id'=>$model->id),'visible'=>(Yii::app()->user->checkAccess('Presupuesto.create') && $model->estado == 0 && $model->tipo_visita_id != 3)? true : false),
 	array('label'=>Yii::t('app','model.Presupuesto.update'),'url'=>array('Presupuesto/update','id'=>$model->id),'visible'=>(Yii::app()->user->checkAccess('Presupuesto.update') &&$model->estado == 2 && $model->tipo_visita_id != 3)? true : false),
 	array('label'=>Yii::t('app','model.Presupuesto.create'),'url'=>array('Presupuesto/createTraslado','id'=>$model->id),'visible'=>(Yii::app()->user->checkAccess('Presupuesto.createTraslado') && $model->estado == 0 && $model->tipo_visita_id == 3)? true : false),
-	array('label'=>Yii::t('app','model.Presupuesto.update'),'url'=>array('Presupuesto/updateTraslado','id'=>$model->id),'visible'=>(Yii::app()->user->checkAccess('Presupuesto.updateTRaslado') && $model->estado == 2 && $model->tipo_visita_id == 3)? true : false),		
+	array('label'=>Yii::t('app','model.Presupuesto.update'),'url'=>array('Presupuesto/updateTraslado','id'=>$model->id),'visible'=>(Yii::app()->user->checkAccess('Presupuesto.updateTRaslado') && $model->estado == 2 && $model->tipo_visita_id == 3)? true : false),
 	array('label'=>Yii::t('app','model.Visita.delete'),'url'=>'#','linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?'),'visible'=>Yii::app()->user->checkAccess('Visita.delete')),
 	array('label'=>Yii::t('app','model.Presupuesto.aceptar'),'url'=>array('Visita/AceptarPresupuesto','id'=>$model->id),'visible'=>(Yii::app()->user->checkAccess('Visita.aceptarPresupuesto') && $model->estado == 1) ? true : false),
 	array('label'=>Yii::t('app','model.Presupuesto.rechazar'),'url'=>array('Visita/RechazarPresupuesto','id'=>$model->id),'visible'=>(Yii::app()->user->checkAccess('Visita.rechazarPresupuesto') && $model->estado == 1) ? true : false),
@@ -216,19 +216,21 @@ $this->menu=array(
 	</table>
 <?php endforeach ?>
 <?php endif ?>
+<?php if ($model->informe): ?>
+	<h4>Notas</h4>
+	<div class="row well">
+		<?php echo $model->informe->notas; ?>
+	</div>
+<?php endif; ?>
 
 <?php if ( (Yii::app()->user->checkAccess('admin') && $model->estado != 0 && isset($model->informe)) || (!Yii::app()->user->checkAccess('admin') && (Yii::app()->user->checkAccess('movistar_user') || Yii::app()->user->checkAccess('movistar_lectura')) && $model->estado==4 && isset($model->presupuestos)) ): ?>
-<h4>Notas</h4>
-<div class="row well">
-	<?php echo $model->informe->notas; ?>
-</div>
 
 <h2>Fotos</h2>
 <br>
-	<?php 
+	<?php
 	$items = array();
 	$itemsMuebles =array();
-	foreach ($model->informe->fotos as $foto){		
+	foreach ($model->informe->fotos as $foto){
 		if ($foto->tipo_foto_id == 3 || $foto->tipo_foto_id == 4 || $foto->tipo_foto_id == 5 ) {
 			$url = Yii::app()->assetManager->publish($foto->foto->path.$foto->foto->id.'.'.$foto->foto->extension);
 			$image = Yii::app()->image->load($foto->foto->path.$foto->foto->id.'.'.$foto->foto->extension);
@@ -244,7 +246,7 @@ $this->menu=array(
 			$image->save($foto->foto->path.$foto->foto->id.'_thumb.'.$foto->foto->extension);
 			$src = Yii::app()->assetManager->publish($foto->foto->path.$foto->foto->id.'_thumb.'.$foto->foto->extension);
 			$itemsMuebles[] = array('url'=>$url,'src'=>$src, 'options'=>array('title'=>$foto->item_foto_id != null && $foto->tipo_foto_id != 3 && $foto->tipo_foto_id != 4 && $foto->tipo_foto_id != 5 ? strip_tags($foto->Item->Descripcion).' '.$foto->tipo->nombre : $foto->tipo->nombre));
-		}		
+		}
 	}
 	?>
 	<?php if (!empty($items)): ?>
@@ -254,7 +256,7 @@ $this->menu=array(
 	<?php endif ?>
 	<?php if (!empty($itemsMuebles)): ?>
 		<div class="row well">
-			<?php $this->widget('yiiwheels.widgets.gallery.WhGallery', array('items' => $itemsMuebles,'displayControls'=>true));?>	
+			<?php $this->widget('yiiwheels.widgets.gallery.WhGallery', array('items' => $itemsMuebles,'displayControls'=>true));?>
 		</div>
 	<?php endif ?>
 <?php endif ?>

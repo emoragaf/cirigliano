@@ -31,9 +31,8 @@ class ServicioMueble extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('descripcion', 'required'),
-			array('id, tarifa,mueble_id', 'numerical', 'integerOnly'=>true),
-			array('descripcion', 'length', 'max'=>45),
+			array('id, tarifa, tarifa_b, tarifa_c, cant_b, cant_c,mueble_id', 'numerical', 'integerOnly'=>true),
+			array('descripcion', 'length', 'max'=>255),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, tarifa, descripcion, mueble_id', 'safe', 'on'=>'search'),

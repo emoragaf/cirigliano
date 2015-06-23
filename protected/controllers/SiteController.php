@@ -7,7 +7,7 @@ class SiteController extends Controller
 	 */
 	//public $layout='//layouts/column2';
 	public function filters() {
-     return array( 
+     return array(
         //it's important to add site/error, so an unpermitted user will get the error.
         array('auth.filters.AuthFilter - user/login user/logout site/error'),
             );
@@ -98,11 +98,11 @@ class SiteController extends Controller
 
 	public function actionGStore()
 	{
-		
+
 		$this->render('gstore');
 	}
 	public function actionPoblarNotificarPersona()
-	{	
+	{
 		$puntos = Punto::model()->findAll();
 		foreach ($puntos as $punto) {
 			$notificar = new NotificarPersona;
@@ -113,10 +113,73 @@ class SiteController extends Controller
 		echo 'Completado';
 	}
 
-	public function actionUpload()
+	public function actionActualizarTarifas()
 	{
-		
-		echo 'uploaded';
+		$file = Yii::getPathOfAlias('webroot')."/uploads/tarifas.xlsx";
+
+		Yii::import('application.extensions.PHPExcel',true);
+
+		$objReader = PHPExcel_IOFactory::createReaderForFile($file);
+		$objReader->setReadDataOnly(true);
+		$objPHPExcel = $objReader->load($file);
+		$objPHPExcel->setActiveSheetIndex(0);
+		$sheet = $objPHPExcel->getActiveSheet();
+		$rowIterator = $objPHPExcel->getActiveSheet()->getRowIterator();
+
+		$count = 0;
+		$updated = 0;
+		foreach ($rowIterator as $row) {
+	    $rowIndex = $row->getRowIndex ();
+			if($rowIndex != 1){
+				$desc = '%'.$sheet->getCell('H' . $rowIndex)->getCalculatedValue().'%';
+				if(!empty($sheet->getCell('I' . $rowIndex)->getCalculatedValue())){
+					$desc .= $sheet->getCell('I' . $rowIndex)->getCalculatedValue().'%';
+				}
+				$toUpdate = ServicioMueble::model()->find(array(
+					'condition'=>'mueble_id = :id and descripcion like :desc',
+					'params'=>array(
+						':id'=>$sheet->getCell('B' . $rowIndex)->getCalculatedValue(),
+						':desc'=>$desc
+					)
+				));
+				if ($toUpdate) {
+					// echo $rowIndex." encontrado<br>";
+					$toUpdate->tarifa = round($sheet->getCell('C' . $rowIndex)->getCalculatedValue());
+					$toUpdate->tarifa_b = round($sheet->getCell('D' . $rowIndex)->getCalculatedValue());
+					$toUpdate->tarifa_c = round($sheet->getCell('E' . $rowIndex)->getCalculatedValue());
+					$toUpdate->cant_b = $sheet->getCell('F' . $rowIndex)->getCalculatedValue();
+					$toUpdate->cant_c = $sheet->getCell('G' . $rowIndex)->getCalculatedValue();
+					if($toUpdate->save())
+						$updated ++;
+					else{
+						echo '<br><pre>';
+						var_dump($toUpdate->getErrors());
+						echo '</pre>';
+					}
+				}
+				else{
+					$newServicio = new ServicioMueble;
+					$newServicio->mueble_id = $sheet->getCell('B' . $rowIndex)->getCalculatedValue();
+					$newServicio->tarifa = round($sheet->getCell('C' . $rowIndex)->getCalculatedValue());
+					$newServicio->tarifa_b = round($sheet->getCell('D' . $rowIndex)->getCalculatedValue());
+					$newServicio->tarifa_c = round($sheet->getCell('E' . $rowIndex)->getCalculatedValue());
+					$newServicio->cant_b = $sheet->getCell('F' . $rowIndex)->getCalculatedValue();
+					$newServicio->cant_c = $sheet->getCell('G' . $rowIndex)->getCalculatedValue();
+					$newServicio->descripcion = $sheet->getCell('H' . $rowIndex)->getCalculatedValue().' '.$sheet->getCell('H' . $rowIndex)->getCalculatedValue();
+					if($newServicio->save())
+						$count ++;
+					else{
+						echo '<br><pre>';
+						var_dump($newServicio->getErrors());
+						echo '</pre>';
+					}
+					//echo $rowIndex." no encontrado<br>";
+				}
+			}
+		}
+		echo '<br>Completado<br>';
+		echo 'Actualizados: '.$updated.'<br>';
+		echo 'Insertados: '.$count;
 	}
 
 	/**

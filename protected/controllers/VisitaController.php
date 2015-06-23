@@ -12,7 +12,7 @@ class VisitaController extends Controller
 	 * @return array action filters
 	 */
 	public function filters() {
-     return array( 
+     return array(
         //it's important to add site/error, so an unpermitted user will get the error.
         array('auth.filters.AuthFilter'),
             );
@@ -81,6 +81,80 @@ class VisitaController extends Controller
 			'model'=>$model,
 		));
 	}
+
+	public function actionActualizarTarifas()
+	{
+		echo '<h1> Actualizando Tarifas de Visitas </h1>';
+		if(date('d')>=25){
+		$mes = date('m-Y',strtotime('+1 month'));
+		}
+		else
+			$mes = date('m-Y');
+		$criteria = new CDbCriteria();
+		$foo = explode('-', $mes);
+		$bar = array('-');
+		if($foo[0] > 1){
+			$bar[0] = $foo[0]-1;
+			$bar[1] = $foo[1];
+		}
+		if($foo[0] == 1){
+			$bar[0] = 12;
+			$bar[1] = $foo[1]-1;
+		}
+
+		$desde = $bar[1].'-'.str_pad($bar[0],2,0,STR_PAD_LEFT).'-25';
+		$hasta = $foo[1].'-'.str_pad($foo[0],2,0,STR_PAD_LEFT).'-24';
+
+		$criteria->addBetweenCondition('visita.fecha_creacion',$desde,$hasta);
+		$presupuestos = Presupuesto::model()->with('visita')->findAll($criteria);
+
+		foreach ($presupuestos as $presupuesto) {
+			$presupuesto->total = 0;
+			if ($presupuesto->mueblespresupuesto) {
+				foreach ($presupuesto->mueblespresupuesto as $mp) {
+					$mp->tarifa_servicio = $mp->Tarifa;
+					$mp->save();
+					$presupuesto->total += $mp->tarifa_servicio * $mp->cant_servicio;
+				}
+			}
+			if ($presupuesto->trasladopresupuesto) {
+				foreach ($presupuesto->trasladopresupuesto as $tp) {
+					$tarifaInstalacion = TarifaInstalacion::model()->find(array('condition'=>'mueble_id = :id and activo = 1','params'=>array(':id'=>$tp->mueblePunto->mueble_id)));
+					if ($tarifaInstalacion) {
+						if($tp->tarifa_instalacion != null){
+							$tp->tarifa_instalacion = $tarifaInstalacion->tarifa_a;
+							$tp->save();
+							$presupuesto->total += $tp->tarifa_instalacion;
+						}
+						if($tp->tarifa_desinstalacion != null){
+							$tp->tarifa_desinstalacion = $tarifaInstalacion->tarifa_a;
+							$tp->save();
+							$presupuesto->total += $tp->tarifa_desinstalacion;
+						}
+					}
+				}
+			}
+			if ($presupuesto->tarifasTraslado) {
+				foreach ($presupuesto->tarifasTraslado as $tt) {
+					$presupuesto->total += $tt->TTraslado;
+				}
+			}
+			if ($presupuesto->adicionales) {
+				foreach ($presupuesto->adicionales as $adicional) {
+					$presupuesto->total += $adicional->tarifa*$adicional->cantidad;
+				}
+			}
+			if ($presupuesto->manosobra) {
+				foreach ($presupuesto->manosobra as $mo) {
+					$presupuesto->total += $mo->Tarifa;
+				}
+			}
+			$presupuesto->save();
+
+		}
+		echo '<br>Completado!.';
+	}
+
 	public function actionUpdateMueblesPunto($id){
 		Yii::app()->clientScript->scriptMap['jquery.js'] = false;
 		$muebles= MueblePunto::model()->findAll(array('condition'=>'t.punto_id=:id','params'=>array(':id'=>$id)));
@@ -117,19 +191,19 @@ class VisitaController extends Controller
 	                {
 	                	//echo CHtml::tag('li',array(),CHtml::tag('a',array('href'=>'javascript:void(0)',CHtml::tag('label',array('class'=>'checkbox'),CHtml::tag('input',array('type'=>'checkbox', 'value'=>$model->id),CHtml::encode($model->codigo),true),true),true),true),true);
 	                    echo CJSON::encode(array(
-	                        'status'=>'success', 
+	                        'status'=>'success',
 	                        'div'=>'<option value="'.$model->id.'">'.$model->persona->nombre.'</option>',
 	                        ));
-	                    exit;               
+	                    exit;
 	                }
 	            }
             }
             else{
 				echo CJSON::encode(array(
-                        'status'=>'success', 
+                        'status'=>'success',
                         'div'=>'',
                         ));
-            	exit;   
+            	exit;
             }
         }
         if(isset($_POST['Persona']) && $_POST['Persona']['nombre'] != '' && $_POST['Persona']['email'] != '')
@@ -143,10 +217,10 @@ class VisitaController extends Controller
                 {
                 	//echo CHtml::tag('li',array(),CHtml::tag('a',array('href'=>'javascript:void(0)',CHtml::tag('label',array('class'=>'checkbox'),CHtml::tag('input',array('type'=>'checkbox', 'value'=>$model->id),CHtml::encode($model->codigo),true),true),true),true),true);
                     echo CJSON::encode(array(
-                        'status'=>'success', 
+                        'status'=>'success',
                         'div'=>'<option value="'.$model->id.'">'.$model->persona->nombre.'</option>',
                         ));
-                    exit;               
+                    exit;
                 }
                 else
                     $this->redirect(array('/Punto/view','id'=>$model->punto_id));
@@ -155,9 +229,9 @@ class VisitaController extends Controller
         if (Yii::app()->request->isAjaxRequest)
         {
             echo CJSON::encode(array(
-                'status'=>'failure', 
+                'status'=>'failure',
                 'div'=>$this->renderPartial('/visita/_formNewPersona', array('model'=>$model,'persona'=>$persona,'alert'=>$alert), true)));
-            exit;               
+            exit;
         }
         else
             $this->render('create',array('model'=>$model,));
@@ -168,6 +242,8 @@ class VisitaController extends Controller
 		$model=new Visita;
 		$model->punto_id = $id;
 		$model->fecha_creacion = date('Y-m-d');
+		//$model->fecha_creacion = date('Y-m-d',strtotime("2015-05-24"));
+
 		$model->fecha_visita = date('d-m-Y');
 		$muebles= MueblePunto::model()->findAll(array('condition'=>'t.punto_id=:id','params'=>array(':id'=>$id)));
 
@@ -179,12 +255,20 @@ class VisitaController extends Controller
 			$model->attributes=$_POST['Visita'];
 			$model->fecha_visita = date('Y-m-d',strtotime($model->fecha_visita));
 			$p=new Presupuesto;
-			
+
 			$p->user_id = yii::App()->user->getId();
 			$p->estado = 0;
+
 			$p->fecha_creacion = date('c');
+			//$p->fecha_creacion = date('Y-m-d',strtotime("2015-05-24"));
 
 			if ($model->save()) {
+				$log = new VisitaLog;
+				$log->fecha = date('c');
+				$log->visita_id = $model->id;
+				$log->user_id = Yii::app()->user->getId();
+				$log->tipo_accion = "Visita Creada";
+				$log->save();
 				$p->visita_id = $model->id;
 				$p->total = 0;
 				$p->save();
@@ -211,17 +295,17 @@ class VisitaController extends Controller
 								$adicional->mueble_punto_id = $key;
 								$adicional->descripcion = $value['descripcion'];
 								$adicional->tarifa = $value['tarifa'];
-								$adicional->cantidad = !empty($value['cantidad'])?$value['cantidad']:1;	
-								$adicional->save();	
+								$adicional->cantidad = !empty($value['cantidad'])?$value['cantidad']:1;
+								$adicional->save();
 								$p->total += $adicional->tarifa*$adicional->cantidad;
-								$p->save();	
+								$p->save();
 								$flag = true;
 							}
 						}
 					}
 					$mueblesPunto = $_POST['Mueble'];
-					
-					
+
+
 					foreach ($mueblesPunto as $key => $servicios) {
 						if(in_array($key, $ids)){
 							if($model->visita_preventiva == 0){
@@ -287,7 +371,7 @@ class VisitaController extends Controller
 					}
 					$this->redirect(array('visita/view','id'=>$model->id));
 				}
-			}		
+			}
 		}
 
 		$this->render('crear',array(
@@ -301,7 +385,9 @@ class VisitaController extends Controller
 	{
 		$model=new Visita('traslado');
 		$model->punto_id = $id;
+		//$model->fecha_creacion = date('Y-m-d',strtotime("2015-05-24"));
 		$model->fecha_creacion = date('Y-m-d');
+
 		$model->tipo_visita_id =3;
 		if(isset(Yii::app()->session['TrasladoIV'])){
 			unset(Yii::app()->session['TrasladoIV']);
@@ -332,15 +418,23 @@ class VisitaController extends Controller
 			}
 			//$model->destino_traslado_id = $_POST['destino'];
 
-			
+
 			$p->user_id = yii::App()->user->getId();
 			$p->estado = 0;
 			$p->fecha_creacion = date('c');
+			//$p->fecha_creacion = date('Y-m-d',strtotime("2015-05-24"));
+
 
 			if (isset($_POST['idavuelta'])){
 				$p->tipo_tarifa_traslado += 4;
 			}
 			if ($model->save()) {
+				$log = new VisitaLog;
+				$log->fecha = date('c');
+				$log->visita_id = $model->id;
+				$log->user_id = Yii::app()->user->getId();
+				$log->tipo_accion = "Visita Creada (Traslado)";
+				$log->save();
 				$p->visita_id = $model->id;
 				foreach ($_POST['Presupuesto']['tarifa_traslado'] as $key => $value) {
 				# code...
@@ -372,14 +466,14 @@ class VisitaController extends Controller
 							break;
 					}
 
-						
-				
+
+
 					$p->save();
 					$tm = new TarifaTrasladoMultiple;
 					$tm->id_presupuesto = $p->id;
 					$tm->distancia = $tarifa->distancia;
 					$tm->tarifa_traslado = $value;
-					
+
 					$tm->tipo_tarifa_traslado = $p->tipo_tarifa_traslado;
 					$tm->save();
 				}
@@ -467,6 +561,12 @@ class VisitaController extends Controller
 		if (isset($_POST['Visita'])) {
 			$model->attributes=$_POST['Visita'];
 			if ($model->save()) {
+				$log = new VisitaLog;
+				$log->fecha = date('c');
+				$log->visita_id = $model->id;
+				$log->user_id = Yii::app()->user->getId();
+				$log->tipo_accion = "Visita Actualizada";
+				$log->save();
 				$this->redirect(array('view','id'=>$model->id));
 			}
 		}
@@ -502,10 +602,10 @@ class VisitaController extends Controller
 			}
 			if($model->formulario){
 				//Guardar Datos en tabla para reportes.
-				$model->saveWH(); 
+				$model->saveWH();
 
 				//Enviar email
-				
+
 				$root = Yii::getPathOfAlias('webroot').'/../files/cirigliano';
 
 				$model->estado == 1;
@@ -516,7 +616,7 @@ class VisitaController extends Controller
 				$html .=$model->punto->comuna!=null&&$model->punto->comuna->region!=null?"<p>Region: ".$model->punto->comuna->region->nombre."</p>":"";
 				$html .=$model->punto->canal!=null?"<p>Canal: ".$model->punto->canal->nombre."</p>":"";
 				$html .=$model->punto->distribuidor!=null?"<p>Distribuidor: ".$model->punto->distribuidor->nombre."</p>":"";
-				
+
 				$recipients = array();
 				if($model->tipo_visita_id == 3){
 					if ($model->punto->canal_id!=7) {
@@ -558,12 +658,18 @@ class VisitaController extends Controller
 				$email->attachments = array(array('type'=>'application/pdf','name'=>'Informe Solicitud '.$model->punto->direccion.' '.date('d-m-Y',strtotime($model->fecha_visita)),'content'=>$content));
 				$email->images = array();
 				$email->sendEmail();
-				
+
 				$model->estado = 4;
 				$model->id_autoriza = Yii::app()->user->getId();
-			}	
+			}
 		}
 		if ($model->save()) {
+				$log = new VisitaLog;
+				$log->fecha = date('c');
+				$log->visita_id = $model->id;
+				$log->user_id = Yii::app()->user->getId();
+				$log->tipo_accion = "Aceptado Presupuesto";
+				$log->save();
 				$this->redirect(array('view','id'=>$model->id));
 		}
 	}
@@ -574,6 +680,12 @@ class VisitaController extends Controller
 		$model->estado = 2;
 		$model->id_autoriza = Yii::app()->user->getId();
 		if ($model->save()) {
+				$log = new VisitaLog;
+				$log->fecha = date('c');
+				$log->visita_id = $model->id;
+				$log->user_id = Yii::app()->user->getId();
+				$log->tipo_accion = "Rechazado Presupuesto";
+				$log->save();
 				$this->redirect(array('view','id'=>$model->id));
 		}
 	}
@@ -587,8 +699,16 @@ class VisitaController extends Controller
 	{
 		if (Yii::app()->request->isPostRequest) {
 			// we only allow deletion via POST request
-			$model = $this->loadModel($id);
+			$model=Visita::model()->with('presupuestos','presupuestos.mueblespresupuesto','presupuestos.trasladopresupuesto','presupuestos.adicionales','presupuestos.tarifasTraslado','presupuestos.manosobra')->together()->findByPk($id);
+			//$model = $this->loadModel($id);
 			$tipo = $model->tipo_visita_id;
+			$log = new VisitaLog;
+			$log->fecha = date('c');
+			$log->visita_id = $model->id;
+			$log->user_id = Yii::app()->user->getId();
+			$log->tipo_accion = "Visita Eliminada: ";
+			$log->detalle = json_encode(Visita::convertModelToArray($model));
+			$log->save();
 			$model->delete();
 
 			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser

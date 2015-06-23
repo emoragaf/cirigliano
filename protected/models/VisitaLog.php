@@ -29,7 +29,8 @@ class VisitaLog extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('visita_id, user_id, fecha, tipo_accion', 'required'),
-			array('visita_id, user_id, tipo_accion', 'numerical', 'integerOnly'=>true),
+			array('visita_id, user_id', 'numerical', 'integerOnly'=>true),
+			array('tipo_accion','length','max'=>255),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, visita_id, user_id, fecha, tipo_accion', 'safe', 'on'=>'search'),
