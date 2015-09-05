@@ -82,14 +82,27 @@ class VisitaController extends Controller
 		));
 	}
 
+	public function actionActualizarTarifasWH()
+	{
+		set_time_limit(0);
+		$visitas = Visita::model()->findAll(array('condition'=>"fecha_visita >= '2015-06-01'"));
+
+		foreach ($visitas as $visita) {
+			$visita->deleteWH();
+			$visita->saveWH();
+		}
+		echo "completado";
+	}
+
 	public function actionActualizarTarifas()
 	{
 		echo '<h1> Actualizando Tarifas de Visitas </h1>';
-		if(date('d')>=25){
-		$mes = date('m-Y',strtotime('+1 month'));
-		}
-		else
-			$mes = date('m-Y');
+		// if(date('d')>=25){
+		// $mes = date('m-Y',strtotime('+1 month'));
+		// }
+		// else
+		// 	$mes = date('m-Y');
+		$mes = "06-2015";
 		$criteria = new CDbCriteria();
 		$foo = explode('-', $mes);
 		$bar = array('-');
@@ -112,9 +125,9 @@ class VisitaController extends Controller
 			$presupuesto->total = 0;
 			if ($presupuesto->mueblespresupuesto) {
 				foreach ($presupuesto->mueblespresupuesto as $mp) {
-					$mp->tarifa_servicio = $mp->Tarifa;
+					$mp->tarifa_servicio = $mp->Tarifa/$mp->cant_servicio;
 					$mp->save();
-					$presupuesto->total += $mp->tarifa_servicio * $mp->cant_servicio;
+					$presupuesto->total += $mp->Tarifa;
 				}
 			}
 			if ($presupuesto->trasladopresupuesto) {
@@ -236,13 +249,24 @@ class VisitaController extends Controller
         else
             $this->render('create',array('model'=>$model,));
     }
-
+	public function actionTestFacturacionAbierta()
+	{
+		if(Yii::app()->params['facturacionAbierta']){
+			if(date('d') >= "24"){
+				echo date('Y-m')."-24";
+			}
+		}
+	}
 	public function actionCrear($id)
 	{
 		$model=new Visita;
 		$model->punto_id = $id;
 		$model->fecha_creacion = date('Y-m-d');
-		//$model->fecha_creacion = date('Y-m-d',strtotime("2015-05-24"));
+		if(Yii::app()->params['facturacionAbierta']){
+			if(date('d') >= 24){
+				$model->fecha_creacion = date('Y-m')."-24";
+			}
+		}
 
 		$model->fecha_visita = date('d-m-Y');
 		$muebles= MueblePunto::model()->findAll(array('condition'=>'t.punto_id=:id','params'=>array(':id'=>$id)));
@@ -357,7 +381,7 @@ class VisitaController extends Controller
 					if ($flag || $model->visita_preventiva == 1) {
 						$model->estado = 1;
 						$model->save();
-
+						$model->saveWH();
 						$this->redirect(array('Formulario/Create','id'=>$model->id));
 						//$this->redirect(array('visita/view','id'=>$model->visita_id));
 
@@ -367,6 +391,7 @@ class VisitaController extends Controller
 					if ($model->visita_preventiva == 1) {
 						$model->estado = 1;
 						$model->save();
+						$model->saveWH();
 						$this->redirect(array('Formulario/Create','id'=>$model->id));
 					}
 					$this->redirect(array('visita/view','id'=>$model->id));
@@ -518,6 +543,7 @@ class VisitaController extends Controller
 				}
 				$model->estado = 1;
 				$model->save();
+				$model->saveWH();
 				if($model->tipo_visita_id==3){
 					foreach ($model->presupuestos as $p) {
 						if($p->trasladopresupuesto){
@@ -602,7 +628,7 @@ class VisitaController extends Controller
 			}
 			if($model->formulario){
 				//Guardar Datos en tabla para reportes.
-				$model->saveWH();
+				//$model->saveWH();
 
 				//Enviar email
 
@@ -709,6 +735,7 @@ class VisitaController extends Controller
 			$log->tipo_accion = "Visita Eliminada: ";
 			$log->detalle = json_encode(Visita::convertModelToArray($model));
 			$log->save();
+			$model->deleteWH();
 			$model->delete();
 
 			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser

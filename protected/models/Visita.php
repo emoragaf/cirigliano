@@ -153,6 +153,18 @@ class Visita extends CActiveRecord
 			'codigo'=>'Id Check',
 		);
 	}
+
+	public function deleteWH(){
+		$whvisita = WhVisita::model()->findAll(
+			array('condition'=>'vista_id = :id','params'=>array(':id'=>$this->id))
+		);
+		if($whvisita){
+			foreach ($whvisita as $data) {
+				$data->delete();
+			}
+		}
+	}
+
 	public function saveWH(){
 		$presupuestos = $this->presupuestos;
 
@@ -164,13 +176,13 @@ class Visita extends CActiveRecord
 					$whvisita->tipo_visita = $this->tipo_visita_id;
 					$whvisita->direccion_punto = $this->punto->direccion;
 					$whvisita->region = $this->punto->region_id;
-					$whvisita->region = $this->punto->comuna_id;
+					$whvisita->comuna = $this->punto->comuna_id;
 					$whvisita->fecha_creacion = $this->fecha_creacion;
 					$whvisita->fecha_visita = $this->fecha_visita;
 					$whvisita->visita_preventiva = $this->visita_preventiva;
 					$whvisita->canal = $this->punto->canal_id;
 					$whvisita->distribuidor = $this->punto->distribuidor_id;
-					$whvisita->notas = $this->formulario->notas;
+					$whvisita->notas = isset($this->formulario)?$this->formulario->notas:null;
 					$whvisita->persona_punto = $this->persona_punto_id;
 					$whvisita->user_autoriza = $this->id_autoriza;
 					$whvisita->punto_id = $this->punto_id;
@@ -193,13 +205,13 @@ class Visita extends CActiveRecord
 					$whvisita->tipo_visita = $this->tipo_visita_id;
 					$whvisita->direccion_punto = $this->punto->direccion;
 					$whvisita->region = $this->punto->region_id;
-					$whvisita->region = $this->punto->comuna_id;
+					$whvisita->comuna = $this->punto->comuna_id;
 					$whvisita->fecha_creacion = $this->fecha_creacion;
 					$whvisita->fecha_visita = $this->fecha_visita;
 					$whvisita->visita_preventiva = $this->visita_preventiva;
 					$whvisita->canal = $this->punto->canal_id;
 					$whvisita->distribuidor = $this->punto->distribuidor_id;
-					$whvisita->notas = $this->formulario->notas;
+					$whvisita->notas = isset($this->formulario)?$this->formulario->notas:null;
 					$whvisita->persona_punto = $this->persona_punto_id;
 					$whvisita->user_autoriza = $this->id_autoriza;
 					$whvisita->punto_id = $this->punto_id;
@@ -222,13 +234,13 @@ class Visita extends CActiveRecord
 					$whvisita->tipo_visita = $this->tipo_visita_id;
 					$whvisita->direccion_punto = $this->punto->direccion;
 					$whvisita->region = $this->punto->region_id;
-					$whvisita->region = $this->punto->comuna_id;
+					$whvisita->comuna = $this->punto->comuna_id;
 					$whvisita->fecha_creacion = $this->fecha_creacion;
 					$whvisita->fecha_visita = $this->fecha_visita;
 					$whvisita->visita_preventiva = $this->visita_preventiva;
 					$whvisita->canal = $this->punto->canal_id;
 					$whvisita->distribuidor = $this->punto->distribuidor_id;
-					$whvisita->notas = $this->formulario->notas;
+					$whvisita->notas = isset($this->formulario)?$this->formulario->notas:null;
 					$whvisita->persona_punto = $this->persona_punto_id;
 					$whvisita->user_autoriza = $this->id_autoriza;
 					$whvisita->punto_id = $this->punto_id;
@@ -252,13 +264,13 @@ class Visita extends CActiveRecord
 						$whvisita->tipo_visita = $this->tipo_visita_id;
 						$whvisita->direccion_punto = $this->punto->direccion;
 						$whvisita->region = $this->punto->region_id;
-						$whvisita->region = $this->punto->comuna_id;
+						$whvisita->comuna = $this->punto->comuna_id;
 						$whvisita->fecha_creacion = $this->fecha_creacion;
 						$whvisita->fecha_visita = $this->fecha_visita;
 						$whvisita->visita_preventiva = $this->visita_preventiva;
 						$whvisita->canal = $this->punto->canal_id;
 						$whvisita->distribuidor = $this->punto->distribuidor_id;
-						$whvisita->notas = $this->formulario->notas;
+						$whvisita->notas = isset($this->formulario)?$this->formulario->notas:null;
 						$whvisita->persona_punto = $this->persona_punto_id;
 						$whvisita->user_autoriza = $this->id_autoriza;
 						$whvisita->punto_id = $this->punto_id;
@@ -280,13 +292,13 @@ class Visita extends CActiveRecord
 						$whvisita->tipo_visita = $this->tipo_visita_id;
 						$whvisita->direccion_punto = $this->punto->direccion;
 						$whvisita->region = $this->punto->region_id;
-						$whvisita->region = $this->punto->comuna_id;
+						$whvisita->comuna = $this->punto->comuna_id;
 						$whvisita->fecha_creacion = $this->fecha_creacion;
 						$whvisita->fecha_visita = $this->fecha_visita;
 						$whvisita->visita_preventiva = $this->visita_preventiva;
 						$whvisita->canal = $this->punto->canal_id;
 						$whvisita->distribuidor = $this->punto->distribuidor_id;
-						$whvisita->notas = $this->formulario->notas;
+						$whvisita->notas = isset($this->formulario)?$this->formulario->notas:null;
 						$whvisita->persona_punto = $this->persona_punto_id;
 						$whvisita->user_autoriza = $this->id_autoriza;
 						$whvisita->punto_id = $this->punto_id;
@@ -313,13 +325,13 @@ class Visita extends CActiveRecord
 					$whvisita->tipo_visita = $this->tipo_visita_id;
 					$whvisita->direccion_punto = $this->punto->direccion;
 					$whvisita->region = $this->punto->region_id;
-					$whvisita->region = $this->punto->comuna_id;
+					$whvisita->comuna = $this->punto->comuna_id;
 					$whvisita->fecha_creacion = $this->fecha_creacion;
 					$whvisita->fecha_visita = $this->fecha_visita;
 					$whvisita->visita_preventiva = $this->visita_preventiva;
 					$whvisita->canal = $this->punto->canal_id;
 					$whvisita->distribuidor = $this->punto->distribuidor_id;
-					$whvisita->notas = $this->formulario->notas;
+					$whvisita->notas = isset($this->formulario)?$this->formulario->notas:null;
 					$whvisita->persona_punto = $this->persona_punto_id;
 					$whvisita->user_autoriza = $this->id_autoriza;
 					$whvisita->punto_id = $this->punto_id;
@@ -343,13 +355,13 @@ class Visita extends CActiveRecord
 					$whvisita->tipo_visita = $this->tipo_visita_id;
 					$whvisita->direccion_punto = $this->punto->direccion;
 					$whvisita->region = $this->punto->region_id;
-					$whvisita->region = $this->punto->comuna_id;
+					$whvisita->comuna = $this->punto->comuna_id;
 					$whvisita->fecha_creacion = $this->fecha_creacion;
 					$whvisita->fecha_visita = $this->fecha_visita;
 					$whvisita->visita_preventiva = $this->visita_preventiva;
 					$whvisita->canal = $this->punto->canal_id;
 					$whvisita->distribuidor = $this->punto->distribuidor_id;
-					$whvisita->notas = $this->formulario->notas;
+					$whvisita->notas = isset($this->formulario)?$this->formulario->notas:null;
 					$whvisita->persona_punto = $this->persona_punto_id;
 					$whvisita->user_autoriza = $this->id_autoriza;
 					$whvisita->punto_id = $this->punto_id;

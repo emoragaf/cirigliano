@@ -12,7 +12,7 @@ class FormularioController extends Controller
 	 * @return array action filters
 	 */
 	public function filters() {
-     return array( 
+     return array(
         //it's important to add site/error, so an unpermitted user will get the error.
         array('auth.filters.AuthFilter'),
             );
@@ -104,7 +104,7 @@ class FormularioController extends Controller
 							            foreach ($images as $image => $pic) {
 							            	if(!is_dir($root.'/uploads/')) {
 										   		mkdir($root.'/uploads/');
-									   			chmod($root.'/uploads/', 0775); 
+									   			chmod($root.'/uploads/', 0775);
 									   		}
 								   			if(!is_dir($root.'/uploads/visitas/')) {
 								   				mkdir($root.'/uploads/visitas/');
@@ -113,12 +113,12 @@ class FormularioController extends Controller
 						   					if(!is_dir($root.'/uploads/visitas/'.$visita->id.'/')) {
 								   				mkdir($root.'/uploads/visitas/'.$visita->id.'/');
 								   				chmod($root.'/uploads/visitas/'.$visita->id.'/', 0775);
-								   			} 
+								   			}
 						   					if(!is_dir($root.'/uploads/visitas/'.$visita->id.'/'.$mueble->id.'/')) {
 								   				mkdir($root.'/uploads/visitas/'.$visita->id.'/'.$mueble->id.'/');
-								   				chmod($root.'/uploads/visitas/'.$visita->id.'/'.$mueble->id.'/', 0775); 
-								   			}  
-												   
+								   				chmod($root.'/uploads/visitas/'.$visita->id.'/'.$mueble->id.'/', 0775);
+								   			}
+
 						                    $formfoto = new FormularioFotos;
 						                    $foto = new Foto;
 						                    $foto->nombre = $pic->name; //it might be $img_add->name for you, filename is just what I chose to call it in my model
@@ -137,7 +137,7 @@ class FormularioController extends Controller
 						                    else{
 					                    		print_r($foto->errors);
 						                    }
-							                
+
 								        }
 								    }
 					    		}
@@ -153,17 +153,17 @@ class FormularioController extends Controller
 					            foreach ($images as $image => $pic) {
 					            	if(!is_dir($root.'/uploads/')) {
 								   		mkdir($root.'/uploads/');
-							   			chmod($root.'/uploads/', 0775); 
+							   			chmod($root.'/uploads/', 0775);
 							   		}
 						   			if(!is_dir($root.'/uploads/visitas/')) {
 						   				mkdir($root.'/uploads/visitas/');
 						   				chmod($root.'/uploads/visitas/', 0775);
-						   			}	
+						   			}
 				   					if(!is_dir($root.'/uploads/visitas/'.$visita->id.'/')) {
 						   				mkdir($root.'/uploads/visitas/'.$visita->id.'/');
 						   				chmod($root.'/uploads/visitas/'.$visita->id.'/', 0775);
-						   			} 	
-									   
+						   			}
+
 				                    $formfoto = new FormularioFotos;
 				                    $foto = new Foto;
 				                    $foto->nombre = $pic->name; //it might be $img_add->name for you, filename is just what I chose to call it in my model
@@ -182,7 +182,7 @@ class FormularioController extends Controller
 					                    	else{
 					                    		print_r($formfoto->errors);
 					                    	}
-				                    		
+
 				                    	}
 				                    	else{
 				                    	print_r($tipo->errors);
@@ -203,7 +203,7 @@ class FormularioController extends Controller
 			            foreach ($imagesAntes as $image => $pic) {
 			            	if(!is_dir($root.'/uploads/')) {
 						   		mkdir($root.'/uploads/');
-					   			chmod($root.'/uploads/', 0775); 
+					   			chmod($root.'/uploads/', 0775);
 					   		}
 				   			if(!is_dir($root.'/uploads/visitas/')) {
 				   				mkdir($root.'/uploads/visitas/');
@@ -212,9 +212,9 @@ class FormularioController extends Controller
 		   					if(!is_dir($root.'/uploads/visitas/'.$visita->id.'/')) {
 				   				mkdir($root.'/uploads/visitas/'.$visita->id.'/');
 				   				chmod($root.'/uploads/visitas/'.$visita->id.'/', 0775);
-				   			} 
-		   					
-								   
+				   			}
+
+
 		                    $formfoto = new FormularioFotos;
 		                    $foto = new Foto;
 		                    $foto->nombre = $pic->name; //it might be $img_add->name for you, filename is just what I chose to call it in my model
@@ -231,7 +231,7 @@ class FormularioController extends Controller
 		                    else{
 	                    		print_r($foto->errors);
 		                    }
-			                
+
 				        }
 				    }
 				    $imagesDespues = CUploadedFile::getInstancesByName('VPreventivaDespues');
@@ -240,7 +240,7 @@ class FormularioController extends Controller
 			            foreach ($imagesDespues as $image => $pic) {
 			            	if(!is_dir($root.'/uploads/')) {
 						   		mkdir($root.'/uploads/');
-					   			chmod($root.'/uploads/', 0775); 
+					   			chmod($root.'/uploads/', 0775);
 					   		}
 				   			if(!is_dir($root.'/uploads/visitas/')) {
 				   				mkdir($root.'/uploads/visitas/');
@@ -249,9 +249,9 @@ class FormularioController extends Controller
 		   					if(!is_dir($root.'/uploads/visitas/'.$visita->id.'/')) {
 				   				mkdir($root.'/uploads/visitas/'.$visita->id.'/');
 				   				chmod($root.'/uploads/visitas/'.$visita->id.'/', 0775);
-				   			} 
-		   					
-								   
+				   			}
+
+
 		                    $formfoto = new FormularioFotos;
 		                    $foto = new Foto;
 		                    $foto->nombre = $pic->name; //it might be $img_add->name for you, filename is just what I chose to call it in my model
@@ -268,7 +268,7 @@ class FormularioController extends Controller
 		                    else{
 	                    		print_r($foto->errors);
 		                    }
-			                
+
 				        }
 				    }
 				}
@@ -277,7 +277,7 @@ class FormularioController extends Controller
 				if ($visita->estado == 1) {
 					//Enviar email
 					if($visita->tipo_visita_id == 3){
-																
+
 						$html = "<h1>Presupuesto Solicitud Traslado ".$visita->punto->direccion."</h1>";
 						$html .="<p>Folio: ".$visita->folio."</p>";
 						$html .="<p>Fecha Ingreso: ".date('d-m-Y',strtotime($visita->fecha_visita))."</p>";
@@ -291,10 +291,10 @@ class FormularioController extends Controller
 						$html .=$visita->punto->distribuidor!=null?"<p>Distribuidor: ".$visita->punto->distribuidor->nombre."</p>":"";
 						$html .="<br><p>PARA ACEPTAR EL PRESUPUESTO HAGA CLICK EN EL SIGUIENTE ENLACE:</p><a href='".Yii::app()->createAbsoluteUrl("Visita/AceptarPresupuesto",array("id"=>$visita->id))."'>Aceptar Presupuesto</a>";
 						$html .="<br><p>PARA VER MAS DETALLES:</p><a href='".Yii::app()->createAbsoluteUrl("Visita/view",array("id"=>$visita->id))."'>Detalles Visita</a>";
-														
+
 					}
 					else{
-						$html = "<h1>Presupuesto Solicitud Reparación ".$visita->punto->direccion."</h1>";	
+						$html = "<h1>Presupuesto Solicitud Reparación ".$visita->punto->direccion."</h1>";
 						$html .="<p>Folio: ".$visita->folio."</p>";
 						$html .="<p>Fecha Ingreso: ".date('d-m-Y',strtotime($visita->fecha_visita))."</p>";
 						$html .=$visita->punto->comuna!=null?"<p>Comuna: ".$visita->punto->comuna->nombre."</p>":"";
@@ -304,24 +304,31 @@ class FormularioController extends Controller
 						$html .="<br><p>PARA ACEPTAR EL PRESUPUESTO HAGA CLICK EN EL SIGUIENTE ENLACE:</p><a href='".Yii::app()->createAbsoluteUrl("Visita/AceptarPresupuesto",array("id"=>$visita->id))."'>Aceptar Presupuesto</a>";
 						$html .="<br><p>PARA VER MAS DETALLES:</p><a href='".Yii::app()->createAbsoluteUrl("Visita/view",array("id"=>$visita->id))."'>Detalles Visita</a>";
 					}
-					
+
 					$recipients = array();
+					$query = '(global =1';
+					if ($visita->punto->canal_id) {
+						$query .= $visita->punto->canal_id.') AND tipo_notificacion = 1';
+					}
+					else {
+						$query .=') AND tipo_notificacion = 1';
+					}
 					if($visita->tipo_visita_id == 3){
 						if ($visita->punto->canal_id!=7) {
-							$notificar = NotificarPersona::model()->findAll(array('condition'=>'(global =1 OR canal_id ='.$visita->punto->canal_id.') AND tipo_notificacion = 1'));
+							$notificar = NotificarPersona::model()->findAll(array('condition'=>$query));
 							foreach ($notificar as $n) {
 								$recipients[]= array('email'=>$n->persona->email,'name'=>$n->persona->nombre,'type'=>'to');
 							}
 						}
 						else{
-							$notificar = NotificarPersona::model()->findAll(array('condition'=>'(global =1 OR canal_id ='.$visita->destino->canal_id.') AND tipo_notificacion = 1'));
+							$notificar = NotificarPersona::model()->findAll(array('condition'=>$query));
 							foreach ($notificar as $n) {
 								$recipients[]= array('email'=>$n->persona->email,'name'=>$n->persona->nombre,'type'=>'to');
 							}
 						}
 					}
 					else{
-						$notificar = NotificarPersona::model()->findAll(array('condition'=>'(global =1 OR canal_id ='.$visita->punto->canal_id.') AND tipo_notificacion = 1'));
+						$notificar = NotificarPersona::model()->findAll(array('condition'=>$query));
 						foreach ($notificar as $n) {
 							$recipients[]= array('email'=>$n->persona->email,'name'=>$n->persona->nombre,'type'=>'to');
 						}
@@ -387,10 +394,10 @@ class FormularioController extends Controller
 					$email->attachments = array(array('type'=>'application/pdf','name'=>'Informe Solicitud '.$visita->punto->direccion.' '.date('d-m-Y',strtotime($visita->fecha_visita)),'content'=>$content));
 					$email->images = array();
 					$email->sendEmail();
-					
+
 					$visita->estado = 4;
 					//$visita->id_autoriza = Yii::app()->user->getId();
-					
+
 					$visita->save();
 				}
 				if(isset(Yii::app()->session['TrasladoIV'])){
@@ -399,7 +406,7 @@ class FormularioController extends Controller
 				}
 				$this->redirect(array('Visita/view','id'=>$visita->id));
 			}
-			
+
 		}
 
 		$this->render('create',array(
@@ -466,7 +473,7 @@ class FormularioController extends Controller
 							            foreach ($images as $image => $pic) {
 							            	if(!is_dir($root.'/uploads/')) {
 										   		mkdir($root.'/uploads/');
-									   			chmod($root.'/uploads/', 0775); 
+									   			chmod($root.'/uploads/', 0775);
 									   		}
 								   			if(!is_dir($root.'/uploads/visitas/')) {
 								   				mkdir($root.'/uploads/visitas/');
@@ -475,12 +482,12 @@ class FormularioController extends Controller
 						   					if(!is_dir($root.'/uploads/visitas/'.$visita->id.'/')) {
 								   				mkdir($root.'/uploads/visitas/'.$visita->id.'/');
 								   				chmod($root.'/uploads/visitas/'.$visita->id.'/', 0775);
-								   			} 
+								   			}
 						   					if(!is_dir($root.'/uploads/visitas/'.$visita->id.'/'.$mueble->id.'/')) {
 								   				mkdir($root.'/uploads/visitas/'.$visita->id.'/'.$mueble->id.'/');
-								   				chmod($root.'/uploads/visitas/'.$visita->id.'/'.$mueble->id.'/', 0775); 
-								   			}  
-												   
+								   				chmod($root.'/uploads/visitas/'.$visita->id.'/'.$mueble->id.'/', 0775);
+								   			}
+
 						                    $formfoto = new FormularioFotos;
 						                    $foto = new Foto;
 						                    $foto->nombre = $pic->name; //it might be $img_add->name for you, filename is just what I chose to call it in my model
@@ -499,7 +506,7 @@ class FormularioController extends Controller
 						                    else{
 					                    		print_r($foto->errors);
 						                    }
-							                
+
 								        }
 								    }
 					    		}
@@ -515,17 +522,17 @@ class FormularioController extends Controller
 					            foreach ($images as $image => $pic) {
 					            	if(!is_dir($root.'/uploads/')) {
 								   		mkdir($root.'/uploads/');
-							   			chmod($root.'/uploads/', 0775); 
+							   			chmod($root.'/uploads/', 0775);
 							   		}
 						   			if(!is_dir($root.'/uploads/visitas/')) {
 						   				mkdir($root.'/uploads/visitas/');
 						   				chmod($root.'/uploads/visitas/', 0775);
-						   			}	
+						   			}
 				   					if(!is_dir($root.'/uploads/visitas/'.$visita->id.'/')) {
 						   				mkdir($root.'/uploads/visitas/'.$visita->id.'/');
 						   				chmod($root.'/uploads/visitas/'.$visita->id.'/', 0775);
-						   			} 	
-									   
+						   			}
+
 				                    $formfoto = new FormularioFotos;
 				                    $foto = new Foto;
 				                    $foto->nombre = $pic->name; //it might be $img_add->name for you, filename is just what I chose to call it in my model
@@ -544,7 +551,7 @@ class FormularioController extends Controller
 					                    	else{
 					                    		print_r($formfoto->errors);
 					                    	}
-				                    		
+
 				                    	}
 				                    	else{
 				                    	print_r($tipo->errors);
@@ -565,7 +572,7 @@ class FormularioController extends Controller
 			            foreach ($imagesAntes as $image => $pic) {
 			            	if(!is_dir($root.'/uploads/')) {
 						   		mkdir($root.'/uploads/');
-					   			chmod($root.'/uploads/', 0775); 
+					   			chmod($root.'/uploads/', 0775);
 					   		}
 				   			if(!is_dir($root.'/uploads/visitas/')) {
 				   				mkdir($root.'/uploads/visitas/');
@@ -574,9 +581,9 @@ class FormularioController extends Controller
 		   					if(!is_dir($root.'/uploads/visitas/'.$visita->id.'/')) {
 				   				mkdir($root.'/uploads/visitas/'.$visita->id.'/');
 				   				chmod($root.'/uploads/visitas/'.$visita->id.'/', 0775);
-				   			} 
-		   					
-								   
+				   			}
+
+
 		                    $formfoto = new FormularioFotos;
 		                    $foto = new Foto;
 		                    $foto->nombre = $pic->name; //it might be $img_add->name for you, filename is just what I chose to call it in my model
@@ -593,7 +600,7 @@ class FormularioController extends Controller
 		                    else{
 	                    		print_r($foto->errors);
 		                    }
-			                
+
 				        }
 				    }
 				    $imagesDespues = CUploadedFile::getInstancesByName('VPreventivaDespues');
@@ -602,7 +609,7 @@ class FormularioController extends Controller
 			            foreach ($imagesDespues as $image => $pic) {
 			            	if(!is_dir($root.'/uploads/')) {
 						   		mkdir($root.'/uploads/');
-					   			chmod($root.'/uploads/', 0775); 
+					   			chmod($root.'/uploads/', 0775);
 					   		}
 				   			if(!is_dir($root.'/uploads/visitas/')) {
 				   				mkdir($root.'/uploads/visitas/');
@@ -611,9 +618,9 @@ class FormularioController extends Controller
 		   					if(!is_dir($root.'/uploads/visitas/'.$visita->id.'/')) {
 				   				mkdir($root.'/uploads/visitas/'.$visita->id.'/');
 				   				chmod($root.'/uploads/visitas/'.$visita->id.'/', 0775);
-				   			} 
-		   					
-								   
+				   			}
+
+
 		                    $formfoto = new FormularioFotos;
 		                    $foto = new Foto;
 		                    $foto->nombre = $pic->name; //it might be $img_add->name for you, filename is just what I chose to call it in my model
@@ -630,7 +637,7 @@ class FormularioController extends Controller
 		                    else{
 	                    		print_r($foto->errors);
 		                    }
-			                
+
 				        }
 				    }
 				}

@@ -46,7 +46,12 @@ class MueblePresupuesto extends CActiveRecord
 			return $this->servicio->descripcion;
 	}
 	public function getTarifa(){
-			return $this->tarifa_servicio*$this->cant_servicio;
+			if($this->cant_servicio > $this->servicio->cant_b && $this->cant_servicio <= $this->servicio->cant_c)
+				return $this->servicio->tarifa_b*$this->cant_servicio;
+			if($this->cant_servicio > $this->servicio->cant_b && $this->cant_servicio > $this->servicio->cant_c)
+				return $this->servicio->tarifa_c*$this->cant_servicio;
+			else
+				return $this->servicio->tarifa*$this->cant_servicio;
 	}
 	public function getMueblePuntoDescripcion(){
 		if($this->servicio)

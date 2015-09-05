@@ -212,5 +212,6 @@ return array(
 	'params'=>array(
 		'companyName' => 'Exefire',
 		'adminEmail'=>'webmaster@exefire.com',
+		'facturacionAbierta'=>false,
 	),
 );

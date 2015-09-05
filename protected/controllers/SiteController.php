@@ -74,7 +74,18 @@ class SiteController extends Controller
 	public function actionPhpInfo(){
 		echo phpinfo();
 	}
+	public function actionCompletaWH()
+	{
+		$visitas = Visita::model()->findAll();
+		$foliosWH = CHtml::listData(WhVisita::model()->findAll(),'id','folio');
 
+		foreach ($visitas as $visita) {
+			if (!in_array($visita->folio,$foliosWH)) {
+				$visita->saveWH();
+			}
+		}
+		echo "completado";
+	}
 
 
 	/**
